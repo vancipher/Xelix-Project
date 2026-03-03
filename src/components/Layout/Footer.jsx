@@ -17,7 +17,7 @@ export default function Footer() {
           {t('footer.poweredBy')}{' '}
           <strong>{t('footer.designer')}</strong>
           {' '}&mdash;{' '}
-          <span className="footer-team">{t('footer.team')}</span>
+          <a className="footer-team" href="https://cyberxsec.me/" target="_blank" rel="noopener noreferrer">{t('footer.team')}</a>
         </span>
       </div>
     </footer>
