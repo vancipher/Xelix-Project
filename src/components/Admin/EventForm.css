@@ -1,0 +1,122 @@
+/* ── Event Form ─────────────────────────────────────────────────── */
+.event-form { display: flex; flex-direction: column; gap: 18px; }
+
+.ef-group { display: flex; flex-direction: column; gap: 6px; }
+.ef-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.ef-input {
+  background: var(--bg-input);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  font-family: inherit;
+  outline: none;
+  width: 100%;
+}
+.ef-input:focus {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.ef-input::placeholder { color: var(--text-muted); }
+
+.ef-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+/* Type grid */
+.ef-type-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.ef-type-btn {
+  background: var(--bg-input);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-family: inherit;
+}
+.ef-type-btn:hover { border-color: var(--c); color: var(--c); }
+.ef-type-btn.selected {
+  background: color-mix(in srgb, var(--c) 12%, transparent);
+  border-color: var(--c);
+  color: var(--c);
+}
+
+/* Toggle */
+.ef-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+.ef-toggle input { display: none; }
+.ef-toggle-track {
+  width: 40px;
+  height: 22px;
+  background: var(--border);
+  border-radius: 999px;
+  position: relative;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+.ef-toggle input:checked ~ .ef-toggle-track { background: var(--danger); }
+.ef-toggle-thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  background: #fff;
+  border-radius: 50%;
+  transition: left 0.2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+.ef-toggle input:checked ~ .ef-toggle-track .ef-toggle-thumb { left: 21px; }
+.ef-toggle-label { font-size: 0.85rem; color: var(--text-secondary); font-weight: 500; }
+
+/* Actions */
+.ef-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 4px;
+  gap: 10px;
+}
+.ef-actions-right { display: flex; gap: 8px; }
+.ef-btn {
+  padding: 9px 20px;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  border: none;
+}
+.ef-btn--primary {
+  background: var(--accent);
+  color: var(--text-inverse);
+}
+.ef-btn--primary:hover { background: var(--accent-hover); }
+.ef-btn--ghost {
+  background: var(--bg-badge);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+}
+.ef-btn--ghost:hover { background: var(--bg-card-hover); color: var(--text-primary); }
+.ef-btn--danger {
+  background: var(--danger-soft);
+  color: var(--danger);
+  border: 1px solid var(--danger);
+}
+.ef-btn--danger:hover { background: var(--danger); color: #fff; }

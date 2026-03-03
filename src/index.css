@@ -1,0 +1,425 @@
+/* ─────────────────────────────────────────────────────────────────
+   XELIX — Global Stylesheet
+   Themes: white | black | lavender | nature
+   ───────────────────────────────────────────────────────────────── */
+
+/* ── Reset & Base ───────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+/* ── Font Families ───────────────────────────────────────────────── */
+:root {
+  --font-en: 'Inter', sans-serif;
+  --font-ar: 'Almarai', sans-serif;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   THEME: WHITE (default)
+══════════════════════════════════════════════════════════════════ */
+[data-theme="white"] {
+  --bg-primary:        #f8f8f8;
+  --bg-secondary:      #ffffff;
+  --bg-card:           #ffffff;
+  --bg-card-hover:     #f1f1f1;
+  --bg-header:         rgba(255,255,255,0.75);
+  --bg-sidebar:        #ffffff;
+  --bg-input:          #f4f4f4;
+  --bg-modal:          #ffffff;
+  --bg-overlay:        rgba(0,0,0,0.35);
+  --bg-badge:          #e8e8e8;
+  --border:            #e2e2e2;
+  --border-focus:      #6c63ff;
+  --text-primary:      #111111;
+  --text-secondary:    #555555;
+  --text-muted:        #999999;
+  --text-inverse:      #ffffff;
+  --accent:            #6c63ff;
+  --accent-soft:       #ede9ff;
+  --accent-hover:      #5a52d5;
+  --danger:            #e53935;
+  --danger-soft:       #fdecea;
+  --warning:           #f59e0b;
+  --warning-soft:      #fef3c7;
+  --success:           #10b981;
+  --success-soft:      #d1fae5;
+  --day-alert-bg:      #fff0f0;
+  --day-alert-border:  #e53935;
+  --day-alert-text:    #c62828;
+  --shadow-sm:         0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md:         0 4px 16px rgba(0,0,0,0.10);
+  --shadow-lg:         0 12px 40px rgba(0,0,0,0.14);
+  --noise-opacity:     0.025;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   THEME: BLACK (dark crimson — deep red shadows, heavy noise)
+══════════════════════════════════════════════════════════════════ */
+[data-theme="black"] {
+  --bg-primary:        #0a0608;
+  --bg-secondary:      #120a0c;
+  --bg-card:           #180c0f;
+  --bg-card-hover:     #1e1013;
+  --bg-header:         rgba(10,6,8,0.92);
+  --bg-sidebar:        #100809;
+  --bg-input:          #1e1013;
+  --bg-modal:          #180c0f;
+  --bg-overlay:        rgba(0,0,0,0.82);
+  --bg-badge:          #2a1318;
+  --border:            #3a1820;
+  --border-focus:      #c41230;
+  --text-primary:      #f2e8ea;
+  --text-secondary:    #b07880;
+  --text-muted:        #623540;
+  --text-inverse:      #0a0608;
+  --accent:            #c41230;
+  --accent-soft:       #2a0a10;
+  --accent-hover:      #e0182e;
+  --danger:            #ff3344;
+  --danger-soft:       #2d0810;
+  --warning:           #fbbf24;
+  --warning-soft:      #2d1e00;
+  --success:           #34d399;
+  --success-soft:      #0a2418;
+  --day-alert-bg:      #280810;
+  --day-alert-border:  #ff3344;
+  --day-alert-text:    #ff7080;
+  --shadow-sm:         0 1px 4px rgba(120,0,20,0.55);
+  --shadow-md:         0 4px 18px rgba(120,0,20,0.60);
+  --shadow-lg:         0 12px 44px rgba(120,0,20,0.80);
+  --noise-opacity:     0.09;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   THEME: LAVENDER (pink / girly / vibrant)
+══════════════════════════════════════════════════════════════════ */
+[data-theme="lavender"] {
+  --bg-primary:        #fdf4fb;
+  --bg-secondary:      #fff0f9;
+  --bg-card:           #fff5fb;
+  --bg-card-hover:     #fde8f5;
+  --bg-header:         rgba(253,244,251,0.80);
+  --bg-sidebar:        #fff0f9;
+  --bg-input:          #fde8f5;
+  --bg-modal:          #fff5fb;
+  --bg-overlay:        rgba(200,50,120,0.20);
+  --bg-badge:          #fce4f2;
+  --border:            #f4c2e4;
+  --border-focus:      #d63384;
+  --text-primary:      #3b0a2a;
+  --text-secondary:    #854060;
+  --text-muted:        #c490b0;
+  --text-inverse:      #ffffff;
+  --accent:            #d63384;
+  --accent-soft:       #fce4f2;
+  --accent-hover:      #b5276b;
+  --danger:            #e53935;
+  --danger-soft:       #fdecea;
+  --warning:           #f59e0b;
+  --warning-soft:      #fef3c7;
+  --success:           #10b981;
+  --success-soft:      #d1fae5;
+  --day-alert-bg:      #fdecea;
+  --day-alert-border:  #e53935;
+  --day-alert-text:    #c62828;
+  --shadow-sm:         0 1px 3px rgba(180,60,120,0.10);
+  --shadow-md:         0 4px 16px rgba(180,60,120,0.14);
+  --shadow-lg:         0 12px 40px rgba(180,60,120,0.18);
+  --noise-opacity:     0.02;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   THEME: NATURE (green / earthy)
+══════════════════════════════════════════════════════════════════ */
+[data-theme="nature"] {
+  --bg-primary:        #f2f7f2;
+  --bg-secondary:      #eaf3ea;
+  --bg-card:           #eef5ee;
+  --bg-card-hover:     #e0ede0;
+  --bg-header:         rgba(242,247,242,0.80);
+  --bg-sidebar:        #eaf3ea;
+  --bg-input:          #e0ede0;
+  --bg-modal:          #eef5ee;
+  --bg-overlay:        rgba(20,80,20,0.20);
+  --bg-badge:          #d4ebcc;
+  --border:            #b8d8b8;
+  --border-focus:      #2d7a2d;
+  --text-primary:      #0f2b0f;
+  --text-secondary:    #3a5e3a;
+  --text-muted:        #7aaa7a;
+  --text-inverse:      #ffffff;
+  --accent:            #2d7a2d;
+  --accent-soft:       #d4ebcc;
+  --accent-hover:      #215c21;
+  --danger:            #e53935;
+  --danger-soft:       #fdecea;
+  --warning:           #f59e0b;
+  --warning-soft:      #fef3c7;
+  --success:           #10b981;
+  --success-soft:      #d1fae5;
+  --day-alert-bg:      #fdecea;
+  --day-alert-border:  #e53935;
+  --day-alert-text:    #c62828;
+  --shadow-sm:         0 1px 3px rgba(30,80,30,0.10);
+  --shadow-md:         0 4px 16px rgba(30,80,30,0.12);
+  --shadow-lg:         0 12px 40px rgba(30,80,30,0.16);
+  --noise-opacity:     0.025;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   THEME: ORANGE (ember / sunset fire)
+══════════════════════════════════════════════════════════════════ */
+[data-theme="orange"] {
+  --bg-primary:        #130900;
+  --bg-secondary:      #1d1000;
+  --bg-card:           #241500;
+  --bg-card-hover:     #2e1c00;
+  --bg-header:         rgba(19,9,0,0.88);
+  --bg-sidebar:        #1a0e00;
+  --bg-input:          #2e1c00;
+  --bg-modal:          #241500;
+  --bg-overlay:        rgba(0,0,0,0.70);
+  --bg-badge:          #3c2200;
+  --border:            #4d2e00;
+  --border-focus:      #f97316;
+  --text-primary:      #ffe8c8;
+  --text-secondary:    #d4904a;
+  --text-muted:        #7a5030;
+  --text-inverse:      #130900;
+  --accent:            #f97316;
+  --accent-soft:       #3c2200;
+  --accent-hover:      #fb923c;
+  --danger:            #ff4444;
+  --danger-soft:       #2d0808;
+  --warning:           #fbbf24;
+  --warning-soft:      #2d1e00;
+  --success:           #34d399;
+  --success-soft:      #0a2418;
+  --day-alert-bg:      #2d1000;
+  --day-alert-border:  #ff4444;
+  --day-alert-text:    #ff8888;
+  --shadow-sm:         0 1px 4px rgba(200,80,0,0.35);
+  --shadow-md:         0 4px 18px rgba(200,80,0,0.40);
+  --shadow-lg:         0 12px 44px rgba(200,80,0,0.55);
+  --noise-opacity:     0.05;
+}
+
+/* ── Event Type Colors (theme-agnostic) ────────────────────────── */
+:root {
+  --evt-lecture:    #3b82f6;
+  --evt-quiz:       #f59e0b;
+  --evt-assignment: #8b5cf6;
+  --evt-exam:       #ef4444;
+  --evt-report:     #06b6d4;
+  --evt-lab:        #10b981;
+  --evt-other:      #6b7280;
+}
+
+/* ── Body ─────────────────────────────────────────────────────── */
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-en);
+  min-height: 100vh;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Subtle noise layer */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity: var(--noise-opacity);
+}
+
+/* ════════════════════════════════════════════════════════════════
+   LAVENDER (ROSE) — floating hearts + sparkle card glow
+══════════════════════════════════════════════════════════════════ */
+
+/* Floating hearts/sparkles drifting up */
+[data-theme="lavender"] body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    radial-gradient(circle 3px at center, rgba(214,51,132,0.55) 0%, transparent 70%),
+    radial-gradient(circle 2px at center, rgba(255,110,180,0.45) 0%, transparent 70%),
+    radial-gradient(circle 4px at center, rgba(232,121,177,0.38) 0%, transparent 70%),
+    radial-gradient(circle 2px at center, rgba(255,141,199,0.40) 0%, transparent 70%),
+    radial-gradient(circle 3px at center, rgba(180,40,110,0.35) 0%, transparent 70%);
+  background-size: 90px 90px, 65px 65px, 110px 110px, 78px 78px, 55px 55px;
+  background-position: 10px 20px, 45px 55px, 70px 15px, 25px 80px, 55px 40px;
+  animation: xelixHeartFloat 28s linear infinite;
+  opacity: 0.9;
+}
+
+@keyframes xelixHeartFloat {
+  0%   { background-position: 10px 20px,   45px 55px,  70px 15px,  25px 80px,  55px 40px; }
+  100% { background-position: 60px -70px,  90px -10px, 115px -95px, 70px -20px, 95px -55px; }
+}
+
+/* Soft pink shimmer pulse on cards */
+[data-theme="lavender"] .glass {
+  animation: xelixPinkPulse 5s ease-in-out infinite alternate;
+}
+@keyframes xelixPinkPulse {
+  0%   { box-shadow: var(--shadow-md); }
+  100% { box-shadow: var(--shadow-md), 0 0 18px 5px rgba(214,51,132,0.13); }
+}
+
+/* Bouncy pop on buttons */
+[data-theme="lavender"] .ctrl-btn:hover,
+[data-theme="lavender"] .dash-add-btn:hover,
+[data-theme="lavender"] .ef-btn--primary:hover {
+  animation: xelixBounce 0.35s ease forwards;
+}
+@keyframes xelixBounce {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.10); }
+  70%  { transform: scale(0.96); }
+  100% { transform: scale(1.03); }
+}
+
+/* Sparkle on active nav link */
+[data-theme="lavender"] .nav-link.active::after {
+  content: ' ✦';
+  font-size: 0.55rem;
+  vertical-align: super;
+  opacity: 0.7;
+  animation: xelixTwinkle 1.8s ease-in-out infinite alternate;
+}
+@keyframes xelixTwinkle {
+  0%   { opacity: 0.3; transform: scale(0.8) rotate(-10deg); }
+  100% { opacity: 1;   transform: scale(1.2) rotate(10deg); }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   NATURE (OLIVE) — gentle wind breeze + card sway
+   (SVG leaf particles are rendered by ThemeEffects.jsx)
+══════════════════════════════════════════════════════════════════ */
+
+/* Slow breeze tint sweep */
+[data-theme="nature"] body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    rgba(45,122,45,0.06) 30%,
+    rgba(90,160,90,0.09) 50%,
+    rgba(45,122,45,0.06) 70%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: xelixBreeze 14s ease-in-out infinite alternate;
+}
+@keyframes xelixBreeze {
+  0%   { background-position: 0% 50%;   opacity: 0.45; }
+  50%  { background-position: 100% 50%; opacity: 0.9;  }
+  100% { background-position: 60% 50%;  opacity: 0.60; }
+}
+
+/* Card subtle sway */
+[data-theme="nature"] .glass {
+  animation: xelixSway 9s ease-in-out infinite alternate;
+}
+@keyframes xelixSway {
+  0%   { box-shadow: var(--shadow-md); transform: skewX(0deg); }
+  50%  { box-shadow: var(--shadow-md), -4px 0 18px rgba(45,122,45,0.10); transform: skewX(0.25deg); }
+  100% { box-shadow: var(--shadow-md),  4px 0 18px rgba(45,122,45,0.12); transform: skewX(-0.25deg); }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   ORANGE (EMBER) — heat shimmer glow from below
+══════════════════════════════════════════════════════════════════ */
+
+[data-theme="orange"] body::after {
+  content: '';
+  position: fixed;
+  bottom: 0;
+  left: 10%;
+  right: 10%;
+  height: 35vh;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(ellipse at 50% 100%, rgba(249,115,22,0.18) 0%, rgba(234,88,12,0.08) 50%, transparent 75%);
+  animation: xelixEmberGlow 5s ease-in-out infinite alternate;
+}
+@keyframes xelixEmberGlow {
+  0%   { opacity: 0.55; transform: scaleX(0.9); }
+  100% { opacity: 1;    transform: scaleX(1.1); }
+}
+
+/* Warm amber card glow */
+[data-theme="orange"] .glass {
+  animation: xelixAmberPulse 5s ease-in-out infinite alternate;
+}
+@keyframes xelixAmberPulse {
+  0%   { box-shadow: var(--shadow-md); }
+  100% { box-shadow: var(--shadow-md), 0 0 22px 6px rgba(249,115,22,0.14); }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   BLACK (CRIMSON) — red vignette pulse + deep noise already via --noise-opacity
+══════════════════════════════════════════════════════════════════ */
+
+[data-theme="black"] body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(ellipse at center, transparent 45%, rgba(160,0,25,0.10) 100%);
+  animation: xelixRedVignette 7s ease-in-out infinite alternate;
+}
+@keyframes xelixRedVignette {
+  0%   { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+
+/* Deep crimson glow on cards */
+[data-theme="black"] .glass {
+  animation: xelixCrimsonPulse 6s ease-in-out infinite alternate;
+}
+@keyframes xelixCrimsonPulse {
+  0%   { box-shadow: var(--shadow-md); }
+  100% { box-shadow: var(--shadow-md), 0 0 20px 4px rgba(180,0,30,0.18); }
+}
+
+/* ── RTL Support ─────────────────────────────────────────────── */
+[dir="rtl"] body,
+[dir="rtl"] {
+  font-family: var(--font-ar);
+}
+[dir="ltr"] {
+  font-family: var(--font-en);
+}
+
+/* ── Scrollbar ────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-secondary); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+/* ── Utility: Glass Card ─────────────────────────────────────── */
+.glass {
+  background: var(--bg-card);
+  backdrop-filter: blur(12px) saturate(1.4);
+  -webkit-backdrop-filter: blur(12px) saturate(1.4);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow-md);
+}
+
+/* ── Transitions ────────────────────────────────────────────── */
+* { transition: background-color 0.25s ease, border-color 0.25s ease, color 0.2s ease; }
+button, a, input, select, textarea { transition: all 0.2s ease; }

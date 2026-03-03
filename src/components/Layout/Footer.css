@@ -1,0 +1,31 @@
+/* ── Footer ──────────────────────────────────────────────────────── */
+.footer {
+  border-top: 1px solid var(--border);
+  background: var(--bg-secondary);
+  margin-top: auto;
+}
+.footer-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.footer-brand {
+  font-family: var(--font-en);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+}
+.foot-x { color: var(--accent); }
+.footer-sep { color: var(--border); }
+.footer-credit {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+.footer-credit strong { color: var(--text-secondary); font-weight: 600; }
+.footer-team { color: var(--accent); font-weight: 600; }
