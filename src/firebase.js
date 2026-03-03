@@ -1,15 +1,6 @@
-import { initializeApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
+import { createClient } from '@supabase/supabase-js';
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCoesC3Eme2RQv6Po_NdAVtDjSnVR7VIUk",
-  authDomain: "xelix-project.firebaseapp.com",
-  projectId: "xelix-project",
-  storageBucket: "xelix-project.firebasestorage.app",
-  messagingSenderId: "123326737802",
-  appId: "1:123326737802:web:a408ada3d0109125caac73",
-  measurementId: "G-QW264ZHQR6",
-};
+const SUPABASE_URL = 'https://dnpeszhmwtyckqiswztr.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRucGVzemhtd3R5Y2txaXN3enRyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI1NDMzMzcsImV4cCI6MjA4ODExOTMzN30.Fl31zGYnh3JyFTkt4e9eZL3TDbslnk1qMhYoLAt3I74';
 
-const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app);
+export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);

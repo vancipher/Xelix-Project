@@ -1,6 +1,5 @@
-import { createContext, useContext, useState, useEffect } from 'react';
-import { doc, onSnapshot, setDoc, getDoc } from 'firebase/firestore';
-import { db } from '../firebase';
+import { createContext, useContext, useState, useEffect, useRef } from 'react';
+import { supabase } from '../firebase';
 import {
   createGroupSchedule, createEvent, GROUPS,
   dayHasImportant, filterEventsForWeek,
@@ -8,8 +7,8 @@ import {
 
 const ScheduleContext = createContext(null);
 
-// Migrate any existing localStorage data to Firestore once
-const MIGRATED_KEY = 'xelix-migrated-v1';
+// Migrate localStorage data to Supabase once
+const MIGRATED_KEY = 'xelix-sb-migrated-v1';
 const OLD_KEY = 'xelix-schedule-v3';
 
 async function migrateIfNeeded() {
@@ -20,42 +19,55 @@ async function migrateIfNeeded() {
     const local = JSON.parse(raw);
     for (const group of GROUPS) {
       if (!local[group]) continue;
-      const ref = doc(db, 'schedule', group);
-      const snap = await getDoc(ref);
-      // Only migrate if Firestore doc is empty/missing
-      if (!snap.exists() || Object.values(snap.data() ?? {}).every(d => !d?.events?.length)) {
-        await setDoc(ref, local[group]);
+      // Only migrate if the row has no events
+      const { data } = await supabase.from('schedule').select('data').eq('id', group).single();
+      const isEmpty = !data?.data || Object.values(data.data).every(d => !d?.events?.length);
+      if (isEmpty) {
+        await supabase.from('schedule').upsert({ id: group, data: local[group] });
       }
     }
-  } catch { /* ignore migration errors */ }
+  } catch { /* ignore */ }
   localStorage.setItem(MIGRATED_KEY, '1');
 }
 
 export function ScheduleProvider({ children }) {
   const [schedule, setSchedule] = useState(createGroupSchedule);
   const [loading, setLoading] = useState(true);
+  const scheduleRef = useRef(schedule);
+  scheduleRef.current = schedule;
 
   useEffect(() => {
-    migrateIfNeeded();
+    // Load all groups then subscribe to realtime changes
+    const init = async () => {
+      await migrateIfNeeded();
+      const { data, error } = await supabase.from('schedule').select('id, data');
+      if (!error && data) {
+        const merged = { ...createGroupSchedule() };
+        data.forEach(row => { merged[row.id] = row.data; });
+        setSchedule(merged);
+      }
+      setLoading(false);
+    };
+    init();
 
-    const unsubs = GROUPS.map((group) => {
-      const ref = doc(db, 'schedule', group);
-      return onSnapshot(ref, (snap) => {
-        const data = snap.exists() ? snap.data() : createGroupSchedule()[group];
-        setSchedule((prev) => ({ ...prev, [group]: data }));
-        setLoading(false);
-      });
-    });
+    // Realtime subscription
+    const channel = supabase
+      .channel('schedule-changes')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'schedule' }, (payload) => {
+        const { id, data } = payload.new;
+        setSchedule((prev) => ({ ...prev, [id]: data }));
+      })
+      .subscribe();
 
-    return () => unsubs.forEach((u) => u());
+    return () => supabase.removeChannel(channel);
   }, []);
 
-  /* ── Write helpers ───────────────────────────────────────────── */
-  const _updateGroup = async (group, updater) => {
+  /* ── Write helper ────────────────────────────────────────────── */
+  const _updateGroup = (group, updater) => {
     setSchedule((prev) => {
-      const next = { ...prev, [group]: updater(prev[group] ?? createGroupSchedule()[group]) };
-      // Write to Firestore
-      setDoc(doc(db, 'schedule', group), next[group]).catch(console.error);
+      const updated = updater(prev[group] ?? createGroupSchedule()[group]);
+      const next = { ...prev, [group]: updated };
+      supabase.from('schedule').upsert({ id: group, data: updated }).catch(console.error);
       return next;
     });
   };
@@ -98,11 +110,11 @@ export function ScheduleProvider({ children }) {
     }));
   };
 
-  /** Raw day data (all events, no week filtering) */
+  /** Raw day data */
   const getDay = (group, dayKey) =>
     schedule[group]?.[dayKey] ?? { events: [] };
 
-  /** Events visible for a given week date (filters one-time events by date) */
+  /** Events filtered for a specific week date */
   const getDayFiltered = (group, dayKey, weekDate) => {
     const dayData = schedule[group]?.[dayKey] ?? { events: [] };
     return {
