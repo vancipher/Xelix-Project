@@ -1,94 +1,101 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
+import { doc, onSnapshot, setDoc, getDoc } from 'firebase/firestore';
+import { db } from '../firebase';
 import {
-  createGroupSchedule, createEvent,
+  createGroupSchedule, createEvent, GROUPS,
   dayHasImportant, filterEventsForWeek,
 } from '../utils/helpers';
 
 const ScheduleContext = createContext(null);
 
-const STORAGE_KEY = 'xelix-schedule-v3';
+// Migrate any existing localStorage data to Firestore once
+const MIGRATED_KEY = 'xelix-migrated-v1';
+const OLD_KEY = 'xelix-schedule-v3';
 
-// Clear old seed data from previous versions
-try {
-  localStorage.removeItem('xelix-schedule-v2');
-} catch { /* ignore */ }
-
-const load = () => {
+async function migrateIfNeeded() {
+  if (localStorage.getItem(MIGRATED_KEY)) return;
+  const raw = localStorage.getItem(OLD_KEY);
+  if (!raw) { localStorage.setItem(MIGRATED_KEY, '1'); return; }
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) return JSON.parse(raw);
-  } catch { /* fall through */ }
-  return createGroupSchedule();
-};
-
-const persist = (schedule) =>
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(schedule));
+    const local = JSON.parse(raw);
+    for (const group of GROUPS) {
+      if (!local[group]) continue;
+      const ref = doc(db, 'schedule', group);
+      const snap = await getDoc(ref);
+      // Only migrate if Firestore doc is empty/missing
+      if (!snap.exists() || Object.values(snap.data() ?? {}).every(d => !d?.events?.length)) {
+        await setDoc(ref, local[group]);
+      }
+    }
+  } catch { /* ignore migration errors */ }
+  localStorage.setItem(MIGRATED_KEY, '1');
+}
 
 export function ScheduleProvider({ children }) {
-  const [schedule, setSchedule] = useState(load);
+  const [schedule, setSchedule] = useState(createGroupSchedule);
+  const [loading, setLoading] = useState(true);
 
-  const _update = (updater) => {
+  useEffect(() => {
+    migrateIfNeeded();
+
+    const unsubs = GROUPS.map((group) => {
+      const ref = doc(db, 'schedule', group);
+      return onSnapshot(ref, (snap) => {
+        const data = snap.exists() ? snap.data() : createGroupSchedule()[group];
+        setSchedule((prev) => ({ ...prev, [group]: data }));
+        setLoading(false);
+      });
+    });
+
+    return () => unsubs.forEach((u) => u());
+  }, []);
+
+  /* ── Write helpers ───────────────────────────────────────────── */
+  const _updateGroup = async (group, updater) => {
     setSchedule((prev) => {
-      const next = updater(prev);
-      persist(next);
+      const next = { ...prev, [group]: updater(prev[group] ?? createGroupSchedule()[group]) };
+      // Write to Firestore
+      setDoc(doc(db, 'schedule', group), next[group]).catch(console.error);
       return next;
     });
   };
 
   /* ── CRUD ────────────────────────────────────────────────────── */
   const addEvent = (group, dayKey, eventData, adminName) => {
-    _update((prev) => {
-      const groupSched = prev[group] ?? createGroupSchedule()[group];
-      return {
-        ...prev,
-        [group]: {
-          ...groupSched,
-          [dayKey]: {
-            ...groupSched[dayKey],
-            events: [
-              ...(groupSched[dayKey]?.events ?? []),
-              createEvent({ ...eventData, addedByName: adminName }),
-            ],
-          },
-        },
-      };
-    });
+    _updateGroup(group, (groupSched) => ({
+      ...groupSched,
+      [dayKey]: {
+        ...groupSched[dayKey],
+        events: [
+          ...(groupSched[dayKey]?.events ?? []),
+          createEvent({ ...eventData, addedByName: adminName }),
+        ],
+      },
+    }));
   };
 
   const editEvent = (group, dayKey, eventId, eventData, adminName) => {
-    _update((prev) => {
-      const groupSched = prev[group] ?? {};
-      return {
-        ...prev,
-        [group]: {
-          ...groupSched,
-          [dayKey]: {
-            ...groupSched[dayKey],
-            events: (groupSched[dayKey]?.events ?? []).map((e) =>
-              e.id === eventId
-                ? { ...e, ...eventData, addedByName: adminName, updatedAt: new Date().toISOString() }
-                : e
-            ),
-          },
-        },
-      };
-    });
+    _updateGroup(group, (groupSched) => ({
+      ...groupSched,
+      [dayKey]: {
+        ...groupSched[dayKey],
+        events: (groupSched[dayKey]?.events ?? []).map((e) =>
+          e.id === eventId
+            ? { ...e, ...eventData, addedByName: adminName, updatedAt: new Date().toISOString() }
+            : e
+        ),
+      },
+    }));
   };
 
   const deleteEvent = (group, dayKey, eventId) => {
-    _update((prev) => {
-      const groupSched = prev[group] ?? {};
-      return {
-        ...prev,
-        [group]: {
-          ...groupSched,
-          [dayKey]: {
-            ...groupSched[dayKey],
-            events: (groupSched[dayKey]?.events ?? []).filter((e) => e.id !== eventId),
-          },
-        },
-      };
-    });
+    _updateGroup(group, (groupSched) => ({
+      ...groupSched,
+      [dayKey]: {
+        ...groupSched[dayKey],
+        events: (groupSched[dayKey]?.events ?? []).filter((e) => e.id !== eventId),
+      },
+    }));
   };
 
   /** Raw day data (all events, no week filtering) */
@@ -111,7 +118,7 @@ export function ScheduleProvider({ children }) {
 
   return (
     <ScheduleContext.Provider
-      value={{ schedule, addEvent, editEvent, deleteEvent, getDay, getDayFiltered, isDayImportant }}
+      value={{ schedule, loading, addEvent, editEvent, deleteEvent, getDay, getDayFiltered, isDayImportant }}
     >
       {children}
     </ScheduleContext.Provider>
