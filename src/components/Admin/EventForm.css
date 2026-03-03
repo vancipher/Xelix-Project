@@ -25,6 +25,11 @@
   box-shadow: 0 0 0 3px var(--accent-soft);
 }
 .ef-input::placeholder { color: var(--text-muted); }
+.ef-textarea {
+  resize: vertical;
+  min-height: 72px;
+  line-height: 1.5;
+}
 
 .ef-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 

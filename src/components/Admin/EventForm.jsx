@@ -7,7 +7,7 @@ import './EventForm.css';
 const EMPTY = {
   title: '', titleAr: '', type: 'lecture',
   time: '', room: '', instructor: '', isImportant: false,
-  isRecurring: true, date: '',
+  isRecurring: true, date: '', notes: '',
 };
 
 export default function EventForm({ initial, onSave, onCancel, onDelete, dayDate }) {
@@ -131,6 +131,18 @@ export default function EventForm({ initial, onSave, onCancel, onDelete, dayDate
           value={form.instructor}
           onChange={(e) => set('instructor', e.target.value)}
           placeholder="Dr. ..."
+        />
+      </div>
+
+      {/* Notes */}
+      <div className="ef-group">
+        <label className="ef-label">{t('admin.eventNotes')}</label>
+        <textarea
+          className="ef-input ef-textarea"
+          value={form.notes}
+          onChange={(e) => set('notes', e.target.value)}
+          placeholder={t('admin.notesPlaceholder')}
+          rows={3}
         />
       </div>
 

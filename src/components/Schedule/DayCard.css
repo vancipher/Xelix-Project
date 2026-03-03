@@ -206,6 +206,55 @@
 }
 .event-item__added-by span { font-weight: 600; color: var(--accent); }
 
+/* Notes toggle button */
+.event-item__notes-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 7px;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 3px 8px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: inherit;
+  letter-spacing: 0.3px;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+.event-item__notes-toggle:hover,
+.event-item__notes-toggle.open {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+.event-item__notes-toggle svg {
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+.event-item__notes-toggle.open svg {
+  transform: rotate(180deg);
+}
+
+/* Notes panel */
+.event-item__notes {
+  margin-top: 7px;
+  padding: 8px 10px;
+  background: var(--bg-input, rgba(0,0,0,0.04));
+  border-left: 3px solid var(--evt-color);
+  border-radius: 0 6px 6px 0;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.event-item--important .event-item__notes {
+  border-left-color: var(--danger);
+}
+
 /* Responsive */
 @media (max-width: 520px) {
   .day-card__header { padding: 14px 14px 10px; }

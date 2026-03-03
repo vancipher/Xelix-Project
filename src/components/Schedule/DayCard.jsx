@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useT } from '../../utils/i18n';
 import { EVENT_TYPE_COLORS, EVENT_TYPE_BG, formatDate } from '../../utils/helpers';
@@ -46,9 +47,11 @@ export default function DayCard({ dayKey, dayData, isImportant, date, isToday })
 }
 
 function EventItem({ event, lang, t }) {
+  const [notesOpen, setNotesOpen] = useState(false);
   const label = lang === 'ar' && event.titleAr ? event.titleAr : event.title;
   const typeColor = EVENT_TYPE_COLORS[event.type] || EVENT_TYPE_COLORS.other;
   const typeBg    = EVENT_TYPE_BG[event.type]    || EVENT_TYPE_BG.other;
+  const hasNotes  = !!event.notes?.trim();
 
   return (
     <div
@@ -85,6 +88,25 @@ function EventItem({ event, lang, t }) {
           <p className="event-item__added-by">
             {t('schedule.addedBy')}: <span>{event.addedByName}</span>
           </p>
+        )}
+        {hasNotes && (
+          <>
+            <button
+              type="button"
+              className={`event-item__notes-toggle ${notesOpen ? 'open' : ''}`}
+              onClick={() => setNotesOpen((v) => !v)}
+            >
+              <svg width="10" height="10" viewBox="0 0 16 16" fill="none">
+                <path d="M3 6l5 5 5-5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              {notesOpen ? t('schedule.hideDetails') : t('schedule.showDetails')}
+            </button>
+            {notesOpen && (
+              <div className="event-item__notes">
+                {event.notes}
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>
