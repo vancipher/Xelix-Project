@@ -96,13 +96,14 @@ export const createGroupSchedule = () => {
 export const createEvent = ({
   title = '', titleAr = '', type = 'lecture', time = '', room = '',
   instructor = '', isImportant = false, addedByName = '',
-  isRecurring = null, date = null,
+  isRecurring = null, date = null, notes = '',
 }) => ({
   id: uuidv4(),
   title, titleAr, type, time, room, instructor, isImportant,
   isRecurring: isRecurring ?? (EVENT_TYPE_RECURRING_DEFAULT[type] ?? true),
   date,
   addedByName,
+  notes,
   createdAt: new Date().toISOString(),
 });
 
