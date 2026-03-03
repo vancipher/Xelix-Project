@@ -54,8 +54,9 @@ export function ScheduleProvider({ children }) {
     const channel = supabase
       .channel('schedule-changes')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'schedule' }, (payload) => {
-        const { id, data } = payload.new;
-        setSchedule((prev) => ({ ...prev, [id]: data }));
+        const row = payload.new;
+        if (!row?.id || !row?.data) return;
+        setSchedule((prev) => ({ ...prev, [row.id]: row.data }));
       })
       .subscribe();
 
@@ -66,9 +67,11 @@ export function ScheduleProvider({ children }) {
   const _updateGroup = (group, updater) => {
     setSchedule((prev) => {
       const updated = updater(prev[group] ?? createGroupSchedule()[group]);
-      const next = { ...prev, [group]: updated };
-      supabase.from('schedule').upsert({ id: group, data: updated }).catch(console.error);
-      return next;
+      // Schedule the Supabase write outside of the setState call
+      setTimeout(() => {
+        supabase.from('schedule').upsert({ id: group, data: updated }).catch(console.error);
+      }, 0);
+      return { ...prev, [group]: updated };
     });
   };
 
