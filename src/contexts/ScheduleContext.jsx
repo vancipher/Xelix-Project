@@ -67,9 +67,14 @@ export function ScheduleProvider({ children }) {
   const _updateGroup = (group, updater) => {
     setSchedule((prev) => {
       const updated = updater(prev[group] ?? createGroupSchedule()[group]);
-      // Schedule the Supabase write outside of the setState call
-      setTimeout(() => {
-        supabase.from('schedule').upsert({ id: group, data: updated }).catch(console.error);
+      setTimeout(async () => {
+        const { error } = await supabase
+          .from('schedule')
+          .upsert({ id: group, data: updated });
+        if (error) {
+          console.error('Supabase upsert error:', JSON.stringify(error));
+          alert('Save failed: ' + error.message);
+        }
       }, 0);
       return { ...prev, [group]: updated };
     });
