@@ -1,57 +1,69 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { ADMIN_ACCOUNTS } from '../utils/helpers';
+import { supabase } from '../firebase';
 import { v4 as uuidv4 } from 'uuid';
 
 const AuthContext = createContext(null);
 
-const ACCOUNTS_KEY = 'xelix-accounts';
-const SESSION_KEY  = 'xelix-admin';
+const SESSION_KEY = 'xelix-admin';
+const OLD_ACCOUNTS_KEY = 'xelix-accounts';
+const ACCOUNTS_ROW = 'accounts';
 
-// If cached accounts still have old seed accounts, reset to fresh seed
-const migrateAccounts = () => {
-  try {
-    const raw = localStorage.getItem(ACCOUNTS_KEY);
-    if (raw) {
-      const parsed = JSON.parse(raw);
-      const hasOld = parsed.some((a) =>
-        a.username === 'superadmin' ||
-        a.username === 'coordinator' ||
-        a.username === 'faculty'
-      );
-      if (hasOld) localStorage.removeItem(ACCOUNTS_KEY);
-    }
-  } catch { /* ignore */ }
+const saveToSupabase = async (accounts) => {
+  const { error } = await supabase
+    .from('admins')
+    .upsert({ id: ACCOUNTS_ROW, data: accounts });
+  if (error) console.error('Admins save error:', error.message);
 };
-migrateAccounts();
-
-// Load persisted accounts or fall back to seed
-const loadAccounts = () => {
-  try {
-    const raw = localStorage.getItem(ACCOUNTS_KEY);
-    return raw ? JSON.parse(raw) : ADMIN_ACCOUNTS;
-  } catch { return ADMIN_ACCOUNTS; }
-};
-
-const saveAccounts = (accounts) =>
-  localStorage.setItem(ACCOUNTS_KEY, JSON.stringify(accounts));
 
 export function AuthProvider({ children }) {
-  const [accounts, setAccounts] = useState(loadAccounts);
+  const [accounts, setAccounts] = useState(ADMIN_ACCOUNTS);
+  const [ready, setReady] = useState(false);
   const [admin, setAdmin] = useState(() => {
     try {
       const saved = localStorage.getItem(SESSION_KEY);
       return saved ? JSON.parse(saved) : null;
     } catch { return null; }
   });
+  const accountsRef = useRef(accounts);
+  accountsRef.current = accounts;
+
+  // Load accounts from Supabase on mount, migrate localStorage if needed
+  useEffect(() => {
+    const init = async () => {
+      const { data, error } = await supabase
+        .from('admins')
+        .select('data')
+        .eq('id', ACCOUNTS_ROW)
+        .single();
+
+      if (!error && data?.data && Array.isArray(data.data) && data.data.length > 0) {
+        // Supabase has accounts — use them
+        setAccounts(data.data);
+      } else {
+        // Supabase empty — migrate from localStorage or use seed
+        const raw = localStorage.getItem(OLD_ACCOUNTS_KEY);
+        let local = null;
+        if (raw) {
+          try { local = JSON.parse(raw); } catch { /* ignore */ }
+        }
+        const toSave = (local && local.length > 0) ? local : ADMIN_ACCOUNTS;
+        setAccounts(toSave);
+        await saveToSupabase(toSave);
+      }
+      setReady(true);
+    };
+    init();
+  }, []);
 
   const _setAccounts = (next) => {
     setAccounts(next);
-    saveAccounts(next);
+    setTimeout(() => saveToSupabase(next), 0);
   };
 
   /* ── Auth ─────────────────────────────────────────────────────── */
   const login = (username, password) => {
-    const found = accounts.find(
+    const found = accountsRef.current.find(
       (a) => a.username === username && a.password === password
     );
     if (!found) return false;
@@ -75,7 +87,7 @@ export function AuthProvider({ children }) {
   /* ── Profile (self) ───────────────────────────────────────────── */
   const updateProfile = ({ displayName, password }) => {
     if (!admin) return false;
-    const next = accounts.map((a) => {
+    const next = accountsRef.current.map((a) => {
       if (a.id !== admin.id) return a;
       return {
         ...a,
@@ -84,11 +96,7 @@ export function AuthProvider({ children }) {
       };
     });
     _setAccounts(next);
-    // Refresh session displayName
-    const updatedSession = {
-      ...admin,
-      displayName: displayName ?? admin.displayName,
-    };
+    const updatedSession = { ...admin, displayName: displayName ?? admin.displayName };
     setAdmin(updatedSession);
     localStorage.setItem(SESSION_KEY, JSON.stringify(updatedSession));
     return true;
@@ -99,25 +107,25 @@ export function AuthProvider({ children }) {
 
   const addAdmin = ({ username, password, displayName, allowedGroups }) => {
     if (!isSuperAdmin) return false;
-    if (accounts.find((a) => a.username === username)) return 'duplicate';
+    if (accountsRef.current.find((a) => a.username === username)) return 'duplicate';
     const newAdmin = {
       id: uuidv4(), username, password, displayName, role: 'admin',
       allowedGroups: allowedGroups ?? ['A', 'B', 'C'],
     };
-    _setAccounts([...accounts, newAdmin]);
+    _setAccounts([...accountsRef.current, newAdmin]);
     return true;
   };
 
   const removeAdmin = (id) => {
     if (!isSuperAdmin) return false;
     if (id === admin.id) return false;
-    _setAccounts(accounts.filter((a) => a.id !== id));
+    _setAccounts(accountsRef.current.filter((a) => a.id !== id));
     return true;
   };
 
   const editAdmin = (id, { displayName, password, username, allowedGroups }) => {
     if (!isSuperAdmin) return false;
-    const next = accounts.map((a) => {
+    const next = accountsRef.current.map((a) => {
       if (a.id !== id) return a;
       return {
         ...a,
@@ -131,7 +139,6 @@ export function AuthProvider({ children }) {
     return true;
   };
 
-  /** Returns true if the current admin can access a specific group */
   const canAccessGroup = (groupKey) => {
     if (!admin) return false;
     if (admin.role === 'superadmin') return true;
@@ -143,6 +150,7 @@ export function AuthProvider({ children }) {
       value={{
         admin,
         accounts,
+        ready,
         login,
         logout,
         isLoggedIn: !!admin,
