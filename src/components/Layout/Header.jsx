@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useLanguage } from '../../contexts/LanguageContext';
@@ -27,6 +27,21 @@ export default function Header() {
   const { isLoggedIn, admin, logout, isSuperAdmin } = useAuth();
   const [themeOpen, setThemeOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const themePickerRef = useRef(null);
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (themePickerRef.current && !themePickerRef.current.contains(e.target)) {
+        setThemeOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    document.addEventListener('touchstart', handler);
+    return () => {
+      document.removeEventListener('mousedown', handler);
+      document.removeEventListener('touchstart', handler);
+    };
+  }, []);
   const location = useLocation();
   const navigate = useNavigate();
   const t = useT(lang);
@@ -107,8 +122,21 @@ export default function Header() {
             {t('lang.switch')}
           </button>
 
+          {/* Hard refresh */}
+          <button
+            className="ctrl-btn refresh-btn"
+            onClick={() => window.location.reload()}
+            title="Hard Refresh"
+            aria-label="Hard Refresh"
+          >
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
+              <path d="M13.5 2.5A6.5 6.5 0 1 0 14.5 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+              <path d="M11 2.5h2.5V5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+
           {/* Theme picker */}
-          <div className="theme-picker">
+          <div className="theme-picker" ref={themePickerRef}>
             <button
               className="ctrl-btn theme-btn"
               onClick={() => setThemeOpen((o) => !o)}

@@ -102,6 +102,7 @@ export default function AdminDashboard() {
   };
 
   const handleRemind = (evt, group, dayKey) => {
+    if (!window.confirm(t('admin.confirmSendNotif'))) return;
     const titleAr = evt.titleAr || evt.title;
     const lines = [];
     if (evt.titleAr) lines.push(evt.titleAr);

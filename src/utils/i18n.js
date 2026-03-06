@@ -102,6 +102,7 @@ export const translations = {
       groupsMorning:   'Morning Groups',
       sendReminder:    'Send Reminder Notification',
       notifSent:       'Notification sent to all users!',
+      confirmSendNotif: 'Send reminder notification to all users?',
     },
     themes: {
       white:    'White',
@@ -288,6 +289,7 @@ export const translations = {
       groupsMorning:   'شعب الصباحي',
       sendReminder:    'إرسال تنبيه تذكيري',
       notifSent:       'تم إرسال الإشعار لجميع المستخدمين!',
+      confirmSendNotif: 'إرسال إشعار تذكير لجميع المستخدمين؟',
     },
     themes: {
       white:    'أبيض',
