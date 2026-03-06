@@ -206,15 +206,14 @@ export default function Header() {
               {t('nav.admin')}
             </Link>
           )}
+          <div className="mobile-divider" />
+          <button className="mobile-link mobile-lang" onClick={toggleLang}>
+            {t('lang.switch')}
+          </button>
           {isLoggedIn && (
-            <>
-              <div className="mobile-divider" />
-              <div className="mobile-controls">
-                <button className="ctrl-btn logout-btn" onClick={handleLogout}>
-                  {t('nav.logout')}
-                </button>
-              </div>
-            </>
+            <button className="mobile-link mobile-logout" onClick={handleLogout}>
+              {t('nav.logout')}
+            </button>
           )}
         </div>
       )}
