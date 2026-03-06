@@ -86,7 +86,7 @@
 }
 
 @media (max-width: 1024px) {
-  .week-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .week-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
 }
 
 @media (max-width: 768px) {
