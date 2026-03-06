@@ -239,13 +239,12 @@ button.mobile-link { background: none; border: none; cursor: pointer; width: 100
 /*  Responsive  */
 
 /* Medium: tighten button padding */
-@media (max-width: 900px) {
+@media (max-width: 1180px) and (min-width: 481px) {
   .header-inner { gap: 10px; }
-  .ctrl-btn { padding: 6px 10px; font-size: 0.75rem; }
 }
 
 /* Tablet/iPad + Phone: hide desktop nav, show hamburger. Keep Resources, Refresh, Theme in header. */
-@media (max-width: 1024px) {
+@media (max-width: 1180px) {
   .header-inner { padding: 0 14px; gap: 8px; }
   .header-nav   { display: none; }
   .hamburger    { display: flex; }
