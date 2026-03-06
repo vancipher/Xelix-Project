@@ -236,8 +236,8 @@ export const translations = {
       switch: 'English',
     },
     groups: {
-      label:  'المجموعة',
-      all:    'جميع المجموعات',
+      label:  'الشعبة',
+      all:    'جميع الشعب',
       A:      'الشعبة A',
       B:      'الشعبة B',
       C:      'الشعبة C',
