@@ -29,11 +29,24 @@ export default function NotificationBell() {
 
   const handleClick = async () => {
     if (!supported) {
-      alert(
-        lang === 'ar'
-          ? 'الإشعارات غير مدعومة في هذا المتصفح. أضف التطبيق إلى الشاشة الرئيسية لتفعيلها.'
-          : 'Push notifications are not supported in this browser. Add the app to your home screen to enable them.'
-      );
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+      const isStandalone = window.navigator.standalone === true ||
+        window.matchMedia('(display-mode: standalone)').matches;
+      let msg;
+      if (isIOS && !isStandalone) {
+        msg = lang === 'ar'
+          ? 'أضف التطبيق إلى الشاشة الرئيسية أولاً، ثم فعّل الإشعارات.'
+          : 'Add this app to your Home Screen first, then enable notifications.';
+      } else if (isIOS && isStandalone) {
+        msg = lang === 'ar'
+          ? 'الإشعارات تتطلب iOS 16.4 أو أحدث. جهازك غير مدعوم.'
+          : 'Notifications require iOS 16.4 or later. This device is not supported.';
+      } else {
+        msg = lang === 'ar'
+          ? 'الإشعارات غير مدعومة في هذا المتصفح.'
+          : 'Push notifications are not supported in this browser.';
+      }
+      alert(msg);
       return;
     }
     if (isDenied || loading) return;

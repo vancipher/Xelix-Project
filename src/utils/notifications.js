@@ -70,10 +70,11 @@ export async function unsubscribeFromPush() {
 /** Called by the admin after posting an event */
 export async function sendEventPushNotification({ title, body, url = '/' }) {
   try {
-    const secret = import.meta.env.VITE_PUSH_SECRET;
+    const secret = (import.meta.env.VITE_PUSH_SECRET || '').trim();
     const res = await fetch('/api/send-push', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-push-secret': secret ?? '' },
+      headers: { 'Content-Type': 'application/json', 'x-push-secret': secret },
+
       body: JSON.stringify({ title, body, url }),
     });
     if (!res.ok) {

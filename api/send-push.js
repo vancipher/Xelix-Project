@@ -1,16 +1,17 @@
 import webpush from 'web-push';
 import { createClient } from '@supabase/supabase-js';
 
-webpush.setVapidDetails(
-  `mailto:${process.env.VAPID_EMAIL}`,
-  process.env.VAPID_PUBLIC_KEY,
-  process.env.VAPID_PRIVATE_KEY
-);
+// Trim all env vars — PowerShell echo adds \r\n which breaks VAPID signing
+const VAPID_EMAIL     = (process.env.VAPID_EMAIL        || '').trim();
+const VAPID_PUBLIC    = (process.env.VAPID_PUBLIC_KEY   || '').trim();
+const VAPID_PRIVATE   = (process.env.VAPID_PRIVATE_KEY  || '').trim();
+const PUSH_SECRET     = (process.env.PUSH_SECRET        || '').trim();
+const SUPABASE_URL    = (process.env.SUPABASE_URL       || '').trim();
+const SUPABASE_KEY    = (process.env.SUPABASE_SERVICE_KEY || '').trim();
 
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY
-);
+webpush.setVapidDetails(`mailto:${VAPID_EMAIL}`, VAPID_PUBLIC, VAPID_PRIVATE);
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -18,8 +19,8 @@ export default async function handler(req, res) {
   }
 
   // Basic secret check — the admin UI passes the same secret
-  const authHeader = req.headers['x-push-secret'];
-  if (!authHeader || authHeader !== process.env.PUSH_SECRET) {
+  const authHeader = (req.headers['x-push-secret'] || '').trim();
+  if (!authHeader || authHeader !== PUSH_SECRET) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
