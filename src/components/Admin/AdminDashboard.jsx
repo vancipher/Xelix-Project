@@ -9,6 +9,7 @@ import {
 } from '../../utils/helpers';
 import Modal from '../UI/Modal';
 import EventForm from './EventForm';
+import { sendEventPushNotification } from '../../utils/notifications';
 import './AdminDashboard.css';
 
 export default function AdminDashboard() {
@@ -61,6 +62,13 @@ export default function AdminDashboard() {
   const handleSave = (formData) => {
     if (modalMode === 'add') {
       addEvent(activeGroup, selectedDay, formData, admin.displayName);
+      // Fire push notification for new events (non-blocking)
+      const eventTitle = formData.title || formData.titleAr || t('admin.addEvent');
+      sendEventPushNotification({
+        title: `Xelix — ${t(`groups.${activeGroup}`)}`,
+        body: eventTitle,
+        url: '/',
+      });
     } else {
       editEvent(activeGroup, selectedDay, editTarget.id, formData, admin.displayName);
     }

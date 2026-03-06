@@ -4,6 +4,7 @@ import { useTheme } from '../../contexts/ThemeContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { useT } from '../../utils/i18n';
+import NotificationBell from '../UI/NotificationBell';
 import './Header.css';
 
 const ThemeIcon = ({ theme }) => {
@@ -89,6 +90,7 @@ export default function Header() {
 
         {/* Controls */}
         <div className="header-controls">
+          <NotificationBell />
           <button className="ctrl-btn lang-btn" onClick={toggleLang} title="Toggle Language">
             {t('lang.switch')}
           </button>

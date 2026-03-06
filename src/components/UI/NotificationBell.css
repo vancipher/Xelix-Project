@@ -1,0 +1,47 @@
+.notif-bell {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: var(--text-muted, #94a3b8);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, transform 0.15s;
+  flex-shrink: 0;
+}
+
+.notif-bell:hover:not(:disabled) {
+  background: var(--surface-hover, rgba(255,255,255,0.08));
+  color: var(--text-primary, #f1f5f9);
+  transform: scale(1.08);
+}
+
+.notif-bell--on {
+  color: var(--accent, #4ade80);
+}
+
+.notif-bell--on:hover:not(:disabled) {
+  color: #f87171;
+}
+
+.notif-bell--denied {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.notif-bell__spinner {
+  display: block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: notif-spin 0.6s linear infinite;
+}
+
+@keyframes notif-spin {
+  to { transform: rotate(360deg); }
+}

@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './contexts/AuthContext';
 import Header from './components/Layout/Header';
@@ -8,6 +9,7 @@ import AdminLogin from './components/Admin/AdminLogin';
 import AdminDashboard from './components/Admin/AdminDashboard';
 import AdminProfile from './components/Admin/AdminProfile';
 import AdminManagement from './components/Admin/AdminManagement';
+import { isPushSupported, getNotifPermission, subscribeToPush } from './utils/notifications';
 import './App.css';
 
 function ProtectedRoute({ children }) {
@@ -16,6 +18,14 @@ function ProtectedRoute({ children }) {
 }
 
 export default function App() {
+  useEffect(() => {
+    if (!isPushSupported()) return;
+    if (getNotifPermission() !== 'default') return;
+    // Delay slightly so the page is fully rendered before the prompt appears
+    const timer = setTimeout(() => { subscribeToPush(); }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div className="app-shell">
       <ThemeEffects />

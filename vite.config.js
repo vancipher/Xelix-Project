@@ -7,6 +7,9 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
+      strategies: 'injectManifest',
+      srcDir: 'src',
+      filename: 'sw.js',
       includeAssets: ['icon.svg', 'apple-touch-icon.png', 'icons/icon-192.png', 'icons/icon-512.png'],
       manifest: {
         name: 'Xelix — University Schedule',
@@ -39,29 +42,9 @@ export default defineConfig({
           },
         ],
       },
-      workbox: {
+      injectManifest: {
         // Cache all app shell assets
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2,woff,ttf}'],
-        // Navigate offline: serve index.html for all navigation requests
-        navigateFallback: '/index.html',
-        navigateFallbackDenylist: [/^\/api/],
-        runtimeCaching: [
-          {
-            // Cache Google Fonts stylesheets
-            urlPattern: /^https:\/\/fonts\.googleapis\.com/,
-            handler: 'StaleWhileRevalidate',
-            options: { cacheName: 'google-fonts-stylesheets' },
-          },
-          {
-            // Cache Google Fonts files
-            urlPattern: /^https:\/\/fonts\.gstatic\.com/,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'google-fonts-webfonts',
-              expiration: { maxEntries: 30, maxAgeSeconds: 60 * 60 * 24 * 365 },
-            },
-          },
-        ],
       },
     }),
   ],
