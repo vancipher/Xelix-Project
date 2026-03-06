@@ -129,7 +129,7 @@ export default function Header() {
             title="Hard Refresh"
             aria-label="Hard Refresh"
           >
-            <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
+            <svg width="15" height="15" viewBox="-1 -1 18 18" fill="none">
               <path d="M13.5 2.5A6.5 6.5 0 1 0 14.5 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
               <path d="M11 2.5h2.5V5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>

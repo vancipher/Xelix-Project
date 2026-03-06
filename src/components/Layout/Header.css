@@ -112,6 +112,7 @@
 }
 .lang-btn { font-family: inherit; letter-spacing: 0.5px; }
 .resources-btn { display: flex; align-items: center; justify-content: center; text-decoration: none; }
+.refresh-btn { display: flex; align-items: center; justify-content: center; padding: 6px 8px; }
 .logout-btn { color: var(--danger); border-color: var(--danger); }
 .logout-btn:hover { background: var(--danger-soft); color: var(--danger); }
 
