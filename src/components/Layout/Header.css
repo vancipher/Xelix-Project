@@ -111,6 +111,7 @@
   border-color: var(--text-muted);
 }
 .lang-btn { font-family: inherit; letter-spacing: 0.5px; }
+.resources-btn { display: flex; align-items: center; justify-content: center; text-decoration: none; }
 .logout-btn { color: var(--danger); border-color: var(--danger); }
 .logout-btn:hover { background: var(--danger-soft); color: var(--danger); }
 
@@ -133,6 +134,9 @@
 .lavender-dot { background: #d63384; border-color: #b5276b; }
 .nature-dot   { background: #2d7a2d; border-color: #1a501a; }
 .orange-dot   { background: #f97316; border-color: #c2540a; }
+.sea-dot      { background: #38bdf8; border-color: #0ea5e9; }
+.purple-dot   { background: #a855f7; border-color: #7e22ce; }
+.sun-dot      { background: #facc15; border-color: #ca8a04; }
 
 .theme-dropdown {
   position: absolute;

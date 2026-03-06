@@ -6,6 +6,7 @@ import { LanguageProvider } from './contexts/LanguageContext';
 import { AuthProvider } from './contexts/AuthContext';
 import { ScheduleProvider } from './contexts/ScheduleContext';
 import { GroupProvider } from './contexts/GroupContext';
+import { ResourcesProvider } from './contexts/ResourcesContext';
 import App from './App';
 import './index.css';
 
@@ -17,7 +18,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <AuthProvider>
             <ScheduleProvider>
               <GroupProvider>
-                <App />
+                <ResourcesProvider>
+                  <App />
+                </ResourcesProvider>
               </GroupProvider>
             </ScheduleProvider>
           </AuthProvider>

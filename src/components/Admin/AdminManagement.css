@@ -247,6 +247,17 @@
   flex-wrap: wrap;
   margin-top: 4px;
 }
+.amp-section-block {
+  margin-bottom: 8px;
+}
+.amp-section-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
 .amp-group-check {
   display: flex;
   align-items: center;

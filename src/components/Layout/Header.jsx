@@ -14,6 +14,9 @@ const ThemeIcon = ({ theme }) => {
     lavender: <span className="theme-dot lavender-dot" />,
     nature:   <span className="theme-dot nature-dot" />,
     orange:   <span className="theme-dot orange-dot" />,
+    sea:      <span className="theme-dot sea-dot" />,
+    purple:   <span className="theme-dot purple-dot" />,
+    sun:      <span className="theme-dot sun-dot" />,
   };
   return icons[theme] || <span className="theme-dot" />;
 };
@@ -40,11 +43,15 @@ export default function Header() {
     lavender: t('themes.lavender'),
     nature:   t('themes.nature'),
     orange:   t('themes.orange'),
+    sea:      t('themes.sea'),
+    purple:   t('themes.purple'),
+    sun:      t('themes.sun'),
   };
 
   const navLinks = [
     { to: '/', label: t('nav.schedule'), always: true },
     { to: '/admin', label: t('nav.admin'), auth: true },
+    { to: '/admin/resources', label: t('resources.manageResources'), auth: true },
     { to: '/admin/profile', label: t('admin.myProfile'), auth: true },
     { to: '/admin/manage', label: t('admin.manageAdmins'), superadmin: true },
   ].filter((l) => {
@@ -91,6 +98,11 @@ export default function Header() {
         {/* Controls */}
         <div className="header-controls">
           <NotificationBell />
+          <Link to="/resources" className="ctrl-btn resources-btn" title={t('nav.resources')}>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M2 2h4v5H2zM10 2h4v3h-4zM10 7h4v7h-4zM2 9h4v5H2z" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </Link>
           <button className="ctrl-btn lang-btn" onClick={toggleLang} title="Toggle Language">
             {t('lang.switch')}
           </button>

@@ -1,21 +1,58 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useSchedule } from '../../contexts/ScheduleContext';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { useTheme } from '../../contexts/ThemeContext';
 import { useGroup } from '../../contexts/GroupContext';
 import { useT } from '../../utils/i18n';
-import { DAY_KEYS, GROUPS, getWeekDates, getTodayDayKey, formatDate } from '../../utils/helpers';
+import { DAY_KEYS, SECTIONS, SECTION_GROUPS, getWeekDates, getTodayDayKey, formatDate } from '../../utils/helpers';
+import { supabase } from '../../firebase';
 import DayCard from './DayCard';
 import './WeeklySchedule.css';
+
+/* ── Theme-based visitor icon ────────────────────────────────── */
+const VISITOR_ICONS = {
+  white:    <svg viewBox="0 0 20 20" width="16" height="16"><circle cx="10" cy="6" r="4" fill="none" stroke="currentColor" strokeWidth="1.4"/><path d="M3 18c0-3.3 3.1-6 7-6s7 2.7 7 6" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>,
+  sun:      <svg viewBox="0 0 20 20" width="16" height="16"><circle cx="10" cy="10" r="4" fill="currentColor" opacity="0.3"/><circle cx="10" cy="10" r="4" fill="none" stroke="currentColor" strokeWidth="1.2"/><path d="M10 2v3M10 15v3M2 10h3M15 10h3M4.2 4.2l2 2M13.8 13.8l2 2M4.2 15.8l2-2M13.8 6.2l2-2" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/></svg>,
+  sea:      <svg viewBox="0 0 20 20" width="16" height="16"><path d="M1 14c1.5-1.5 3-1.5 4.5 0s3 1.5 4.5 0 3-1.5 4.5 0 3 1.5 4.5 0" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/><path d="M1 10c1.5-1.5 3-1.5 4.5 0s3 1.5 4.5 0 3-1.5 4.5 0 3 1.5 4.5 0" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" opacity="0.5"/></svg>,
+  lavender: <svg viewBox="0 0 20 20" width="16" height="16"><path d="M10 18C10 18 3 12.5 3 7.5a4.2 4.2 0 0 1 7-3.1 4.2 4.2 0 0 1 7 3.1c0 5-7 10.5-7 10.5z" fill="currentColor" opacity="0.25"/><path d="M10 18C10 18 3 12.5 3 7.5a4.2 4.2 0 0 1 7-3.1 4.2 4.2 0 0 1 7 3.1c0 5-7 10.5-7 10.5z" fill="none" stroke="currentColor" strokeWidth="1.3"/></svg>,
+  purple:   <svg viewBox="0 0 20 20" width="16" height="16"><circle cx="10" cy="8" r="5" fill="currentColor" opacity="0.2"/><circle cx="10" cy="8" r="5" fill="none" stroke="currentColor" strokeWidth="1.2"/><circle cx="6.5" cy="5.5" r="2.2" fill="none" stroke="currentColor" strokeWidth="1"/><circle cx="13.5" cy="5.5" r="2.2" fill="none" stroke="currentColor" strokeWidth="1"/><path d="M8 16v2M12 16v2" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>,
+  nature:   <svg viewBox="0 0 20 20" width="16" height="16"><path d="M10 2C7 3.5 4 8 4 12c0 3.5 2.7 6 6 6s6-2.5 6-6c0-4-3-8.5-6-10z" fill="currentColor" opacity="0.2"/><path d="M10 2C7 3.5 4 8 4 12c0 3.5 2.7 6 6 6s6-2.5 6-6c0-4-3-8.5-6-10z" fill="none" stroke="currentColor" strokeWidth="1.2"/><path d="M10 5v12" stroke="currentColor" strokeWidth="0.7" opacity="0.4"/></svg>,
+  orange:   <svg viewBox="0 0 20 20" width="16" height="16"><path d="M10 18c-2.5 0-5-3.5-5-8.5S7.5 2 10 2s5 3 5 7.5-2.5 8.5-5 8.5z" fill="currentColor" opacity="0.25"/><path d="M10 18c-2.5 0-5-3.5-5-8.5S7.5 2 10 2s5 3 5 7.5-2.5 8.5-5 8.5z" fill="none" stroke="currentColor" strokeWidth="1.2"/></svg>,
+  black:    <svg viewBox="0 0 20 20" width="16" height="16"><path d="M4 4h12v12H4z" fill="none" stroke="currentColor" strokeWidth="1.3" rx="1.5"/><path d="M6.5 6.5l7 7M13.5 6.5l-7 7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" opacity="0.4"/></svg>,
+};
+
+const VISIT_KEY = 'xelix-visited';
 
 export default function WeeklySchedule() {
   const { getDayFiltered, isDayImportant } = useSchedule();
   const { lang } = useLanguage();
-  const { activeGroup, setActiveGroup } = useGroup();
+  const { theme } = useTheme();
+  const { activeSection, setActiveSection, activeGroup, setActiveGroup, sectionGroups } = useGroup();
   const t = useT(lang);
 
   const [weekOffset, setWeekOffset] = useState(0);
   const [weekDates, setWeekDates]   = useState(() => getWeekDates(0));
   const [todayKey,  setTodayKey]    = useState(getTodayDayKey);
+  const [visits, setVisits]         = useState(null);
+
+  // Visit counter
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const visited = sessionStorage.getItem(VISIT_KEY);
+      if (!visited) {
+        sessionStorage.setItem(VISIT_KEY, '1');
+        const { data } = await supabase.from('visits').select('count').eq('id', 'global').single();
+        const newCount = (data?.count ?? 0) + 1;
+        await supabase.from('visits').upsert({ id: 'global', count: newCount });
+        if (!cancelled) setVisits(newCount);
+      } else {
+        const { data } = await supabase.from('visits').select('count').eq('id', 'global').single();
+        if (!cancelled) setVisits(data?.count ?? 0);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, []);
 
   // Recompute dates whenever offset changes
   useEffect(() => {
@@ -92,9 +129,22 @@ export default function WeeklySchedule() {
         </button>
       </div>
 
+      {/* Section tabs */}
+      <div className="section-tabs">
+        {SECTIONS.map((s) => (
+          <button
+            key={s}
+            className={`section-tab ${activeSection === s ? 'section-tab--active' : ''}`}
+            onClick={() => setActiveSection(s)}
+          >
+            {t(`sections.${s}`)}
+          </button>
+        ))}
+      </div>
+
       {/* Group tabs */}
       <div className="group-tabs">
-        {GROUPS.map((g) => (
+        {sectionGroups.map((g) => (
           <button
             key={g}
             className={`group-tab ${activeGroup === g ? 'group-tab--active' : ''}`}
@@ -118,6 +168,13 @@ export default function WeeklySchedule() {
           />
         ))}
       </div>
+      {visits !== null && (
+        <div className="schedule-visits">
+          <span className="schedule-visits__icon">{VISITOR_ICONS[theme] || VISITOR_ICONS.white}</span>
+          <span className="schedule-visits__count">{visits.toLocaleString()}</span>
+          <span className="schedule-visits__label">{t('footer.visits')}</span>
+        </div>
+      )}
     </div>
   );
 }

@@ -8,6 +8,8 @@ import AdminLogin from './components/Admin/AdminLogin';
 import AdminDashboard from './components/Admin/AdminDashboard';
 import AdminProfile from './components/Admin/AdminProfile';
 import AdminManagement from './components/Admin/AdminManagement';
+import ResourcesPage from './components/Resources/ResourcesPage';
+import ResourceManager from './components/Resources/ResourceManager';
 import './App.css';
 
 function ProtectedRoute({ children }) {
@@ -23,6 +25,7 @@ export default function App() {
       <main className="app-main">
         <Routes>
           <Route path="/" element={<WeeklySchedule />} />
+          <Route path="/resources" element={<ResourcesPage />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route
             path="/admin"
@@ -45,6 +48,14 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <AdminManagement />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/resources"
+            element={
+              <ProtectedRoute>
+                <ResourceManager />
               </ProtectedRoute>
             }
           />

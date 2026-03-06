@@ -1,6 +1,11 @@
 import { v4 as uuidv4 } from 'uuid';
 
-export const GROUPS = ['A', 'B', 'C'];
+export const SECTIONS = ['evening', 'morning'];
+export const SECTION_GROUPS = {
+  evening: ['A', 'B', 'C'],
+  morning: ['MA', 'MB', 'MC'],
+};
+export const GROUPS = ['A', 'B', 'C', 'MA', 'MB', 'MC'];
 
 export const DAY_KEYS = [
   'saturday', 'sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday',
@@ -85,7 +90,7 @@ export const createEmptySchedule = () => {
 
 export const createGroupSchedule = () => {
   const gs = {};
-  for (const g of GROUPS) gs[g] = createEmptySchedule();
+  for (const g of [...SECTION_GROUPS.evening, ...SECTION_GROUPS.morning]) gs[g] = createEmptySchedule();
   return gs;
 };
 
@@ -126,5 +131,5 @@ export const clamp = (val, min, max) => Math.min(Math.max(val, min), max);
 export const SEED_SCHEDULE = createGroupSchedule();
 
 export const ADMIN_ACCOUNTS = [
-  { id: 'admin1', username: 'abdullah', password: 'admin123', displayName: 'Abdullah', role: 'superadmin', allowedGroups: ['A', 'B', 'C'] },
+  { id: 'admin1', username: 'abdullah', password: 'admin123', displayName: 'Abdullah', role: 'superadmin', allowedGroups: ['A', 'B', 'C', 'MA', 'MB', 'MC'] },
 ];

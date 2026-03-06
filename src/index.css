@@ -203,6 +203,120 @@ html { scroll-behavior: smooth; }
   --noise-opacity:     0.05;
 }
 
+/* ══════════════════════════════════════════════════════════════════
+   THEME: SEA (bright ocean — crystal water, light & lively)
+══════════════════════════════════════════════════════════════════ */
+[data-theme="sea"] {
+  --bg-primary:        #eef8ff;
+  --bg-secondary:      #ddf1ff;
+  --bg-card:           #e8f5ff;
+  --bg-card-hover:     #d0ecff;
+  --bg-header:         rgba(238,248,255,0.82);
+  --bg-sidebar:        #ddf1ff;
+  --bg-input:          #d0ecff;
+  --bg-modal:          #e8f5ff;
+  --bg-overlay:        rgba(0,80,160,0.18);
+  --bg-badge:          #bae2ff;
+  --border:            #90cdf4;
+  --border-focus:      #0ea5e9;
+  --text-primary:      #0c2d48;
+  --text-secondary:    #1a6694;
+  --text-muted:        #60a5c8;
+  --text-inverse:      #ffffff;
+  --accent:            #0ea5e9;
+  --accent-soft:       #bae2ff;
+  --accent-hover:      #0284c7;
+  --danger:            #e53935;
+  --danger-soft:       #fdecea;
+  --warning:           #f59e0b;
+  --warning-soft:      #fef3c7;
+  --success:           #10b981;
+  --success-soft:      #d1fae5;
+  --day-alert-bg:      #fff0f0;
+  --day-alert-border:  #e53935;
+  --day-alert-text:    #c62828;
+  --shadow-sm:         0 1px 3px rgba(0,120,200,0.10);
+  --shadow-md:         0 4px 16px rgba(0,120,200,0.13);
+  --shadow-lg:         0 12px 40px rgba(0,120,200,0.18);
+  --noise-opacity:     0.02;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   THEME: PURPLE (cute / girly — teddy bears, soft lavender-purple)
+══════════════════════════════════════════════════════════════════ */
+[data-theme="purple"] {
+  --bg-primary:        #f8f0ff;
+  --bg-secondary:      #f0e4ff;
+  --bg-card:           #f5ecff;
+  --bg-card-hover:     #ecdcff;
+  --bg-header:         rgba(248,240,255,0.82);
+  --bg-sidebar:        #f0e4ff;
+  --bg-input:          #ecdcff;
+  --bg-modal:          #f5ecff;
+  --bg-overlay:        rgba(100,30,180,0.18);
+  --bg-badge:          #e4d0ff;
+  --border:            #d4b4f8;
+  --border-focus:      #a855f7;
+  --text-primary:      #2a0845;
+  --text-secondary:    #6d3ca0;
+  --text-muted:        #b090d0;
+  --text-inverse:      #ffffff;
+  --accent:            #a855f7;
+  --accent-soft:       #e4d0ff;
+  --accent-hover:      #9333ea;
+  --danger:            #e53935;
+  --danger-soft:       #fdecea;
+  --warning:           #f59e0b;
+  --warning-soft:      #fef3c7;
+  --success:           #10b981;
+  --success-soft:      #d1fae5;
+  --day-alert-bg:      #fdecea;
+  --day-alert-border:  #e53935;
+  --day-alert-text:    #c62828;
+  --shadow-sm:         0 1px 3px rgba(120,40,200,0.12);
+  --shadow-md:         0 4px 16px rgba(120,40,200,0.16);
+  --shadow-lg:         0 12px 40px rgba(120,40,200,0.22);
+  --noise-opacity:     0.02;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   THEME: SUN (warm yellow — sunshine, golden glow)
+══════════════════════════════════════════════════════════════════ */
+[data-theme="sun"] {
+  --bg-primary:        #fffbeb;
+  --bg-secondary:      #fef3c7;
+  --bg-card:           #fef9e7;
+  --bg-card-hover:     #fde68a;
+  --bg-header:         rgba(255,251,235,0.82);
+  --bg-sidebar:        #fef3c7;
+  --bg-input:          #fde68a;
+  --bg-modal:          #fef9e7;
+  --bg-overlay:        rgba(120,80,0,0.18);
+  --bg-badge:          #fde68a;
+  --border:            #f5d060;
+  --border-focus:      #d97706;
+  --text-primary:      #422006;
+  --text-secondary:    #92400e;
+  --text-muted:        #ca8a04;
+  --text-inverse:      #ffffff;
+  --accent:            #d97706;
+  --accent-soft:       #fef3c7;
+  --accent-hover:      #b45309;
+  --danger:            #e53935;
+  --danger-soft:       #fdecea;
+  --warning:           #ea580c;
+  --warning-soft:      #fff7ed;
+  --success:           #10b981;
+  --success-soft:      #d1fae5;
+  --day-alert-bg:      #fdecea;
+  --day-alert-border:  #e53935;
+  --day-alert-text:    #c62828;
+  --shadow-sm:         0 1px 3px rgba(180,120,0,0.12);
+  --shadow-md:         0 4px 16px rgba(180,120,0,0.15);
+  --shadow-lg:         0 12px 40px rgba(180,120,0,0.20);
+  --noise-opacity:     0.02;
+}
+
 /* ── Event Type Colors (theme-agnostic) ────────────────────────── */
 :root {
   --evt-lecture:    #3b82f6;
@@ -393,6 +507,114 @@ body::before {
 @keyframes xelixCrimsonPulse {
   0%   { box-shadow: var(--shadow-md); }
   100% { box-shadow: var(--shadow-md), 0 0 20px 4px rgba(180,0,30,0.18); }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   SEA — underwater caustic light + wave shimmer
+══════════════════════════════════════════════════════════════════ */
+
+[data-theme="sea"] body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 110%, rgba(14,165,233,0.18) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 40% at 20% 90%, rgba(56,189,248,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(6,182,212,0.10) 0%, transparent 60%);
+  animation: xelixSeaShimmer 10s ease-in-out infinite alternate;
+}
+@keyframes xelixSeaShimmer {
+  0%   { opacity: 0.5; transform: scaleY(0.96); }
+  50%  { opacity: 1;   transform: scaleY(1.02); }
+  100% { opacity: 0.7; transform: scaleY(0.98); }
+}
+
+[data-theme="sea"] .glass {
+  animation: xelixSeaPulse 6s ease-in-out infinite alternate;
+}
+@keyframes xelixSeaPulse {
+  0%   { box-shadow: var(--shadow-md); }
+  100% { box-shadow: var(--shadow-md), 0 0 18px 5px rgba(14,165,233,0.12); }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   PURPLE — sparkle dust + dreamy glow
+══════════════════════════════════════════════════════════════════ */
+
+[data-theme="purple"] body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    radial-gradient(circle 3px at center, rgba(168,85,247,0.50) 0%, transparent 70%),
+    radial-gradient(circle 2px at center, rgba(192,132,252,0.40) 0%, transparent 70%),
+    radial-gradient(circle 4px at center, rgba(147,51,234,0.35) 0%, transparent 70%),
+    radial-gradient(circle 2px at center, rgba(216,180,254,0.42) 0%, transparent 70%),
+    radial-gradient(circle 3px at center, rgba(126,34,206,0.30) 0%, transparent 70%);
+  background-size: 85px 85px, 60px 60px, 105px 105px, 72px 72px, 50px 50px;
+  background-position: 8px 15px, 40px 50px, 65px 12px, 22px 75px, 50px 35px;
+  animation: xelixPurpleDust 26s linear infinite;
+  opacity: 0.85;
+}
+@keyframes xelixPurpleDust {
+  0%   { background-position: 8px 15px,   40px 50px,  65px 12px,  22px 75px,  50px 35px; }
+  100% { background-position: 55px -65px,  85px -5px, 110px -90px, 65px -18px, 90px -50px; }
+}
+
+[data-theme="purple"] .glass {
+  animation: xelixPurplePulse 5s ease-in-out infinite alternate;
+}
+@keyframes xelixPurplePulse {
+  0%   { box-shadow: var(--shadow-md); }
+  100% { box-shadow: var(--shadow-md), 0 0 18px 5px rgba(168,85,247,0.15); }
+}
+
+[data-theme="purple"] .ctrl-btn:hover,
+[data-theme="purple"] .dash-add-btn:hover,
+[data-theme="purple"] .ef-btn--primary:hover {
+  animation: xelixBounce 0.35s ease forwards;
+}
+
+[data-theme="purple"] .nav-link.active::after {
+  content: ' ✦';
+  font-size: 0.55rem;
+  vertical-align: super;
+  opacity: 0.7;
+  animation: xelixTwinkle 1.8s ease-in-out infinite alternate;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   SUN — warm rays + golden glow
+══════════════════════════════════════════════════════════════════ */
+
+[data-theme="sun"] body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 50% 50% at 50% -10%, rgba(250,204,21,0.25) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 30% at 80% 10%, rgba(245,158,11,0.15) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 30% at 20% 10%, rgba(252,211,77,0.15) 0%, transparent 60%);
+  animation: xelixSunRay 8s ease-in-out infinite alternate;
+}
+@keyframes xelixSunRay {
+  0%   { opacity: 0.5; transform: scale(0.96); }
+  50%  { opacity: 1;   transform: scale(1.02); }
+  100% { opacity: 0.7; transform: scale(0.98); }
+}
+
+[data-theme="sun"] .glass {
+  animation: xelixSunPulse 5s ease-in-out infinite alternate;
+}
+@keyframes xelixSunPulse {
+  0%   { box-shadow: var(--shadow-md); }
+  100% { box-shadow: var(--shadow-md), 0 0 18px 5px rgba(217,119,6,0.12); }
 }
 
 /* ── RTL Support ─────────────────────────────────────────────── */

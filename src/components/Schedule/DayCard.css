@@ -28,6 +28,7 @@
   justify-content: space-between;
   padding: 18px 20px 14px;
   gap: 8px;
+  min-height: 72px;
 }
 .day-card__header-left {
   display: flex;
@@ -178,9 +179,8 @@
   font-weight: 600;
   color: var(--text-primary);
   line-height: 1.3;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  white-space: normal;
+  word-break: break-word;
 }
 .event-item__meta {
   display: flex;
@@ -260,4 +260,55 @@
   .day-card__header { padding: 14px 14px 10px; }
   .day-card__events { padding: 10px 10px 12px; }
   .event-item__title { font-size: 0.85rem; }
+}
+
+/* ── Reaction buttons ────────────────────────────────────────── */
+.event-reactions {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 1px dashed var(--border);
+}
+.event-reactions__btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  cursor: pointer;
+  transition: transform 0.15s ease, border-color 0.15s, background 0.15s, box-shadow 0.15s;
+  color: var(--text-muted);
+  line-height: 1;
+}
+.event-reactions__btn:hover {
+  transform: scale(1.08);
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.event-reactions__btn.active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-soft);
+}
+.event-reactions__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+}
+.event-reactions__icon svg {
+  width: 100%;
+  height: 100%;
+}
+.event-reactions__count {
+  font-size: 0.7rem;
+  font-weight: 700;
+  min-width: 12px;
+  text-align: center;
 }

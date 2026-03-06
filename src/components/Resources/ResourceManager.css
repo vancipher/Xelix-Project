@@ -1,0 +1,302 @@
+/* ── Admin Resource Manager ────────────────────────────────── */
+
+.rman-page {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 24px 16px 60px;
+}
+
+.rman-header {
+  margin-bottom: 20px;
+}
+
+.rman-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.rman-sub {
+  font-size: .85rem;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+/* ── Add‑Subject Button ──────────────────────────────────── */
+
+.rman-add-subject {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
+  font-size: .85rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 18px;
+  transition: opacity .2s;
+}
+
+.rman-add-subject:hover {
+  opacity: .85;
+}
+
+/* ── Subject Cards ───────────────────────────────────────── */
+
+.rman-subjects {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.rman-empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-secondary);
+  font-size: .95rem;
+}
+
+.rman-subject {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.rman-subject__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+}
+
+.rman-subject__toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  font-size: .95rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.rman-chevron {
+  transition: transform .25s ease;
+}
+
+.rman-chevron.open {
+  transform: rotate(180deg);
+}
+
+.rman-subject__name {
+  white-space: normal;
+  word-break: break-word;
+}
+
+.rman-subject__count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  border-radius: 11px;
+  background: var(--accent);
+  color: #fff;
+  font-size: .7rem;
+  font-weight: 700;
+  padding: 0 6px;
+}
+
+.rman-subject__actions {
+  display: flex;
+  gap: 6px;
+}
+
+.rman-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 6px;
+  background: rgba(var(--accent-rgb, 99, 102, 241), .1);
+  color: var(--accent);
+  cursor: pointer;
+  transition: background .2s;
+}
+
+.rman-icon-btn:hover {
+  background: rgba(var(--accent-rgb, 99, 102, 241), .2);
+}
+
+.rman-icon-btn--danger {
+  background: rgba(239, 68, 68, .1);
+  color: #ef4444;
+}
+
+.rman-icon-btn--danger:hover {
+  background: rgba(239, 68, 68, .2);
+}
+
+/* ── Items ────────────────────────────────────────────────── */
+
+.rman-items {
+  padding: 0 16px 14px;
+}
+
+.rman-add-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border: 1.5px dashed var(--accent);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--accent);
+  font-size: .8rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 10px;
+  transition: background .2s;
+}
+
+.rman-add-item:hover {
+  background: rgba(var(--accent-rgb, 99, 102, 241), .06);
+}
+
+.rman-items__empty {
+  text-align: center;
+  padding: 12px;
+  color: var(--text-secondary);
+  font-size: .85rem;
+}
+
+.rman-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(var(--accent-rgb, 99, 102, 241), .08);
+}
+
+.rman-item:last-child {
+  border-bottom: none;
+}
+
+.rman-item__num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-size: .7rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.rman-item__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.rman-item__title {
+  font-size: .88rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.rman-item__notes {
+  font-size: .78rem;
+  color: var(--text-secondary);
+  margin: 2px 0 0;
+}
+
+.rman-item__url {
+  display: inline-block;
+  font-size: .75rem;
+  color: var(--accent);
+  text-decoration: none;
+  word-break: break-all;
+  margin-top: 2px;
+}
+
+.rman-item__url:hover {
+  text-decoration: underline;
+}
+
+.rman-item__actions {
+  flex-shrink: 0;
+}
+
+/* ── Form inside Modal ───────────────────────────────────── */
+
+.rman-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 4px 0;
+}
+
+.rman-form__group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.rman-form__label {
+  font-size: .82rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.rman-form__input {
+  padding: 8px 12px;
+  border: 1.5px solid rgba(var(--accent-rgb, 99, 102, 241), .18);
+  border-radius: 8px;
+  background: rgba(var(--accent-rgb, 99, 102, 241), .04);
+  color: var(--text-primary);
+  font-size: .88rem;
+  transition: border-color .2s;
+}
+
+.rman-form__input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.rman-form__textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+.rman-form__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding-top: 6px;
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+
+@media (max-width: 600px) {
+  .rman-page {
+    padding: 16px 10px 50px;
+  }
+
+  .rman-subject__head {
+    padding: 12px 12px;
+  }
+
+  .rman-items {
+    padding: 0 12px 12px;
+  }
+}

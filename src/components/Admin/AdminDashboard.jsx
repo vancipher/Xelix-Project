@@ -4,7 +4,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useT } from '../../utils/i18n';
 import {
-  DAY_KEYS, GROUPS, EVENT_TYPE_COLORS, EVENT_TYPE_BG,
+  DAY_KEYS, SECTIONS, SECTION_GROUPS, GROUPS, EVENT_TYPE_COLORS, EVENT_TYPE_BG,
   getWeekDates, getTodayDayKey, formatDate,
 } from '../../utils/helpers';
 import Modal from '../UI/Modal';
@@ -20,7 +20,17 @@ export default function AdminDashboard() {
 
   // Restrict group tabs to what this admin can access
   const accessibleGroups = GROUPS.filter((g) => canAccessGroup(g));
-  const [activeGroup, setActiveGroup] = useState(accessibleGroups[0] ?? 'A');
+
+  // Section state
+  const [activeSection, setActiveSection] = useState(() => {
+    // Default to first section that has accessible groups
+    for (const s of SECTIONS) {
+      if (SECTION_GROUPS[s].some((g) => accessibleGroups.includes(g))) return s;
+    }
+    return SECTIONS[0];
+  });
+  const sectionGroups = SECTION_GROUPS[activeSection]?.filter((g) => accessibleGroups.includes(g)) ?? [];
+  const [activeGroup, setActiveGroup] = useState(sectionGroups[0] ?? accessibleGroups[0] ?? 'A');
 
   const [weekOffset, setWeekOffset] = useState(0);
   const weekDates = getWeekDates(weekOffset);
@@ -95,9 +105,30 @@ export default function AdminDashboard() {
         </div>
       </div>
 
+      {/* Section tabs */}
+      <div className="dash-section-tabs">
+        {SECTIONS.map((s) => {
+          const hasAccess = SECTION_GROUPS[s].some((g) => accessibleGroups.includes(g));
+          if (!hasAccess) return null;
+          return (
+            <button
+              key={s}
+              className={`section-tab ${activeSection === s ? 'section-tab--active' : ''}`}
+              onClick={() => {
+                setActiveSection(s);
+                const first = SECTION_GROUPS[s].filter((g) => accessibleGroups.includes(g))[0];
+                if (first) setActiveGroup(first);
+              }}
+            >
+              {t(`sections.${s}`)}
+            </button>
+          );
+        })}
+      </div>
+
       {/* Group tabs */}
       <div className="dash-group-tabs">
-        {accessibleGroups.map((g) => (
+        {sectionGroups.map((g) => (
           <button
             key={g}
             className={`dash-group-tab ${activeGroup === g ? 'dash-group-tab--active' : ''}`}
@@ -137,7 +168,7 @@ export default function AdminDashboard() {
         {DAY_KEYS.map((dayKey) => {
           const dayData = getDayFiltered(activeGroup, dayKey, weekDates[dayKey]);
           const hasImportant = dayData.events.some((e) => e.isImportant);
-          const isToday = dayKey === todayKey;
+          const isToday = weekOffset === 0 && dayKey === todayKey;
           const date = weekDates[dayKey];
           return (
             <div

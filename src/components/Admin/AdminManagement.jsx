@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useT } from '../../utils/i18n';
-import { GROUPS } from '../../utils/helpers';
+import { GROUPS, SECTIONS, SECTION_GROUPS } from '../../utils/helpers';
 import Modal from '../UI/Modal';
 import './AdminManagement.css';
 
@@ -192,26 +192,31 @@ export default function AdminManagement() {
           </div>
           <div className="amp-group">
             <label className="amp-label">{t('admin.groupAccess')}</label>
-            <div className="amp-groups-row">
-              {GROUPS.map((g) => (
-                <label key={g} className="amp-group-check">
-                  <input
-                    type="checkbox"
-                    checked={(form.allowedGroups ?? []).includes(g)}
-                    onChange={(e) => {
-                      const prev = form.allowedGroups ?? [];
-                      setForm((f) => ({
-                        ...f,
-                        allowedGroups: e.target.checked
-                          ? [...prev, g]
-                          : prev.filter((x) => x !== g),
-                      }));
-                    }}
-                  />
-                  {t(`groups.${g}`)}
-                </label>
-              ))}
-            </div>
+            {SECTIONS.map((section) => (
+              <div key={section} className="amp-section-block">
+                <p className="amp-section-label">{t(`sections.${section}`)}</p>
+                <div className="amp-groups-row">
+                  {SECTION_GROUPS[section].map((g) => (
+                    <label key={g} className="amp-group-check">
+                      <input
+                        type="checkbox"
+                        checked={(form.allowedGroups ?? []).includes(g)}
+                        onChange={(e) => {
+                          const prev = form.allowedGroups ?? [];
+                          setForm((f) => ({
+                            ...f,
+                            allowedGroups: e.target.checked
+                              ? [...prev, g]
+                              : prev.filter((x) => x !== g),
+                          }));
+                        }}
+                      />
+                      {t(`groups.${g}`)}
+                    </label>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
           {error && <p className="amp-error">{error}</p>}
           <div className="amp-actions">
