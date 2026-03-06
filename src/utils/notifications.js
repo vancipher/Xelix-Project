@@ -1,6 +1,6 @@
 import { supabase } from '../firebase';
 
-const VAPID_PUBLIC_KEY = import.meta.env.VITE_VAPID_PUBLIC_KEY;
+const VAPID_PUBLIC_KEY = (import.meta.env.VITE_VAPID_PUBLIC_KEY || '').trim();
 
 function urlBase64ToUint8Array(base64String) {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
@@ -22,28 +22,39 @@ export async function subscribeToPush() {
   if (!isPushSupported()) return null;
   if (!VAPID_PUBLIC_KEY) { console.warn('VITE_VAPID_PUBLIC_KEY not set'); return null; }
 
-  const permission = await Notification.requestPermission();
-  if (permission !== 'granted') return null;
+  try {
+    const permission = await Notification.requestPermission();
+    if (permission !== 'granted') return null;
 
-  const reg = await navigator.serviceWorker.ready;
+    // Timeout so we never hang forever waiting for the SW
+    const reg = await Promise.race([
+      navigator.serviceWorker.ready,
+      new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('Service worker timed out')), 10000)
+      ),
+    ]);
 
-  // Return existing subscription if already subscribed
-  let sub = await reg.pushManager.getSubscription();
-  if (!sub) {
-    sub = await reg.pushManager.subscribe({
-      userVisibleOnly: true,
-      applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
-    });
+    // Return existing subscription if already subscribed
+    let sub = await reg.pushManager.getSubscription();
+    if (!sub) {
+      sub = await reg.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
+      });
+    }
+
+    // Persist to Supabase (upsert by endpoint to avoid duplicates)
+    const { error } = await supabase.from('push_subscriptions').upsert(
+      { endpoint: sub.endpoint, subscription: sub.toJSON() },
+      { onConflict: 'endpoint' }
+    );
+    if (error) console.error('Failed to save push subscription:', error.message);
+
+    return sub;
+  } catch (err) {
+    console.error('subscribeToPush error:', err);
+    return null;
   }
-
-  // Persist to Supabase (upsert by endpoint to avoid duplicates)
-  const { error } = await supabase.from('push_subscriptions').upsert(
-    { endpoint: sub.endpoint, subscription: sub.toJSON() },
-    { onConflict: 'endpoint' }
-  );
-  if (error) console.error('Failed to save push subscription:', error.message);
-
-  return sub;
 }
 
 export async function unsubscribeFromPush() {

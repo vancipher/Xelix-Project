@@ -10,23 +10,32 @@ export default function NotificationBell() {
   const { lang } = useLanguage();
   const [permission, setPermission] = useState('default');
   const [loading, setLoading] = useState(false);
+  const supported = isPushSupported();
 
   useEffect(() => {
-    if (isPushSupported()) setPermission(getNotifPermission());
-  }, []);
-
-  if (!isPushSupported()) return null;
+    if (supported) setPermission(getNotifPermission());
+  }, [supported]);
 
   const isGranted = permission === 'granted';
   const isDenied = permission === 'denied';
 
-  const label = isDenied
-    ? (lang === 'ar' ? 'الإشعارات محظورة' : 'Notifications blocked')
-    : isGranted
-      ? (lang === 'ar' ? 'إلغاء الإشعارات' : 'Disable notifications')
-      : (lang === 'ar' ? 'تفعيل الإشعارات' : 'Enable notifications');
+  const label = !supported
+    ? (lang === 'ar' ? 'الإشعارات غير مدعومة' : 'Notifications not supported')
+    : isDenied
+      ? (lang === 'ar' ? 'الإشعارات محظورة' : 'Notifications blocked')
+      : isGranted
+        ? (lang === 'ar' ? 'إلغاء الإشعارات' : 'Disable notifications')
+        : (lang === 'ar' ? 'تفعيل الإشعارات' : 'Enable notifications');
 
   const handleClick = async () => {
+    if (!supported) {
+      alert(
+        lang === 'ar'
+          ? 'الإشعارات غير مدعومة في هذا المتصفح. أضف التطبيق إلى الشاشة الرئيسية لتفعيلها.'
+          : 'Push notifications are not supported in this browser. Add the app to your home screen to enable them.'
+      );
+      return;
+    }
     if (isDenied || loading) return;
     setLoading(true);
     try {
@@ -44,11 +53,11 @@ export default function NotificationBell() {
 
   return (
     <button
-      className={`notif-bell ${isGranted ? 'notif-bell--on' : ''} ${isDenied ? 'notif-bell--denied' : ''}`}
+      className={`notif-bell ${isGranted ? 'notif-bell--on' : ''} ${isDenied || !supported ? 'notif-bell--denied' : ''}`}
       onClick={handleClick}
       title={label}
       aria-label={label}
-      disabled={loading || isDenied}
+      disabled={loading}
     >
       {loading ? (
         <span className="notif-bell__spinner" />
