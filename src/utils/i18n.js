@@ -100,6 +100,8 @@ export const translations = {
       youtubePlaceholder: 'Paste YouTube video link…',
       groupsEvening:   'Evening Groups',
       groupsMorning:   'Morning Groups',
+      sendReminder:    'Send Reminder Notification',
+      notifSent:       'Notification sent to all users!',
     },
     themes: {
       white:    'White',
@@ -284,6 +286,8 @@ export const translations = {
       youtubePlaceholder: 'الصق رابط فيديو يوتيوب…',
       groupsEvening:   'شعب المسائي',
       groupsMorning:   'شعب الصباحي',
+      sendReminder:    'إرسال تنبيه تذكيري',
+      notifSent:       'تم إرسال الإشعار لجميع المستخدمين!',
     },
     themes: {
       white:    'أبيض',

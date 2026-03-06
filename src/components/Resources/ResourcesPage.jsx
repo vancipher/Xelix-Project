@@ -85,7 +85,7 @@ export default function ResourcesPage() {
         <div className="res-subjects">
           {subjects.map((subject) => {
             const isOpen = openSubject === subject.id;
-            const label = lang === 'ar' && subject.nameAr ? subject.nameAr : subject.name;
+            const label = subject.nameAr ? subject.nameAr : subject.name;
             return (
               <div key={subject.id} className={`res-subject glass ${isOpen ? 'res-subject--open' : ''}`}>
                 <button className="res-subject__header" onClick={() => toggleSubject(subject.id)}>
@@ -122,7 +122,7 @@ export default function ResourcesPage() {
                       <p className="res-items__empty">{t('resources.noItems')}</p>
                     ) : (
                       subject.items.map((item, idx) => {
-                        const itemLabel = lang === 'ar' && item.titleAr ? item.titleAr : item.title;
+                        const itemLabel = item.titleAr ? item.titleAr : item.title;
                         const embedUrl = activeTab === 'youtube' ? getYoutubeEmbedUrl(item.url) : null;
                         return (
                           <div key={item.id} className="res-item">

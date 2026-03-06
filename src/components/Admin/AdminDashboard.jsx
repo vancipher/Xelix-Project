@@ -73,10 +73,17 @@ export default function AdminDashboard() {
     if (modalMode === 'add') {
       addEvent(activeGroup, selectedDay, formData, admin.displayName);
       // Fire push notification for new events (non-blocking)
-      const eventTitle = formData.title || formData.titleAr || t('admin.addEvent');
+      const lines = [];
+      if (formData.titleAr) lines.push(formData.titleAr);
+      if (formData.title && formData.title !== formData.titleAr) lines.push(formData.title);
+      lines.push(`📌 ${t(`eventTypes.${formData.type}`)}`);
+      if (formData.time) lines.push(`🕐 ${formData.time}`);
+      if (formData.room) lines.push(`📍 ${formData.room}`);
+      if (formData.instructor) lines.push(`👨‍🏫 ${formData.instructor}`);
+      if (formData.notes) lines.push(`📝 ${formData.notes}`);
       sendEventPushNotification({
-        title: `Xelix — ${t(`groups.${activeGroup}`)}`,
-        body: eventTitle,
+        title: `Xelix — ${t(`groups.${activeGroup}`)} — ${t(`days.${selectedDay}`)}`,
+        body: lines.join('\n'),
         url: '/',
       });
     } else {
@@ -91,6 +98,25 @@ export default function AdminDashboard() {
     deleteEvent(activeGroup, selectedDay, editTarget.id);
     closeModal();
     showToast(t('admin.changesSaved'));
+  };
+
+  const handleRemind = (evt, group, dayKey) => {
+    const lines = [];
+    if (evt.titleAr) lines.push(evt.titleAr);
+    if (evt.title && evt.title !== evt.titleAr) lines.push(evt.title);
+    const typeLabelEn = t(`eventTypes.${evt.type}`);
+    lines.push(`📌 ${typeLabelEn}`);
+    if (evt.time) lines.push(`🕐 ${evt.time}`);
+    if (evt.room) lines.push(`📍 ${evt.room}`);
+    if (evt.instructor) lines.push(`👨‍🏫 ${evt.instructor}`);
+    if (evt.notes) lines.push(`📝 ${evt.notes}`);
+    const body = lines.join('\n');
+    sendEventPushNotification({
+      title: `Xelix — ${t(`groups.${group}`)} — ${t(`days.${dayKey}`)}`,
+      body,
+      url: '/',
+    });
+    showToast(t('admin.notifSent'));
   };
 
   return (
@@ -212,6 +238,7 @@ export default function AdminDashboard() {
                       lang={lang}
                       t={t}
                       onEdit={() => openEdit(dayKey, evt)}
+                      onNotify={() => handleRemind(evt, activeGroup, dayKey)}
                     />
                   ))
                 )}
@@ -242,7 +269,7 @@ export default function AdminDashboard() {
   );
 }
 
-function AdminEventRow({ event, lang, t, onEdit }) {
+function AdminEventRow({ event, lang, t, onEdit, onNotify }) {
   const label = lang === 'ar' && event.titleAr ? event.titleAr : event.title;
   const typeColor = EVENT_TYPE_COLORS[event.type] || EVENT_TYPE_COLORS.other;
   const typeBg    = EVENT_TYPE_BG[event.type]    || EVENT_TYPE_BG.other;
@@ -268,6 +295,12 @@ function AdminEventRow({ event, lang, t, onEdit }) {
           <p className="aer__by">{t('schedule.addedBy')}: <span>{event.addedByName}</span></p>
         )}
       </div>
+      <button className="aer__notify" onClick={onNotify} aria-label="send reminder" title={t('admin.sendReminder')}>
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+          <path d="M8 1.5a4 4 0 0 0-4 4v2.7L2.6 10.8a.5.5 0 0 0 .4.7h10a.5.5 0 0 0 .4-.7L12 8.2V5.5a4 4 0 0 0-4-4z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round"/>
+          <path d="M6.5 12a1.5 1.5 0 0 0 3 0" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
+        </svg>
+      </button>
       <button className="aer__edit" onClick={onEdit} aria-label="edit">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
           <path d="M11 2l3 3-8 8H3v-3l8-8z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/>

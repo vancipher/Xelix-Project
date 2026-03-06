@@ -133,6 +133,18 @@
   margin-top: 3px;
 }
 .aer__by span { color: var(--accent); font-weight: 600; }
+.aer__notify {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+.aer__notify:hover { color: var(--accent); background: var(--accent-soft); }
 .aer__edit {
   display: flex;
   align-items: center;
