@@ -1,3 +1,4 @@
+// sw v3
 import { precacheAndRoute, cleanupOutdatedCaches } from 'workbox-precaching';
 
 // Workbox manifest injection
