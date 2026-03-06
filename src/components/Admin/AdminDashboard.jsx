@@ -73,6 +73,7 @@ export default function AdminDashboard() {
     if (modalMode === 'add') {
       addEvent(activeGroup, selectedDay, formData, admin.displayName);
       // Fire push notification for new events (non-blocking)
+      const titleAr = formData.titleAr || formData.title;
       const lines = [];
       if (formData.titleAr) lines.push(formData.titleAr);
       if (formData.title && formData.title !== formData.titleAr) lines.push(formData.title);
@@ -82,7 +83,7 @@ export default function AdminDashboard() {
       if (formData.instructor) lines.push(`👨‍🏫 ${formData.instructor}`);
       if (formData.notes) lines.push(`📝 ${formData.notes}`);
       sendEventPushNotification({
-        title: `Xelix — ${t(`groups.${activeGroup}`)} — ${t(`days.${selectedDay}`)}`,
+        title: `${titleAr} — ${t(`groups.${activeGroup}`)}`,
         body: lines.join('\n'),
         url: '/',
       });
@@ -101,18 +102,18 @@ export default function AdminDashboard() {
   };
 
   const handleRemind = (evt, group, dayKey) => {
+    const titleAr = evt.titleAr || evt.title;
     const lines = [];
     if (evt.titleAr) lines.push(evt.titleAr);
     if (evt.title && evt.title !== evt.titleAr) lines.push(evt.title);
-    const typeLabelEn = t(`eventTypes.${evt.type}`);
-    lines.push(`📌 ${typeLabelEn}`);
+    lines.push(`📌 ${t(`eventTypes.${evt.type}`)}`);
     if (evt.time) lines.push(`🕐 ${evt.time}`);
     if (evt.room) lines.push(`📍 ${evt.room}`);
     if (evt.instructor) lines.push(`👨‍🏫 ${evt.instructor}`);
     if (evt.notes) lines.push(`📝 ${evt.notes}`);
     const body = lines.join('\n');
     sendEventPushNotification({
-      title: `Xelix — ${t(`groups.${group}`)} — ${t(`days.${dayKey}`)}`,
+      title: `${titleAr} — ${t(`groups.${group}`)}`,
       body,
       url: '/',
     });

@@ -3,7 +3,7 @@ import { createContext, useContext, useState, useEffect } from 'react';
 const LanguageContext = createContext(null);
 
 export function LanguageProvider({ children }) {
-  const [lang, setLang] = useState(() => localStorage.getItem('xelix-lang') || 'en');
+  const [lang, setLang] = useState(() => localStorage.getItem('xelix-lang') || 'ar');
 
   useEffect(() => {
     const dir = lang === 'ar' ? 'rtl' : 'ltr';
