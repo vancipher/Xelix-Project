@@ -96,6 +96,22 @@ export default function UserManagement() {
     await loadUsers();
   };
 
+  const handleGiveCandy = async (userId, current) => {
+    const { error } = await supabase
+      .from('users')
+      .update({ candy: (current || 0) + 1 })
+      .eq('id', userId);
+    if (!error) await loadUsers();
+  };
+
+  const handleTakeCandy = async (userId, current) => {
+    const { error } = await supabase
+      .from('users')
+      .update({ candy: Math.max(0, (current || 0) - 1) })
+      .eq('id', userId);
+    if (!error) await loadUsers();
+  };
+
   if (!canAccess) {
     return (
       <div className="um-page">
@@ -172,6 +188,11 @@ export default function UserManagement() {
                 <span className="um-row__joined">
                   {t('admin.userMgmt.joined')} {new Date(user.created_at).toLocaleDateString()}
                 </span>
+                {(user.candy || 0) > 0 && (
+                  <span className="um-row__candy-badge">
+                    {'🍬'.repeat(Math.min(user.candy, 5))}{user.candy > 5 ? ` ×${user.candy}` : ''}
+                  </span>
+                )}
               </div>
               {user.banned && (
                 <span className="um-row__badge banned">{t('admin.userMgmt.badgebanned')}</span>
@@ -200,6 +221,22 @@ export default function UserManagement() {
                 >
                   {t('admin.userMgmt.delete')}
                 </button>
+                <button
+                  className="um-btn um-btn--candy"
+                  onClick={() => handleGiveCandy(user.id, user.candy)}
+                  title={lang === 'ar' ? 'أعطِ حلوى' : 'Give candy'}
+                >
+                  🍬+
+                </button>
+                {(user.candy || 0) > 0 && (
+                  <button
+                    className="um-btn um-btn--candy-take"
+                    onClick={() => handleTakeCandy(user.id, user.candy)}
+                    title={lang === 'ar' ? 'سحب حلوى' : 'Take candy'}
+                  >
+                    🍬−
+                  </button>
+                )}
               </div>
             </div>
           ))

@@ -255,6 +255,31 @@
   opacity: 0.8;
 }
 
+/* ── Candy Buttons ──────────────────────────────────────────── */
+.um-btn--candy {
+  background: #fef9c3;
+  color: #b45309;
+  border: 1px solid #fcd34d;
+  font-size: 13px;
+  padding: 8px 10px;
+}
+.um-btn--candy:hover { opacity: 0.8; }
+
+.um-btn--candy-take {
+  background: #fff7ed;
+  color: #c2410c;
+  border: 1px solid #fb923c;
+  font-size: 13px;
+  padding: 8px 10px;
+}
+.um-btn--candy-take:hover { opacity: 0.8; }
+
+.um-row__candy-badge {
+  font-size: 14px;
+  letter-spacing: 1px;
+  margin-top: 2px;
+}
+
 /* ── Responsive ────────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .um-row {

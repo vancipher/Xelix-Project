@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useT } from '../../utils/i18n';
@@ -54,6 +54,14 @@ const REACTION_SHAPES = {
 
 const REACTION_KEYS = ['happy', 'afraid', 'angry'];
 
+function getDeviceId() {
+  let id = localStorage.getItem('xelix-device-id');
+  if (!id) {
+    id = Math.random().toString(36).slice(2) + Date.now().toString(36);
+    localStorage.setItem('xelix-device-id', id);
+  }
+  return id;
+}
 
 export default function DayCard({ dayKey, dayData, isImportant, date, isToday }) {
   const { lang } = useLanguage();
@@ -105,30 +113,33 @@ function EventItem({ event, lang, t }) {
   const [counts, setCounts] = useState({ happy: 0, afraid: 0, angry: 0 });
   const [completed, setCompleted] = useState(false);
   const [showComments, setShowComments] = useState(false);
+  const deviceId = useRef(getDeviceId()).current;
 
   useEffect(() => {
     let cancelled = false;
-    // Load aggregate reaction counts
-    supabase.from('user_reactions').select('reaction').eq('event_id', String(event.id))
-      .then(({ data }) => {
-        if (cancelled || !data) return;
-        const c = { happy: 0, afraid: 0, angry: 0 };
-        data.forEach(r => { if (c[r.reaction] !== undefined) c[r.reaction]++; });
-        setCounts(c);
-      });
+    // Load counts from both logged-in and guest reaction tables
+    Promise.all([
+      supabase.from('user_reactions').select('reaction').eq('event_id', String(event.id)),
+      supabase.from('guest_reactions').select('reaction').eq('event_id', String(event.id)),
+    ]).then(([r1, r2]) => {
+      if (cancelled) return;
+      const c = { happy: 0, afraid: 0, angry: 0 };
+      [...(r1.data || []), ...(r2.data || [])].forEach(r => { if (c[r.reaction] !== undefined) c[r.reaction]++; });
+      setCounts(c);
+    });
     if (user) {
-      // Load this user's reaction
       supabase.from('user_reactions').select('reaction').eq('event_id', String(event.id)).eq('user_id', user.id).maybeSingle()
         .then(({ data }) => { if (!cancelled) setMyReaction(data?.reaction ?? null); });
-      // Load completion state
       supabase.from('event_completions').select('id').eq('event_id', String(event.id)).eq('user_id', user.id).maybeSingle()
         .then(({ data }) => { if (!cancelled) setCompleted(!!data); });
+    } else {
+      supabase.from('guest_reactions').select('reaction').eq('event_id', String(event.id)).eq('device_id', deviceId).maybeSingle()
+        .then(({ data }) => { if (!cancelled) setMyReaction(data?.reaction ?? null); });
     }
     return () => { cancelled = true; };
   }, [event.id, user?.id]);
 
   const handleReaction = useCallback(async (key) => {
-    if (!user) return;
     const prev = myReaction;
     const next = prev === key ? null : key;
     setMyReaction(next);
@@ -138,15 +149,26 @@ function EventItem({ event, lang, t }) {
       if (next) copy[next] = copy[next] + 1;
       return copy;
     });
-    if (next) {
-      await supabase.from('user_reactions').upsert(
-        { user_id: user.id, event_id: String(event.id), reaction: next },
-        { onConflict: 'user_id,event_id' }
-      );
+    if (user) {
+      if (next) {
+        await supabase.from('user_reactions').upsert(
+          { user_id: user.id, event_id: String(event.id), reaction: next },
+          { onConflict: 'user_id,event_id' }
+        );
+      } else {
+        await supabase.from('user_reactions').delete().eq('user_id', user.id).eq('event_id', String(event.id));
+      }
     } else {
-      await supabase.from('user_reactions').delete().eq('user_id', user.id).eq('event_id', String(event.id));
+      if (next) {
+        await supabase.from('guest_reactions').upsert(
+          { device_id: deviceId, event_id: String(event.id), reaction: next },
+          { onConflict: 'device_id,event_id' }
+        );
+      } else {
+        await supabase.from('guest_reactions').delete().eq('device_id', deviceId).eq('event_id', String(event.id));
+      }
     }
-  }, [event.id, user, myReaction]);
+  }, [event.id, user, myReaction, deviceId]);
 
   const handleComplete = useCallback(async () => {
     if (!user) return;
@@ -229,9 +251,8 @@ function EventItem({ event, lang, t }) {
             <button
               key={key}
               type="button"
-              className={`event-reactions__btn ${myReaction === key ? 'active' : ''} ${!user ? 'event-reactions__btn--locked' : ''}`}
+              className={`event-reactions__btn ${myReaction === key ? 'active' : ''}`}
               onClick={() => handleReaction(key)}
-              title={!user ? t('schedule.loginToReact') : undefined}
               aria-label={key}
             >
               <span className="event-reactions__icon">{shapes[key]}</span>
