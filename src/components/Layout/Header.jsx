@@ -81,6 +81,7 @@ export default function Header() {
     { to: '/admin/resources', label: t('resources.manageResources'), auth: true },
     { to: '/admin/profile', label: t('admin.myProfile'), auth: true },
     { to: '/admin/manage', label: t('admin.manageAdmins'), superadmin: true },
+    { to: '/admin/users', label: t('admin.manageUsers'), auth: true },
   ].filter((l) => {
     if (l.always) return true;
     if (l.superadmin) return isSuperAdmin;
