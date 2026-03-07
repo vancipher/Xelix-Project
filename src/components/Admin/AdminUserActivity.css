@@ -1,0 +1,232 @@
+/* ── User Activity Page ────────────────────────────────────────── */
+.ua-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+.ua-header {
+  margin-bottom: 24px;
+}
+
+.ua-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 4px 0;
+}
+
+.ua-sub {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.ua-loading,
+.ua-empty {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+/* ── User Row ──────────────────────────────────────────────────── */
+.ua-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ua-row {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  transition: border-color 0.2s;
+}
+
+.ua-row--open {
+  border-color: var(--accent);
+}
+
+.ua-row__main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  width: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: start;
+  transition: background 0.15s;
+}
+
+.ua-row__main:hover {
+  background: var(--accent-soft);
+}
+
+.ua-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 17px;
+  flex-shrink: 0;
+}
+
+.ua-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.ua-name {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 14px;
+}
+
+.ua-email {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.ua-tags {
+  display: flex;
+  gap: 4px;
+  margin-top: 3px;
+}
+
+.ua-tag {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.ua-tag.banned {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+.ua-tag.pending {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.ua-counts {
+  display: flex;
+  gap: 14px;
+  flex-shrink: 0;
+}
+
+.ua-count {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.ua-chevron {
+  flex-shrink: 0;
+  color: var(--text-muted);
+  transition: transform 0.2s;
+}
+
+.ua-chevron.open {
+  transform: rotate(180deg);
+}
+
+/* ── Expanded Detail ────────────────────────────────────────────── */
+.ua-detail {
+  padding: 16px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  background: var(--bg-secondary);
+}
+
+.ua-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ua-section__title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.ua-none {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* ── Chips ─────────────────────────────────────────────────────── */
+.ua-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.ua-chip {
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+}
+
+.ua-chip--happy  { background: var(--success-soft); color: var(--success); border-color: var(--success); }
+.ua-chip--afraid { background: var(--accent-soft);  color: var(--accent);  border-color: var(--accent); }
+.ua-chip--angry  { background: var(--danger-soft);  color: var(--danger);  border-color: var(--danger); }
+.ua-chip--done   { background: var(--success-soft); color: var(--success); border-color: var(--success); }
+
+/* ── Comment List ───────────────────────────────────────────────── */
+.ua-comment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ua-comment {
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+}
+
+.ua-comment__text {
+  font-size: 13px;
+  color: var(--text-primary);
+  margin: 0 0 4px 0;
+  line-height: 1.5;
+}
+
+.ua-comment__meta {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* ── Responsive ─────────────────────────────────────────────────── */
+@media (max-width: 520px) {
+  .ua-counts { display: none; }
+  .ua-row__main { padding: 12px; }
+}

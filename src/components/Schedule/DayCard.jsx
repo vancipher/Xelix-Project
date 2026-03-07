@@ -4,6 +4,8 @@ import { useTheme } from '../../contexts/ThemeContext';
 import { useT } from '../../utils/i18n';
 import { EVENT_TYPE_COLORS, EVENT_TYPE_BG, formatDate } from '../../utils/helpers';
 import { supabase } from '../../firebase';
+import { useUserAuth } from '../../contexts/UserAuthContext';
+import Comments from '../Auth/Comments';
 import './DayCard.css';
 
 /* ── Theme-based reaction SVG icons ──────────────────────────── */
@@ -52,19 +54,6 @@ const REACTION_SHAPES = {
 
 const REACTION_KEYS = ['happy', 'afraid', 'angry'];
 
-/* ── Supabase reaction helpers ───────────────────────────────── */
-const MY_REACT_KEY = 'xelix-my-reactions'; // { [eventId]: 'happy'|'afraid'|'angry' }
-function getMyReactions() {
-  try { return JSON.parse(localStorage.getItem(MY_REACT_KEY)) || {}; } catch { return {}; }
-}
-function saveMyReaction(eventId, key) {
-  const all = getMyReactions();
-  const prev = all[eventId];
-  if (prev === key) { delete all[eventId]; }
-  else { all[eventId] = key; }
-  localStorage.setItem(MY_REACT_KEY, JSON.stringify(all));
-  return { prev, next: all[eventId] ?? null };
-}
 
 export default function DayCard({ dayKey, dayData, isImportant, date, isToday }) {
   const { lang } = useLanguage();
@@ -111,48 +100,67 @@ export default function DayCard({ dayKey, dayData, isImportant, date, isToday })
 function EventItem({ event, lang, t }) {
   const [notesOpen, setNotesOpen] = useState(false);
   const { theme } = useTheme();
-  const [myReaction, setMyReaction] = useState(() => getMyReactions()[event.id] ?? null);
+  const { user } = useUserAuth();
+  const [myReaction, setMyReaction] = useState(null);
   const [counts, setCounts] = useState({ happy: 0, afraid: 0, angry: 0 });
+  const [completed, setCompleted] = useState(false);
+  const [showComments, setShowComments] = useState(false);
 
-  // Load reaction counts from Supabase
   useEffect(() => {
     let cancelled = false;
-    supabase.from('reactions').select('happy, afraid, angry').eq('event_id', event.id).single()
-      .then(({ data }) => { if (!cancelled && data) setCounts({ happy: data.happy, afraid: data.afraid, angry: data.angry }); });
+    // Load aggregate reaction counts
+    supabase.from('user_reactions').select('reaction').eq('event_id', String(event.id))
+      .then(({ data }) => {
+        if (cancelled || !data) return;
+        const c = { happy: 0, afraid: 0, angry: 0 };
+        data.forEach(r => { if (c[r.reaction] !== undefined) c[r.reaction]++; });
+        setCounts(c);
+      });
+    if (user) {
+      // Load this user's reaction
+      supabase.from('user_reactions').select('reaction').eq('event_id', String(event.id)).eq('user_id', user.id).maybeSingle()
+        .then(({ data }) => { if (!cancelled) setMyReaction(data?.reaction ?? null); });
+      // Load completion state
+      supabase.from('event_completions').select('id').eq('event_id', String(event.id)).eq('user_id', user.id).maybeSingle()
+        .then(({ data }) => { if (!cancelled) setCompleted(!!data); });
+    }
     return () => { cancelled = true; };
-  }, [event.id]);
+  }, [event.id, user?.id]);
 
   const handleReaction = useCallback(async (key) => {
-    const { prev, next } = saveMyReaction(event.id, key);
+    if (!user) return;
+    const prev = myReaction;
+    const next = prev === key ? null : key;
     setMyReaction(next);
-    // Optimistic update
     setCounts(c => {
       const copy = { ...c };
       if (prev) copy[prev] = Math.max(0, copy[prev] - 1);
       if (next) copy[next] = copy[next] + 1;
       return copy;
     });
-    // Persist to Supabase — upsert the row
-    const delta = { happy: 0, afraid: 0, angry: 0 };
-    if (prev) delta[prev] = -1;
-    if (next) delta[next] = 1;
-    // read-modify-write
-    const { data: existing } = await supabase.from('reactions').select('happy, afraid, angry').eq('event_id', event.id).single();
-    if (existing) {
-      await supabase.from('reactions').update({
-        happy: Math.max(0, existing.happy + delta.happy),
-        afraid: Math.max(0, existing.afraid + delta.afraid),
-        angry: Math.max(0, existing.angry + delta.angry),
-      }).eq('event_id', event.id);
+    if (next) {
+      await supabase.from('user_reactions').upsert(
+        { user_id: user.id, event_id: String(event.id), reaction: next },
+        { onConflict: 'user_id,event_id' }
+      );
     } else {
-      await supabase.from('reactions').insert({
-        event_id: event.id,
-        happy: Math.max(0, delta.happy),
-        afraid: Math.max(0, delta.afraid),
-        angry: Math.max(0, delta.angry),
-      });
+      await supabase.from('user_reactions').delete().eq('user_id', user.id).eq('event_id', String(event.id));
     }
-  }, [event.id]);
+  }, [event.id, user, myReaction]);
+
+  const handleComplete = useCallback(async () => {
+    if (!user) return;
+    const next = !completed;
+    setCompleted(next);
+    if (next) {
+      await supabase.from('event_completions').upsert(
+        { user_id: user.id, event_id: String(event.id), completed_at: new Date().toISOString() },
+        { onConflict: 'user_id,event_id' }
+      );
+    } else {
+      await supabase.from('event_completions').delete().eq('user_id', user.id).eq('event_id', String(event.id));
+    }
+  }, [event.id, user, completed]);
 
   const shapes = REACTION_SHAPES[theme] || REACTION_SHAPES.white;
   const label = lang === 'ar' && event.titleAr ? event.titleAr : event.title;
@@ -221,15 +229,41 @@ function EventItem({ event, lang, t }) {
             <button
               key={key}
               type="button"
-              className={`event-reactions__btn ${myReaction === key ? 'active' : ''}`}
+              className={`event-reactions__btn ${myReaction === key ? 'active' : ''} ${!user ? 'event-reactions__btn--locked' : ''}`}
               onClick={() => handleReaction(key)}
+              title={!user ? t('schedule.loginToReact') : undefined}
               aria-label={key}
             >
               <span className="event-reactions__icon">{shapes[key]}</span>
               {counts[key] > 0 && <span className="event-reactions__count">{counts[key]}</span>}
             </button>
           ))}
+          {user && (
+            <button
+              type="button"
+              className={`event-done-btn ${completed ? 'done' : ''}`}
+              onClick={handleComplete}
+              title={completed ? t('schedule.markUndone') : t('schedule.markDone')}
+            >
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+                <path d="M3 8l4 4 6-6" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              {completed ? t('schedule.done') : t('schedule.markDone')}
+            </button>
+          )}
         </div>
+        {/* Comments toggle */}
+        <button
+          type="button"
+          className={`event-comments-toggle ${showComments ? 'open' : ''}`}
+          onClick={() => setShowComments(v => !v)}
+        >
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+            <path d="M14 2H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h3l3 3 3-3h3a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/>
+          </svg>
+          {t('schedule.comments')}
+        </button>
+        {showComments && <Comments eventId={String(event.id)} />}
       </div>
     </div>
   );

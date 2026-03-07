@@ -312,3 +312,61 @@
   min-width: 12px;
   text-align: center;
 }
+
+.event-reactions__btn--locked {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.event-done-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 8px;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  transition: all 0.2s;
+}
+.event-done-btn:hover {
+  border-color: var(--success);
+  color: var(--success);
+  background: var(--success-soft);
+}
+.event-done-btn.done {
+  border-color: var(--success);
+  color: var(--success);
+  background: var(--success-soft);
+}
+
+.event-comments-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  margin-top: 6px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  transition: color 0.2s, background 0.2s;
+  border-radius: 6px;
+}
+.event-comments-toggle:hover,
+.event-comments-toggle.open {
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.event-item .comments-section {
+  padding: 10px 12px;
+  margin-top: 8px;
+  border-radius: 8px;
+  font-size: 0.9em;
+}

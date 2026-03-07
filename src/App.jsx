@@ -10,6 +10,7 @@ import AdminDashboard from './components/Admin/AdminDashboard';
 import AdminProfile from './components/Admin/AdminProfile';
 import AdminManagement from './components/Admin/AdminManagement';
 import UserManagement from './components/Admin/UserManagement';
+import AdminUserActivity from './components/Admin/AdminUserActivity';
 import UserLogin from './components/Auth/UserLogin';
 import UserRegister from './components/Auth/UserRegister';
 import UserProfile from './components/Auth/UserProfile';
@@ -80,6 +81,14 @@ export default function App() {
             element={
               <AdminProtectedRoute>
                 <UserManagement />
+              </AdminProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/activity"
+            element={
+              <AdminProtectedRoute>
+                <AdminUserActivity />
               </AdminProtectedRoute>
             }
           />
