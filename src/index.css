@@ -204,41 +204,41 @@ html { scroll-behavior: smooth; }
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   THEME: SEA (bright ocean — crystal water, light & lively)
+   THEME: SEA (deep ocean — midnight navy, mature & dark)
 ══════════════════════════════════════════════════════════════════ */
 [data-theme="sea"] {
-  --bg-primary:        #eef8ff;
-  --bg-secondary:      #ddf1ff;
-  --bg-card:           #e8f5ff;
-  --bg-card-hover:     #d0ecff;
-  --bg-header:         rgba(238,248,255,0.82);
-  --bg-sidebar:        #ddf1ff;
-  --bg-input:          #d0ecff;
-  --bg-modal:          #e8f5ff;
-  --bg-overlay:        rgba(0,80,160,0.18);
-  --bg-badge:          #bae2ff;
-  --border:            #90cdf4;
-  --border-focus:      #0ea5e9;
-  --text-primary:      #0c2d48;
-  --text-secondary:    #1a6694;
-  --text-muted:        #60a5c8;
-  --text-inverse:      #ffffff;
-  --accent:            #0ea5e9;
-  --accent-soft:       #bae2ff;
-  --accent-hover:      #0284c7;
-  --danger:            #e53935;
-  --danger-soft:       #fdecea;
-  --warning:           #f59e0b;
-  --warning-soft:      #fef3c7;
-  --success:           #10b981;
-  --success-soft:      #d1fae5;
-  --day-alert-bg:      #fff0f0;
-  --day-alert-border:  #e53935;
-  --day-alert-text:    #c62828;
-  --shadow-sm:         0 1px 3px rgba(0,120,200,0.10);
-  --shadow-md:         0 4px 16px rgba(0,120,200,0.13);
-  --shadow-lg:         0 12px 40px rgba(0,120,200,0.18);
-  --noise-opacity:     0.02;
+  --bg-primary:        #060d17;
+  --bg-secondary:      #0a1628;
+  --bg-card:           #0d1f35;
+  --bg-card-hover:     #112540;
+  --bg-header:         rgba(6,13,23,0.88);
+  --bg-sidebar:        #0a1628;
+  --bg-input:          #0d1f35;
+  --bg-modal:          #0d1f35;
+  --bg-overlay:        rgba(0,20,50,0.55);
+  --bg-badge:          #0f2d4a;
+  --border:            #1a3a5c;
+  --border-focus:      #2d7aad;
+  --text-primary:      #c8e4f8;
+  --text-secondary:    #6ba4c8;
+  --text-muted:        #3a6585;
+  --text-inverse:      #060d17;
+  --accent:            #2d7aad;
+  --accent-soft:       #0f2d4a;
+  --accent-hover:      #3a8fc5;
+  --danger:            #e05252;
+  --danger-soft:       #2a1010;
+  --warning:           #c49a3c;
+  --warning-soft:      #251e0a;
+  --success:           #2a9c6e;
+  --success-soft:      #0a2018;
+  --day-alert-bg:      #200a0a;
+  --day-alert-border:  #e05252;
+  --day-alert-text:    #e89898;
+  --shadow-sm:         0 1px 4px rgba(0,10,30,0.45);
+  --shadow-md:         0 4px 18px rgba(0,10,30,0.55);
+  --shadow-lg:         0 12px 44px rgba(0,10,30,0.65);
+  --noise-opacity:     0.04;
 }
 
 /* ══════════════════════════════════════════════════════════════════
@@ -520,23 +520,23 @@ body::before {
   pointer-events: none;
   z-index: 0;
   background:
-    radial-gradient(ellipse 80% 60% at 50% 110%, rgba(14,165,233,0.18) 0%, transparent 70%),
-    radial-gradient(ellipse 60% 40% at 20% 90%, rgba(56,189,248,0.12) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(6,182,212,0.10) 0%, transparent 60%);
-  animation: xelixSeaShimmer 10s ease-in-out infinite alternate;
+    radial-gradient(ellipse 80% 60% at 50% 110%, rgba(20,80,140,0.30) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 40% at 20% 90%, rgba(10,50,100,0.22) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(15,60,110,0.18) 0%, transparent 60%);
+  animation: xelixSeaShimmer 12s ease-in-out infinite alternate;
 }
 @keyframes xelixSeaShimmer {
   0%   { opacity: 0.5; transform: scaleY(0.96); }
   50%  { opacity: 1;   transform: scaleY(1.02); }
-  100% { opacity: 0.7; transform: scaleY(0.98); }
+  100% { opacity: 0.6; transform: scaleY(0.98); }
 }
 
 [data-theme="sea"] .glass {
-  animation: xelixSeaPulse 6s ease-in-out infinite alternate;
+  animation: xelixSeaPulse 7s ease-in-out infinite alternate;
 }
 @keyframes xelixSeaPulse {
   0%   { box-shadow: var(--shadow-md); }
-  100% { box-shadow: var(--shadow-md), 0 0 18px 5px rgba(14,165,233,0.12); }
+  100% { box-shadow: var(--shadow-md), 0 0 22px 6px rgba(20,80,150,0.20); }
 }
 
 /* ════════════════════════════════════════════════════════════════

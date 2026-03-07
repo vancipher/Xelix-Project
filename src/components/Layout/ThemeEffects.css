@@ -346,11 +346,11 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 160px 100px at 25% 30%, rgba(56,189,248,0.15) 0%, transparent 70%),
-    radial-gradient(ellipse 130px 80px at 70% 50%, rgba(14,165,233,0.12) 0%, transparent 70%),
-    radial-gradient(ellipse 180px 110px at 50% 75%, rgba(6,182,212,0.10) 0%, transparent 70%),
-    radial-gradient(ellipse 100px 70px at 85% 25%, rgba(125,211,252,0.13) 0%, transparent 70%);
-  animation: txfxCaustic 12s ease-in-out infinite alternate;
+    radial-gradient(ellipse 160px 100px at 25% 30%, rgba(20,80,150,0.18) 0%, transparent 70%),
+    radial-gradient(ellipse 130px 80px at 70% 50%, rgba(10,60,120,0.14) 0%, transparent 70%),
+    radial-gradient(ellipse 180px 110px at 50% 75%, rgba(15,70,130,0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 100px 70px at 85% 25%, rgba(30,90,160,0.16) 0%, transparent 70%);
+  animation: txfxCaustic 14s ease-in-out infinite alternate;
 }
 @keyframes txfxCaustic {
   0%   { opacity: 0.5; transform: scale(1) translate(0, 0); }
@@ -364,7 +364,7 @@
   right: -10%;
   height: 180px;
   border-radius: 50%;
-  background: rgba(14,165,233,0.08);
+  background: rgba(10,50,110,0.18);
 }
 .txfx-sea-wave--1 {
   bottom: -40px;
@@ -372,12 +372,12 @@
 }
 .txfx-sea-wave--2 {
   bottom: -60px;
-  background: rgba(56,189,248,0.07);
+  background: rgba(8,40,90,0.15);
   animation: txfxWave 9s ease-in-out infinite alternate-reverse;
 }
 .txfx-sea-wave--3 {
   bottom: -80px;
-  background: rgba(125,211,252,0.06);
+  background: rgba(6,30,70,0.12);
   animation: txfxWave 11s ease-in-out infinite alternate;
 }
 @keyframes txfxWave {
@@ -390,7 +390,7 @@
   position: absolute;
   bottom: 0; left: -10%; right: -10%;
   height: 200px;
-  background: linear-gradient(to top, rgba(14,165,233,0.14) 0%, rgba(56,189,248,0.06) 50%, transparent 100%);
+  background: linear-gradient(to top, rgba(5,25,70,0.55) 0%, rgba(10,40,100,0.20) 50%, transparent 100%);
   filter: blur(10px);
   animation: txfxSeaFloor 6s ease-in-out infinite alternate;
 }
