@@ -15,7 +15,7 @@ export default defineConfig({
         name: 'Xelix — University Schedule',
         short_name: 'Xelix',
         description: 'University schedule system for students and admins',
-        theme_color: '#2d7a2d',
+        theme_color: '#6c63ff',
         background_color: '#0f172a',
         display: 'standalone',
         orientation: 'portrait-primary',

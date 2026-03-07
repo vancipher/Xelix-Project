@@ -1,12 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
   <rect width="512" height="512" rx="110" fill="#ffffff"/>
-  <text
-    x="256" y="360"
-    font-family="Arial Black, Arial, sans-serif"
-    font-weight="900"
-    font-size="320"
-    text-anchor="middle"
-    fill="#2d7a2d"
-    letter-spacing="-10"
-  >X</text>
+  <!-- Xelix wordmark: bold X in accent violet + light elix in dark — mirrors light-theme header -->
+  <text x="256" y="308" font-family="Inter,system-ui,-apple-system,'Segoe UI',Arial,sans-serif"
+    font-size="148" text-anchor="middle" dominant-baseline="auto">
+    <tspan font-weight="800" fill="#6c63ff">X</tspan><tspan font-weight="300" fill="#111111" letter-spacing="6">elix</tspan>
+  </text>
 </svg>
