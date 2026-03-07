@@ -40,13 +40,13 @@ export function UserAuthProvider({ children }) {
         .insert({
           username: username.toLowerCase(),
           email: email.toLowerCase(),
-          fullName: fullName,
+          full_name: fullName,
           password: password,
-          displayName: fullName,
+          display_name: fullName,
           role: 'user',
           banned: false,
           approved: false,
-          createdAt: new Date().toISOString(),
+          created_at: new Date().toISOString(),
         })
         .select()
         .single();
@@ -88,7 +88,7 @@ export function UserAuthProvider({ children }) {
       const session = {
         id: data.id,
         username: data.username,
-        displayName: data.displayName,
+        displayName: data.display_name,
         email: data.email,
         role: data.role,
       };
@@ -117,7 +117,7 @@ export function UserAuthProvider({ children }) {
     setLoading(true);
     setError('');
     try {
-      const updateData = { displayName };
+      const updateData = { display_name: displayName };
       if (password) updateData.password = password;
 
       const { error: err } = await supabase

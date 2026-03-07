@@ -19,7 +19,7 @@ export default function UserManagement() {
     const { data } = await supabase
       .from('users')
       .select('*')
-      .order('createdAt', { ascending: false });
+      .order('created_at', { ascending: false });
     
     if (data) setUsers(data);
     setLoading(false);
@@ -150,14 +150,14 @@ export default function UserManagement() {
           filteredUsers.map((user) => (
             <div key={user.id} className={`um-row glass ${user.banned ? 'um-row--banned' : ''} ${!user.approved && !user.banned ? 'um-row--pending' : ''}`}>
               <div className="um-row__avatar">
-                {(user.displayName || user.username || '?').charAt(0).toUpperCase()}
+                {(user.display_name || user.username || '?').charAt(0).toUpperCase()}
               </div>
               <div className="um-row__info">
-                <span className="um-row__name">{user.fullName || user.displayName}</span>
+                <span className="um-row__name">{user.full_name || user.display_name}</span>
                 <span className="um-row__username">@{user.username}</span>
                 <span className="um-row__email">{user.email}</span>
                 <span className="um-row__joined">
-                  Joined {new Date(user.createdAt).toLocaleDateString()}
+                  Joined {new Date(user.created_at).toLocaleDateString()}
                 </span>
               </div>
               {user.banned && (
@@ -170,7 +170,7 @@ export default function UserManagement() {
                 {!user.approved && !user.banned && (
                   <button
                     className="um-btn um-btn--approve"
-                    onClick={() => handleApprove(user.id, user.fullName || user.displayName)}
+                    onClick={() => handleApprove(user.id, user.full_name || user.display_name)}
                   >
                     Approve
                   </button>
