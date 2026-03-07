@@ -52,9 +52,47 @@ html { scroll-behavior: smooth; }
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   THEME: BLACK (pure black — clean, minimal, mirror of white)
+   THEME: BLACK (dark crimson — deep red shadows, heavy noise)
 ══════════════════════════════════════════════════════════════════ */
 [data-theme="black"] {
+  --bg-primary:        #0a0608;
+  --bg-secondary:      #120a0c;
+  --bg-card:           #180c0f;
+  --bg-card-hover:     #1e1013;
+  --bg-header:         rgba(10,6,8,0.92);
+  --bg-sidebar:        #100809;
+  --bg-input:          #1e1013;
+  --bg-modal:          #180c0f;
+  --bg-overlay:        rgba(0,0,0,0.82);
+  --bg-badge:          #2a1318;
+  --border:            #3a1820;
+  --border-focus:      #c41230;
+  --text-primary:      #f2e8ea;
+  --text-secondary:    #b07880;
+  --text-muted:        #623540;
+  --text-inverse:      #0a0608;
+  --accent:            #c41230;
+  --accent-soft:       #2a0a10;
+  --accent-hover:      #e0182e;
+  --danger:            #ff3344;
+  --danger-soft:       #2d0810;
+  --warning:           #fbbf24;
+  --warning-soft:      #2d1e00;
+  --success:           #34d399;
+  --success-soft:      #0a2418;
+  --day-alert-bg:      #280810;
+  --day-alert-border:  #ff3344;
+  --day-alert-text:    #ff7080;
+  --shadow-sm:         0 1px 4px rgba(120,0,20,0.55);
+  --shadow-md:         0 4px 18px rgba(120,0,20,0.60);
+  --shadow-lg:         0 12px 44px rgba(120,0,20,0.80);
+  --noise-opacity:     0.09;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   THEME: NOIR (pure black — clean minimal, like white inverted)
+══════════════════════════════════════════════════════════════════ */
+[data-theme="noir"] {
   --bg-primary:        #000000;
   --bg-secondary:      #0d0d0d;
   --bg-card:           #111111;
@@ -480,6 +518,33 @@ body::before {
 @keyframes xelixAmberPulse {
   0%   { box-shadow: var(--shadow-md); }
   100% { box-shadow: var(--shadow-md), 0 0 22px 6px rgba(249,115,22,0.14); }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   BLACK (CRIMSON) — red vignette pulse + deep noise via --noise-opacity
+══════════════════════════════════════════════════════════════════ */
+
+[data-theme="black"] body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(ellipse at center, transparent 45%, rgba(160,0,25,0.10) 100%);
+  animation: xelixRedVignette 7s ease-in-out infinite alternate;
+}
+@keyframes xelixRedVignette {
+  0%   { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+
+/* Deep crimson glow on cards */
+[data-theme="black"] .glass {
+  animation: xelixCrimsonPulse 6s ease-in-out infinite alternate;
+}
+@keyframes xelixCrimsonPulse {
+  0%   { box-shadow: var(--shadow-md); }
+  100% { box-shadow: var(--shadow-md), 0 0 20px 4px rgba(180,0,30,0.18); }
 }
 
 /* ════════════════════════════════════════════════════════════════

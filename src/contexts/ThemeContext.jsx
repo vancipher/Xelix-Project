@@ -2,7 +2,7 @@ import { createContext, useContext, useState, useEffect } from 'react';
 
 const ThemeContext = createContext(null);
 
-const THEMES = ['white', 'athena', 'sun', 'lavender', 'purple', 'nature', 'orange', 'sea', 'gold', 'black'];
+const THEMES = ['white', 'athena', 'sun', 'lavender', 'purple', 'nature', 'orange', 'sea', 'gold', 'black', 'noir'];
 
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(() => localStorage.getItem('xelix-theme') || 'white');

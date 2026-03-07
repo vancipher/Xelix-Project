@@ -146,6 +146,7 @@ export const translations = {
       sun:      'Sun',
       gold:     'Gold',
       athena:   'Athena',
+      noir:     'Black',
     },
     footer: {
       poweredBy: 'Designed by',
@@ -416,6 +417,7 @@ export const translations = {
       sun:      'شمس',
       gold:     'ذهبي',
       athena:   'أثينا',
+      noir:     'أسود',
     },
     footer: {
       poweredBy: 'تصميم',

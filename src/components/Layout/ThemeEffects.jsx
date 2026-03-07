@@ -443,7 +443,7 @@ export default function ThemeEffects() {
     clearInterval(timerRef.current);
 
     const cfg = CONFIGS[theme];
-    if (!cfg) return; // white / black — no particles
+    if (!cfg) return; // white / black / noir — no particles
 
     // Seed a batch immediately so screen isn't empty on load
     for (let i = 0; i < 8; i++) {
@@ -472,6 +472,15 @@ export default function ThemeEffects() {
           <div className="txfx-tree txfx-tree--right">{TREE_SVG}</div>
           <div className="txfx-tree txfx-tree--center">{TREE_SVG}</div>
           <div className="txfx-mist" />
+        </div>
+      )}
+
+      {/* Blurred giant X — dark/crimson theme */}
+      {theme === 'black' && (
+        <div className="txfx-dark-bg" aria-hidden="true">
+          <div className="txfx-x txfx-x--main">X</div>
+          <div className="txfx-x txfx-x--echo">X</div>
+          <div className="txfx-crimson-glow" />
         </div>
       )}
 

@@ -194,6 +194,7 @@
 .athena-dot   { background: #c8d8a8; border-color: #5a8a25; }
 .purple-dot   { background: #a855f7; border-color: #7e22ce; }
 .sun-dot      { background: #facc15; border-color: #ca8a04; }
+.noir-dot     { background: #111111; border-color: #444444; }
 
 .theme-dropdown {
   position: absolute;
