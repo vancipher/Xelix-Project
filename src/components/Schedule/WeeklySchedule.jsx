@@ -35,21 +35,14 @@ export default function WeeklySchedule() {
   const [todayKey,  setTodayKey]    = useState(getTodayDayKey);
   const [visits, setVisits]         = useState(null);
 
-  // Visit counter
+  // Visit counter - increment every visit
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      const visited = sessionStorage.getItem(VISIT_KEY);
-      if (!visited) {
-        sessionStorage.setItem(VISIT_KEY, '1');
-        const { data } = await supabase.from('visits').select('count').eq('id', 'global').single();
-        const newCount = (data?.count ?? 0) + 1;
-        await supabase.from('visits').upsert({ id: 'global', count: newCount });
-        if (!cancelled) setVisits(newCount);
-      } else {
-        const { data } = await supabase.from('visits').select('count').eq('id', 'global').single();
-        if (!cancelled) setVisits(data?.count ?? 0);
-      }
+      const { data } = await supabase.from('visits').select('count').eq('id', 'global').single();
+      const newCount = (data?.count ?? 0) + 1;
+      await supabase.from('visits').upsert({ id: 'global', count: newCount });
+      if (!cancelled) setVisits(newCount);
     })();
     return () => { cancelled = true; };
   }, []);
