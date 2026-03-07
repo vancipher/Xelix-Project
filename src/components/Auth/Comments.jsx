@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useUserAuth } from '../../contexts/UserAuthContext';
+import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useT } from '../../utils/i18n';
 import { supabase } from '../../firebase';
@@ -8,6 +9,7 @@ import './Comments.css';
 
 export default function Comments({ eventId }) {
   const { user } = useUserAuth();
+  const { isAdmin } = useAuth();
   const { lang } = useLanguage();
   const t = useT(lang);
   const [comments, setComments] = useState([]);
@@ -41,6 +43,11 @@ export default function Comments({ eventId }) {
     setNewComment('');
     await loadComments();
     setLoading(false);
+  };
+
+  const handleDeleteComment = async (id) => {
+    await supabase.from('comments').delete().eq('id', id);
+    setComments(prev => prev.filter(c => c.id !== id));
   };
 
   const displayName = (c) => c.users?.display_name || c.users?.username || '?';
@@ -86,9 +93,20 @@ export default function Comments({ eventId }) {
                     <p className="comment-author-handle">@{comment.users?.username}</p>
                   </div>
                 </div>
+                <div className="comment-date-wrap">
                 <p className="comment-date">
                   {new Date(comment.created_at).toLocaleDateString()}
                 </p>
+                {isAdmin && (
+                  <button
+                    className="comment-delete-btn"
+                    onClick={() => handleDeleteComment(comment.id)}
+                    title="Delete comment"
+                  >
+                    ×
+                  </button>
+                )}
+              </div>
               </div>
               <p className="comment-body">{comment.text}</p>
             </div>

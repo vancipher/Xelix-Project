@@ -179,3 +179,27 @@
   color: var(--text-primary);
   line-height: 1.5;
 }
+
+/* ── Admin Delete Button ────────────────────────────────────── */
+.comment-date-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.comment-delete-btn {
+  background: none;
+  border: none;
+  color: var(--text-tertiary);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 2px;
+  transition: color 0.15s;
+  border-radius: 4px;
+}
+
+.comment-delete-btn:hover {
+  color: var(--danger, #ef4444);
+}
