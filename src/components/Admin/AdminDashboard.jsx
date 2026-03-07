@@ -74,6 +74,7 @@ export default function AdminDashboard() {
       addEvent(activeGroup, selectedDay, formData, admin.displayName);
       // Fire push notification for new events (non-blocking)
       const titleAr = formData.titleAr || formData.title;
+      const section = SECTIONS.find((s) => SECTION_GROUPS[s].includes(activeGroup));
       const lines = [];
       if (formData.titleAr) lines.push(formData.titleAr);
       if (formData.title && formData.title !== formData.titleAr) lines.push(formData.title);
@@ -83,7 +84,7 @@ export default function AdminDashboard() {
       if (formData.instructor) lines.push(`👨‍🏫 ${formData.instructor}`);
       if (formData.notes) lines.push(`📝 ${formData.notes}`);
       sendEventPushNotification({
-        title: `${titleAr} — ${t(`groups.${activeGroup}`)}`,
+        title: `${titleAr} — ${t(`sections.${section}`)} ${t(`groups.${activeGroup}`)}`,
         body: lines.join('\n'),
         url: '/',
       });
@@ -104,6 +105,7 @@ export default function AdminDashboard() {
   const handleRemind = (evt, group, dayKey) => {
     if (!window.confirm(t('admin.confirmSendNotif'))) return;
     const titleAr = evt.titleAr || evt.title;
+    const section = SECTIONS.find((s) => SECTION_GROUPS[s].includes(group));
     const lines = [];
     if (evt.titleAr) lines.push(evt.titleAr);
     if (evt.title && evt.title !== evt.titleAr) lines.push(evt.title);
@@ -114,7 +116,7 @@ export default function AdminDashboard() {
     if (evt.notes) lines.push(`📝 ${evt.notes}`);
     const body = lines.join('\n');
     sendEventPushNotification({
-      title: `${titleAr} — ${t(`groups.${group}`)}`,
+      title: `${titleAr} — ${t(`sections.${section}`)} ${t(`groups.${group}`)}`,
       body,
       url: '/',
     });
