@@ -1,10 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
+import { useLanguage } from '../../contexts/LanguageContext';
+import { useT } from '../../utils/i18n';
 import { supabase } from '../../firebase';
 import './UserManagement.css';
 
 export default function UserManagement() {
   const { isSuperAdmin } = useAuth();
+  const { lang } = useLanguage();
+  const t = useT(lang);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [toast, setToast] = useState('');
@@ -37,16 +41,16 @@ export default function UserManagement() {
       .eq('id', userId);
 
     if (error) {
-      showToast('Failed to approve user');
+      showToast(t('admin.userMgmt.failApprove'));
       return;
     }
 
-    showToast(`${displayName} has been approved!`);
+    showToast(`${displayName} — ${t('admin.userMgmt.approved')}`);
     await loadUsers();
   };
 
   const handleBan = async (userId, currentBanned) => {
-    if (!window.confirm(`Are you sure you want to ${currentBanned ? 'unban' : 'ban'} this user?`)) {
+    if (!window.confirm(currentBanned ? t('admin.userMgmt.confirmUnban') : t('admin.userMgmt.confirmBan'))) {
       return;
     }
 
@@ -56,16 +60,16 @@ export default function UserManagement() {
       .eq('id', userId);
 
     if (error) {
-      showToast('Failed to update user');
+      showToast(t('admin.userMgmt.failUpdate'));
       return;
     }
 
-    showToast(`User ${!currentBanned ? 'banned' : 'unbanned'} successfully`);
+    showToast(t(currentBanned ? 'admin.userMgmt.unban' : 'admin.userMgmt.ban') + ' ✓');
     await loadUsers();
   };
 
   const handleDelete = async (userId, username) => {
-    if (!window.confirm(`Permanently delete user @${username}? This cannot be undone.`)) {
+    if (!window.confirm(`${t('admin.userMgmt.confirmDelete')} @${username}? ${t('admin.userMgmt.cannotUndo')}`)) {
       return;
     }
 
@@ -75,11 +79,11 @@ export default function UserManagement() {
       .eq('id', userId);
 
     if (error) {
-      showToast('Failed to delete user');
+      showToast(t('admin.userMgmt.failDelete'));
       return;
     }
 
-    showToast('User deleted successfully');
+    showToast(t('admin.userMgmt.deletedOk'));
     await loadUsers();
   };
 
@@ -87,7 +91,7 @@ export default function UserManagement() {
     return (
       <div className="um-page">
         <div className="um-forbidden glass">
-          <p>Access restricted to Super Admin only.</p>
+          <p>{t('admin.userMgmt.restricted')}</p>
         </div>
       </div>
     );
@@ -107,8 +111,8 @@ export default function UserManagement() {
       {/* Header */}
       <div className="um-header">
         <div>
-          <h1 className="um-title">User Management</h1>
-          <p className="um-sub">{users.length} total users</p>
+          <h1 className="um-title">{t('admin.userMgmt.title')}</h1>
+          <p className="um-sub">{users.length} {t('admin.userMgmt.totalUsers')}</p>
         </div>
       </div>
 
@@ -118,34 +122,34 @@ export default function UserManagement() {
           className={`filter-btn ${filter === 'all' ? 'active' : ''}`}
           onClick={() => setFilter('all')}
         >
-          All ({users.length})
+          {t('admin.userMgmt.all')} ({users.length})
         </button>
         <button
           className={`filter-btn ${filter === 'pending' ? 'active' : ''}`}
           onClick={() => setFilter('pending')}
         >
-          Pending ({users.filter(u => !u.approved && !u.banned).length})
+          {t('admin.userMgmt.pending')} ({users.filter(u => !u.approved && !u.banned).length})
         </button>
         <button
           className={`filter-btn ${filter === 'active' ? 'active' : ''}`}
           onClick={() => setFilter('active')}
         >
-          Active ({users.filter(u => u.approved && !u.banned).length})
+          {t('admin.userMgmt.active')} ({users.filter(u => u.approved && !u.banned).length})
         </button>
         <button
           className={`filter-btn ${filter === 'banned' ? 'active' : ''}`}
           onClick={() => setFilter('banned')}
         >
-          Banned ({users.filter(u => u.banned).length})
+          {t('admin.userMgmt.banned')} ({users.filter(u => u.banned).length})
         </button>
       </div>
 
       {/* Users List */}
       <div className="um-list">
         {loading ? (
-          <div className="um-loading">Loading users...</div>
+          <div className="um-loading">{t('admin.userMgmt.loading')}</div>
         ) : filteredUsers.length === 0 ? (
-          <div className="um-empty">No users found</div>
+          <div className="um-empty">{t('admin.userMgmt.noUsers')}</div>
         ) : (
           filteredUsers.map((user) => (
             <div key={user.id} className={`um-row glass ${user.banned ? 'um-row--banned' : ''} ${!user.approved && !user.banned ? 'um-row--pending' : ''}`}>
@@ -157,14 +161,14 @@ export default function UserManagement() {
                 <span className="um-row__username">@{user.username}</span>
                 <span className="um-row__email">{user.email}</span>
                 <span className="um-row__joined">
-                  Joined {new Date(user.created_at).toLocaleDateString()}
+                  {t('admin.userMgmt.joined')} {new Date(user.created_at).toLocaleDateString()}
                 </span>
               </div>
               {user.banned && (
-                <span className="um-row__badge banned">BANNED</span>
+                <span className="um-row__badge banned">{t('admin.userMgmt.badgebanned')}</span>
               )}
               {!user.approved && !user.banned && (
-                <span className="um-row__badge pending">PENDING</span>
+                <span className="um-row__badge pending">{t('admin.userMgmt.badgepending')}</span>
               )}
               <div className="um-row__actions">
                 {!user.approved && !user.banned && (
@@ -172,20 +176,20 @@ export default function UserManagement() {
                     className="um-btn um-btn--approve"
                     onClick={() => handleApprove(user.id, user.full_name || user.display_name)}
                   >
-                    Approve
+                    {t('admin.userMgmt.approve')}
                   </button>
                 )}
                 <button
                   className={`um-btn ${user.banned ? 'um-btn--unban' : 'um-btn--ban'}`}
                   onClick={() => handleBan(user.id, user.banned)}
                 >
-                  {user.banned ? 'Unban' : 'Ban'}
+                  {user.banned ? t('admin.userMgmt.unban') : t('admin.userMgmt.ban')}
                 </button>
                 <button
                   className="um-btn um-btn--delete"
                   onClick={() => handleDelete(user.id, user.username)}
                 >
-                  Delete
+                  {t('admin.userMgmt.delete')}
                 </button>
               </div>
             </div>

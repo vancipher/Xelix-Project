@@ -185,7 +185,7 @@ export default function Header() {
             </>
           ) : (
             <Link to="/login" className={`ctrl-btn login-btn ${location.pathname === '/login' ? 'active' : ''}`}>
-              Sign In
+              {t('admin.userMgmt.signIn')}
             </Link>
           )}
 
@@ -233,12 +233,12 @@ export default function Header() {
                 👤 {currentUser.displayName}
               </Link>
               <button className="mobile-link mobile-logout" onClick={handleUserLogout}>
-                Sign Out
+                {t('admin.userMgmt.signOut')}
               </button>
             </>
           ) : (
             <Link to="/login" className="mobile-link" onClick={() => setMobileOpen(false)}>
-              Sign In
+              {t('admin.userMgmt.signIn')}
             </Link>
           )}
           <div className="mobile-divider" />
