@@ -36,7 +36,6 @@ export default function Comments({ eventId }) {
       user_id: user.id,
       event_id: String(eventId),
       text: newComment.trim(),
-      created_at: new Date().toISOString(),
     });
     if (err) { setError(t('schedule.commentFailed')); setLoading(false); return; }
     setNewComment('');

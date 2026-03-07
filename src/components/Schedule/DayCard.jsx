@@ -177,7 +177,7 @@ function EventItem({ event, lang, t }) {
     let dbErr;
     if (next) {
       const { error } = await supabase.from('event_completions').upsert(
-        { user_id: user.id, event_id: String(event.id), completed_at: new Date().toISOString() },
+        { user_id: user.id, event_id: String(event.id) },
         { onConflict: 'user_id,event_id' }
       );
       dbErr = error;
