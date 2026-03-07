@@ -319,6 +319,17 @@ const CONFIGS = {
     maxParticles: 16,
     wander: true,
   },
+  gold: {
+    shapes: [STAR_SHAPE, SPARK_SHAPE],
+    color: '#c9a227',
+    minSize: 6, maxSize: 20,
+    minOpacity: 0.30, maxOpacity: 0.75,
+    spawnDelay: 0,
+    minDur: 4, durRange: 6,
+    drift: 100,
+    interval: 400,
+    maxParticles: 30,
+  },
 };
 
 export default function ThemeEffects() {
@@ -416,6 +427,16 @@ export default function ThemeEffects() {
           <div className="txfx-sun-orb" />
           <div className="txfx-sun-rays" />
           <div className="txfx-sun-haze" />
+        </div>
+      )}
+
+      {/* Gold royal glow */}
+      {theme === 'gold' && (
+        <div className="txfx-gold-bg" aria-hidden="true">
+          <div className="txfx-gold-glow txfx-gold-glow--bottom" />
+          <div className="txfx-gold-glow txfx-gold-glow--left" />
+          <div className="txfx-gold-glow txfx-gold-glow--right" />
+          <div className="txfx-gold-lines" />
         </div>
       )}
 

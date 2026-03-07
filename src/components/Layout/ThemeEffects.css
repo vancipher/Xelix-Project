@@ -398,7 +398,67 @@
   0%   { opacity: 0.4; }
   100% { opacity: 0.8; }
 }
+/* ── Gold theme — royal molten glow ─────────────────────────────────────── */
+.txfx-gold-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
 
+.txfx-gold-glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+}
+
+.txfx-gold-glow--bottom {
+  bottom: -120px;
+  left: 50%;
+  width: 80%;
+  height: 300px;
+  background: radial-gradient(ellipse, rgba(200,155,25,0.28) 0%, transparent 70%);
+  animation: txfxGoldGlowBottom 8s ease-in-out infinite alternate;
+}
+@keyframes txfxGoldGlowBottom {
+  0%   { opacity: 0.45; transform: translateX(-50%) scale(0.94); }
+  50%  { opacity: 1;    transform: translateX(-50%) scale(1.06); }
+  100% { opacity: 0.55; transform: translateX(-50%) scale(0.97); }
+}
+
+.txfx-gold-glow--left {
+  bottom: 10%;
+  left: -100px;
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(ellipse, rgba(180,130,15,0.16) 0%, transparent 70%);
+  animation: txfxGoldGlowSide 11s ease-in-out infinite alternate-reverse;
+}
+
+.txfx-gold-glow--right {
+  bottom: 5%;
+  right: -100px;
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(ellipse, rgba(215,165,25,0.16) 0%, transparent 70%);
+  animation: txfxGoldGlowSide 9s ease-in-out infinite alternate;
+}
+
+@keyframes txfxGoldGlowSide {
+  0%   { opacity: 0.4; transform: scale(0.92); }
+  50%  { opacity: 0.9; transform: scale(1.08); }
+  100% { opacity: 0.5; transform: scale(0.96); }
+}
+
+.txfx-gold-lines {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(90deg, transparent 0%, rgba(201,162,39,0.04) 50%, transparent 100%),
+    linear-gradient(180deg, transparent 0%, rgba(201,162,39,0.03) 50%, transparent 100%);
+  background-size: 200px 100%, 100% 200px;
+}
 /* ── Purple theme — dreamy orbs ──────────────────────────────── */
 .txfx-purple-bg {
   position: fixed;

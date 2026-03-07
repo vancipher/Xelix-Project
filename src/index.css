@@ -616,7 +616,72 @@ body::before {
   0%   { box-shadow: var(--shadow-md); }
   100% { box-shadow: var(--shadow-md), 0 0 18px 5px rgba(217,119,6,0.12); }
 }
+/* ════════════════════════════════════════════════════════════════
+   THEME: GOLD (royal & opulent — dark obsidian + molten gold)
+════════════════════════════════════════════════════════════════ */
+[data-theme="gold"] {
+  --bg-primary:        #0d0b08;
+  --bg-secondary:      #16120c;
+  --bg-card:           #1c1710;
+  --bg-card-hover:     #241e15;
+  --bg-header:         rgba(13,11,8,0.92);
+  --bg-sidebar:        #16120c;
+  --bg-input:          #1c1710;
+  --bg-modal:          #1c1710;
+  --bg-overlay:        rgba(5,4,2,0.65);
+  --bg-badge:          #2a2010;
+  --border:            #3d2e10;
+  --border-focus:      #c9a227;
+  --text-primary:      #f0d97a;
+  --text-secondary:    #b8952a;
+  --text-muted:        #6b5420;
+  --text-inverse:      #0d0b08;
+  --accent:            #c9a227;
+  --accent-soft:       #2a2010;
+  --accent-hover:      #e8bc30;
+  --accent-light:      #f5d060;
+  --danger:            #d94f4f;
+  --danger-soft:       #200a0a;
+  --warning:           #e8a020;
+  --warning-soft:      #201500;
+  --success:           #4a9c5e;
+  --success-soft:      #0a1a0e;
+  --day-alert-bg:      #1a0800;
+  --day-alert-border:  #d94f4f;
+  --day-alert-text:    #f08080;
+  --shadow-sm:         0 1px 4px rgba(0,0,0,0.60);
+  --shadow-md:         0 4px 20px rgba(0,0,0,0.70);
+  --shadow-lg:         0 12px 48px rgba(0,0,0,0.80);
+  --noise-opacity:     0.05;
+}
 
+[data-theme="gold"] body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 100%, rgba(200,160,30,0.22) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 35% at 10% 80%, rgba(180,130,20,0.14) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 35% at 90% 75%, rgba(210,165,25,0.14) 0%, transparent 60%),
+    radial-gradient(ellipse 30% 20% at 50% 0%, rgba(240,210,80,0.08) 0%, transparent 60%);
+  animation: xelixGoldShimmer 10s ease-in-out infinite alternate;
+}
+@keyframes xelixGoldShimmer {
+  0%   { opacity: 0.5; transform: scale(0.97); }
+  50%  { opacity: 1;   transform: scale(1.03); }
+  100% { opacity: 0.6; transform: scale(0.98); }
+}
+
+[data-theme="gold"] .glass {
+  border-color: rgba(201,162,39,0.35) !important;
+  animation: xelixGoldPulse 6s ease-in-out infinite alternate;
+}
+@keyframes xelixGoldPulse {
+  0%   { box-shadow: var(--shadow-md); }
+  100% { box-shadow: var(--shadow-md), 0 0 28px 6px rgba(200,155,25,0.20), inset 0 0 0 1px rgba(201,162,39,0.15); }
+}
 /* ── RTL Support ─────────────────────────────────────────────── */
 [dir="rtl"] body,
 [dir="rtl"] {

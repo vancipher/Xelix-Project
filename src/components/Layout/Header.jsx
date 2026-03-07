@@ -18,6 +18,7 @@ const ThemeIcon = ({ theme }) => {
     sea:      <span className="theme-dot sea-dot" />,
     purple:   <span className="theme-dot purple-dot" />,
     sun:      <span className="theme-dot sun-dot" />,
+    gold:     <span className="theme-dot gold-dot" />,
   };
   return icons[theme] || <span className="theme-dot" />;
 };
