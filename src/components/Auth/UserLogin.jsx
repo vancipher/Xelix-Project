@@ -27,19 +27,18 @@ export default function UserLogin() {
   return (
     <div className="auth-page">
       <div className="auth-card glass">
-        {/* Brand */}
+        {/* Brand — always LTR */}
         <div className="auth-brand">
-          <span className="auth-logo-mark">X</span>
-          <span className="auth-logo-text">elix</span>
+          <span className="auth-logo-mark">X</span><span className="auth-logo-text">elix</span>
         </div>
-        <h1 className="auth-title">Sign In</h1>
-        <p className="auth-sub">Welcome back</p>
+        <h1 className="auth-title">{t('auth.signIn')}</h1>
+        <p className="auth-sub">{t('auth.welcomeBack')}</p>
 
         {error && <div className="auth-error">{error}</div>}
 
         <form className="auth-form" onSubmit={handleSubmit}>
           <div className="af-group">
-            <label className="af-label">Username</label>
+            <label className="af-label">{t('auth.username')}</label>
             <input
               className="af-input"
               type="text"
@@ -53,7 +52,7 @@ export default function UserLogin() {
           </div>
 
           <div className="af-group">
-            <label className="af-label">Password</label>
+            <label className="af-label">{t('auth.password')}</label>
             <div className="af-pass-wrap">
               <input
                 className="af-input"
@@ -87,12 +86,12 @@ export default function UserLogin() {
           </div>
 
           <button className="af-submit" type="submit" disabled={loading}>
-            {loading ? 'Signing in...' : 'Sign In'}
+            {loading ? t('auth.signingIn') : t('auth.signIn')}
           </button>
         </form>
 
         <p className="auth-footer">
-          Don't have an account? <Link to="/register">Register here</Link>
+          {t('auth.noAccount')} <Link to="/register">{t('auth.registerHere')}</Link>
         </p>
       </div>
     </div>

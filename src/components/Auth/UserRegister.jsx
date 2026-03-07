@@ -1,10 +1,14 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useUserAuth } from '../../contexts/UserAuthContext';
+import { useLanguage } from '../../contexts/LanguageContext';
+import { useT } from '../../utils/i18n';
 import './UserAuth.css';
 
 export default function UserRegister() {
   const { register, loading, error, setError } = useUserAuth();
+  const { lang } = useLanguage();
+  const t = useT(lang);
 
   const [fullName, setFullName] = useState('');
   const [username, setUsername] = useState('');
@@ -19,9 +23,9 @@ export default function UserRegister() {
     e.preventDefault();
     setError('');
 
-    if (password !== confirmPass) { setError('Passwords do not match'); return; }
-    if (password.length < 6) { setError('Password must be at least 6 characters'); return; }
-    if (!agreed) { setError('You must agree to the terms'); return; }
+    if (password !== confirmPass) { setError(t('auth.passNoMatch')); return; }
+    if (password.length < 6) { setError(t('auth.passShort')); return; }
+    if (!agreed) { setError(t('auth.agreeRequired')); return; }
 
     const success = await register(fullName.trim(), username.trim(), email.trim(), password);
     if (success) setSubmitted(true);
@@ -32,18 +36,15 @@ export default function UserRegister() {
     return (
       <div className="auth-page">
         <div className="auth-card glass">
-          <div className="auth-brand" dir="ltr">
+          <div className="auth-brand">
             <span className="auth-logo-mark">X</span><span className="auth-logo-text">elix</span>
           </div>
           <div className="auth-pending">
             <div className="pending-icon">⏳</div>
-            <h2 className="pending-title">Account Pending Approval</h2>
-            <p className="pending-msg">
-              Your account request has been received. The admin will review your details and
-              approve your account. You will be able to sign in once approved.
-            </p>
+            <h2 className="pending-title">{t('auth.pendingTitle')}</h2>
+            <p className="pending-msg">{t('auth.pendingMsg')}</p>
             <Link to="/" className="af-submit" style={{ textAlign: 'center', display: 'block', textDecoration: 'none', marginTop: 8 }}>
-              Back to Home
+              {t('auth.backHome')}
             </Link>
           </div>
         </div>
@@ -54,30 +55,31 @@ export default function UserRegister() {
   return (
     <div className="auth-page">
       <div className="auth-card glass">
-        <div className="auth-brand" dir="ltr">
+        <div className="auth-brand">
           <span className="auth-logo-mark">X</span><span className="auth-logo-text">elix</span>
         </div>
-        <h1 className="auth-title">Create Account</h1>
-        <p className="auth-sub">All fields are required</p>
+        <h1 className="auth-title">{t('auth.register')}</h1>
+        <p className="auth-sub">{t('auth.joinCommunity')}</p>
 
         {error && <div className="auth-error">{error}</div>}
 
         <form className="auth-form" onSubmit={handleSubmit}>
           <div className="af-group">
-            <label className="af-label">Full Name <span className="af-required">*</span></label>
+            <label className="af-label">{t('auth.fullName')} <span className="af-required">*</span></label>
             <input
               className="af-input"
               type="text"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
-              placeholder="Your real full name"
+              placeholder={t('auth.fullNamePlaceholder')}
               required
+              dir="auto"
               disabled={loading}
             />
           </div>
 
           <div className="af-group">
-            <label className="af-label">Username <span className="af-required">*</span></label>
+            <label className="af-label">{t('auth.username')} <span className="af-required">*</span></label>
             <input
               className="af-input"
               type="text"
@@ -90,7 +92,7 @@ export default function UserRegister() {
           </div>
 
           <div className="af-group">
-            <label className="af-label">Email <span className="af-required">*</span></label>
+            <label className="af-label">{t('auth.email')} <span className="af-required">*</span></label>
             <input
               className="af-input"
               type="email"
@@ -103,7 +105,7 @@ export default function UserRegister() {
           </div>
 
           <div className="af-group">
-            <label className="af-label">Password <span className="af-required">*</span></label>
+            <label className="af-label">{t('auth.password')} <span className="af-required">*</span></label>
             <div className="af-pass-wrap">
               <input
                 className="af-input"
@@ -131,7 +133,7 @@ export default function UserRegister() {
           </div>
 
           <div className="af-group">
-            <label className="af-label">Confirm Password <span className="af-required">*</span></label>
+            <label className="af-label">{t('auth.confirmPassword')} <span className="af-required">*</span></label>
             <input
               className="af-input"
               type={showPass ? 'text' : 'password'}
@@ -145,16 +147,16 @@ export default function UserRegister() {
 
           <div className="af-checkbox">
             <input type="checkbox" id="agree" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} disabled={loading} />
-            <label htmlFor="agree">I agree to Terms of Service</label>
+            <label htmlFor="agree">{t('auth.agreeTerms')}</label>
           </div>
 
           <button className="af-submit" type="submit" disabled={loading}>
-            {loading ? 'Submitting...' : 'Request Account'}
+            {loading ? t('auth.submitting') : t('auth.requestAccount')}
           </button>
         </form>
 
         <p className="auth-footer">
-          Already have an account? <Link to="/login">Sign in</Link>
+          {t('auth.haveAccount')} <Link to="/login">{t('auth.signInLink')}</Link>
         </p>
       </div>
     </div>
