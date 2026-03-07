@@ -187,6 +187,12 @@
   color: #ef4444;
 }
 
+.um-row__badge.pending {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+}
+
 .um-row__actions {
   display: flex;
   gap: 8px;
@@ -202,6 +208,21 @@
   cursor: pointer;
   transition: all 0.2s;
   white-space: nowrap;
+}
+
+.um-row--pending {
+  border-left: 3px solid var(--accent);
+  opacity: 0.9;
+}
+
+.um-btn--approve {
+  background: var(--success-soft);
+  color: var(--success);
+  border: 1px solid var(--success);
+}
+
+.um-btn--approve:hover {
+  opacity: 0.8;
 }
 
 .um-btn--ban {

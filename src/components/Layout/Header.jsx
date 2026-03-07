@@ -30,11 +30,15 @@ export default function Header() {
   const [themeOpen, setThemeOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const themePickerRef = useRef(null);
+  const headerRef = useRef(null);
 
   useEffect(() => {
     const handler = (e) => {
       if (themePickerRef.current && !themePickerRef.current.contains(e.target)) {
         setThemeOpen(false);
+      }
+      if (headerRef.current && !headerRef.current.contains(e.target)) {
+        setMobileOpen(false);
       }
     };
     document.addEventListener('mousedown', handler);
@@ -88,12 +92,11 @@ export default function Header() {
     to === '/' ? location.pathname === '/' : location.pathname.startsWith(to);
 
   return (
-    <header className="header">
+    <header className="header" ref={headerRef}>
       <div className="header-inner">
-        {/* Logo */}
-        <Link to="/" className="header-logo" onClick={() => setMobileOpen(false)}>
-          <span className="logo-mark">X</span>
-          <span className="logo-text">elix</span>
+        {/* Logo — always LTR so it reads Xelix in both languages */}
+        <Link to="/" className="header-logo" onClick={() => setMobileOpen(false)} dir="ltr">
+          <span className="logo-mark">X</span><span className="logo-text">elix</span>
         </Link>
 
         {/* Desktop Nav */}

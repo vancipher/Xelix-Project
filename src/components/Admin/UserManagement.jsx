@@ -8,7 +8,7 @@ export default function UserManagement() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [toast, setToast] = useState('');
-  const [filter, setFilter] = useState('all'); // 'all', 'banned', 'active'
+  const [filter, setFilter] = useState('all'); // 'all', 'active', 'banned', 'pending'
 
   useEffect(() => {
     if (isSuperAdmin) loadUsers();
@@ -28,6 +28,21 @@ export default function UserManagement() {
   const showToast = (msg) => {
     setToast(msg);
     setTimeout(() => setToast(''), 3000);
+  };
+
+  const handleApprove = async (userId, displayName) => {
+    const { error } = await supabase
+      .from('users')
+      .update({ approved: true })
+      .eq('id', userId);
+
+    if (error) {
+      showToast('Failed to approve user');
+      return;
+    }
+
+    showToast(`${displayName} has been approved!`);
+    await loadUsers();
   };
 
   const handleBan = async (userId, currentBanned) => {
@@ -80,7 +95,8 @@ export default function UserManagement() {
 
   const filteredUsers = users.filter(u => {
     if (filter === 'banned') return u.banned;
-    if (filter === 'active') return !u.banned;
+    if (filter === 'active') return u.approved && !u.banned;
+    if (filter === 'pending') return !u.approved && !u.banned;
     return true;
   });
 
@@ -105,10 +121,16 @@ export default function UserManagement() {
           All ({users.length})
         </button>
         <button
+          className={`filter-btn ${filter === 'pending' ? 'active' : ''}`}
+          onClick={() => setFilter('pending')}
+        >
+          Pending ({users.filter(u => !u.approved && !u.banned).length})
+        </button>
+        <button
           className={`filter-btn ${filter === 'active' ? 'active' : ''}`}
           onClick={() => setFilter('active')}
         >
-          Active ({users.filter(u => !u.banned).length})
+          Active ({users.filter(u => u.approved && !u.banned).length})
         </button>
         <button
           className={`filter-btn ${filter === 'banned' ? 'active' : ''}`}
@@ -126,12 +148,12 @@ export default function UserManagement() {
           <div className="um-empty">No users found</div>
         ) : (
           filteredUsers.map((user) => (
-            <div key={user.id} className={`um-row glass ${user.banned ? 'um-row--banned' : ''}`}>
+            <div key={user.id} className={`um-row glass ${user.banned ? 'um-row--banned' : ''} ${!user.approved && !user.banned ? 'um-row--pending' : ''}`}>
               <div className="um-row__avatar">
-                {user.displayName.charAt(0).toUpperCase()}
+                {(user.displayName || user.username || '?').charAt(0).toUpperCase()}
               </div>
               <div className="um-row__info">
-                <span className="um-row__name">{user.displayName}</span>
+                <span className="um-row__name">{user.fullName || user.displayName}</span>
                 <span className="um-row__username">@{user.username}</span>
                 <span className="um-row__email">{user.email}</span>
                 <span className="um-row__joined">
@@ -141,7 +163,18 @@ export default function UserManagement() {
               {user.banned && (
                 <span className="um-row__badge banned">BANNED</span>
               )}
+              {!user.approved && !user.banned && (
+                <span className="um-row__badge pending">PENDING</span>
+              )}
               <div className="um-row__actions">
+                {!user.approved && !user.banned && (
+                  <button
+                    className="um-btn um-btn--approve"
+                    onClick={() => handleApprove(user.id, user.fullName || user.displayName)}
+                  >
+                    Approve
+                  </button>
+                )}
                 <button
                   className={`um-btn ${user.banned ? 'um-btn--unban' : 'um-btn--ban'}`}
                   onClick={() => handleBan(user.id, user.banned)}

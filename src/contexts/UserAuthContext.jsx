@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from '../firebase';
+import { sendEventPushNotification } from '../utils/notifications';
 
 const UserAuthContext = createContext(null);
 
@@ -16,11 +17,11 @@ export function UserAuthProvider({ children }) {
   const [error, setError] = useState('');
 
   // Register new user
-  const register = async (username, email, password) => {
+  const register = async (fullName, username, email, password) => {
     setLoading(true);
     setError('');
     try {
-      // Check if user already exists
+      // Check if username already exists
       const { data: existing } = await supabase
         .from('users')
         .select('id')
@@ -33,16 +34,18 @@ export function UserAuthProvider({ children }) {
         return false;
       }
 
-      // Create user
+      // Create user with approved=false (pending admin approval)
       const { data, error: err } = await supabase
         .from('users')
         .insert({
           username: username.toLowerCase(),
           email: email.toLowerCase(),
-          password: password, // In production, hash this!
-          displayName: username,
+          fullName: fullName,
+          password: password,
+          displayName: fullName,
           role: 'user',
           banned: false,
+          approved: false,
           createdAt: new Date().toISOString(),
         })
         .select()
@@ -50,16 +53,13 @@ export function UserAuthProvider({ children }) {
 
       if (err) throw err;
 
-      const session = {
-        id: data.id,
-        username: data.username,
-        displayName: data.displayName,
-        email: data.email,
-        role: data.role,
-      };
+      // Notify admin via push notification
+      await sendEventPushNotification({
+        title: '\uD83D\uDC64 New Account Request',
+        body: `${fullName} (@${username}) - ${email} has requested an account.`,
+        url: '/admin/users',
+      });
 
-      setUser(session);
-      localStorage.setItem(USER_SESSION_KEY, JSON.stringify(session));
       setLoading(false);
       return true;
     } catch (err) {
@@ -82,7 +82,8 @@ export function UserAuthProvider({ children }) {
         .single();
 
       if (err || !data) throw new Error('Invalid credentials');
-      if (data.banned) throw new Error('Account banned');
+      if (data.banned) throw new Error('Your account has been banned');
+      if (!data.approved) throw new Error('Your account is pending admin approval. You will be notified once approved.');
 
       const session = {
         id: data.id,

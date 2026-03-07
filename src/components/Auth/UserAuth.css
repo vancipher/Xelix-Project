@@ -195,3 +195,52 @@
 .auth-footer a:hover {
   color: var(--accent-hover);
 }
+
+/* ── Pending Approval Screen ──────────────────────────────────── */
+.auth-pending {
+  text-align: center;
+  padding: 16px 0;
+}
+
+.pending-icon {
+  font-size: 52px;
+  margin-bottom: 16px;
+  line-height: 1;
+}
+
+.pending-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+
+.pending-msg {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+
+.pending-btn {
+  display: inline-block;
+  padding: 10px 24px;
+  background: var(--accent);
+  color: var(--text-inverse);
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.pending-btn:hover {
+  background: var(--accent-hover);
+}
+
+.af-required {
+  color: var(--danger);
+  margin-left: 2px;
+}
