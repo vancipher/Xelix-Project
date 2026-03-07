@@ -105,8 +105,21 @@
   border-radius: 6px;
   white-space: nowrap;
 }
-.role--super { background: var(--accent-soft); color: var(--accent); border: 1px solid var(--accent); }
-.role--admin { background: var(--bg-badge); color: var(--text-muted); border: 1px solid var(--border); }
+.role--super  { background: var(--accent-soft); color: var(--accent); border: 1px solid var(--accent); }
+.role--admin  { background: var(--bg-badge); color: var(--text-muted); border: 1px solid var(--border); }
+.role--users  { background: var(--success-soft); color: var(--success); border: 1px solid var(--success); }
+
+.amp-row__badges { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+
+.amp-check-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
 
 .amp-row__you {
   font-size: 0.7rem;

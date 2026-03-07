@@ -104,13 +104,15 @@ export function AuthProvider({ children }) {
 
   /* ── Admin Management (superadmin only) ─────────────────────── */
   const isSuperAdmin = admin?.role === 'superadmin';
+  const canManageUsers = isSuperAdmin || admin?.canManageUsers === true;
 
-  const addAdmin = ({ username, password, displayName, allowedGroups }) => {
+  const addAdmin = ({ username, password, displayName, allowedGroups, canManageUsers: cmu }) => {
     if (!isSuperAdmin) return false;
     if (accountsRef.current.find((a) => a.username === username)) return 'duplicate';
     const newAdmin = {
       id: uuidv4(), username, password, displayName, role: 'admin',
       allowedGroups: allowedGroups ?? ['A', 'B', 'C'],
+      canManageUsers: cmu ?? false,
     };
     _setAccounts([...accountsRef.current, newAdmin]);
     return true;
@@ -123,16 +125,17 @@ export function AuthProvider({ children }) {
     return true;
   };
 
-  const editAdmin = (id, { displayName, password, username, allowedGroups }) => {
+  const editAdmin = (id, { displayName, password, username, allowedGroups, canManageUsers: cmu }) => {
     if (!isSuperAdmin) return false;
     const next = accountsRef.current.map((a) => {
       if (a.id !== id) return a;
       return {
         ...a,
-        displayName:   displayName   ?? a.displayName,
-        password:      password      ?? a.password,
-        username:      username      ?? a.username,
-        allowedGroups: allowedGroups ?? a.allowedGroups,
+        displayName:    displayName   ?? a.displayName,
+        password:       password      ?? a.password,
+        username:       username      ?? a.username,
+        allowedGroups:  allowedGroups ?? a.allowedGroups,
+        canManageUsers: cmu           ?? a.canManageUsers ?? false,
       };
     });
     _setAccounts(next);
@@ -155,6 +158,7 @@ export function AuthProvider({ children }) {
         logout,
         isLoggedIn: !!admin,
         isSuperAdmin,
+        canManageUsers,
         updateProfile,
         addAdmin,
         removeAdmin,

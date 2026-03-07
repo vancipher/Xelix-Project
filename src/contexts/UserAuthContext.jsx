@@ -1,6 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from '../firebase';
-import { sendEventPushNotification } from '../utils/notifications';
 
 const UserAuthContext = createContext(null);
 
@@ -54,12 +53,6 @@ export function UserAuthProvider({ children }) {
 
       if (err) throw err;
 
-      // Notify admin via push notification
-      await sendEventPushNotification({
-        title: '\uD83D\uDC64 New Account Request',
-        body: `${fullName} (@${username}) - ${email} has requested an account.`,
-        url: '/admin/users',
-      });
 
       setLoading(false);
       return true;

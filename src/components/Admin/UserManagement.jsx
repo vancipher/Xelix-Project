@@ -3,10 +3,12 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useT } from '../../utils/i18n';
 import { supabase } from '../../firebase';
+import { sendEventPushNotification } from '../../utils/notifications';
 import './UserManagement.css';
 
 export default function UserManagement() {
-  const { isSuperAdmin } = useAuth();
+  const { isSuperAdmin, canManageUsers } = useAuth();
+  const canAccess = isSuperAdmin || canManageUsers;
   const { lang } = useLanguage();
   const t = useT(lang);
   const [users, setUsers] = useState([]);
@@ -15,8 +17,8 @@ export default function UserManagement() {
   const [filter, setFilter] = useState('all'); // 'all', 'active', 'banned', 'pending'
 
   useEffect(() => {
-    if (isSuperAdmin) loadUsers();
-  }, [isSuperAdmin]);
+    if (canAccess) loadUsers();
+  }, [canAccess]);
 
   const loadUsers = async () => {
     setLoading(true);
@@ -47,6 +49,13 @@ export default function UserManagement() {
 
     showToast(`${displayName} — ${t('admin.userMgmt.approved')}`);
     await loadUsers();
+
+    // Notify all admins that a new user joined
+    await sendEventPushNotification({
+      title: '🎉 New Member',
+      body: `New user with the name ${displayName} joined.`,
+      url: '/admin/users',
+    });
   };
 
   const handleBan = async (userId, currentBanned) => {
@@ -87,7 +96,7 @@ export default function UserManagement() {
     await loadUsers();
   };
 
-  if (!isSuperAdmin) {
+  if (!canAccess) {
     return (
       <div className="um-page">
         <div className="um-forbidden glass">

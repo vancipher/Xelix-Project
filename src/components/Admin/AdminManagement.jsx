@@ -14,7 +14,7 @@ export default function AdminManagement() {
   const [modalMode, setModalMode] = useState(null); // 'add' | 'edit'
   const [target, setTarget] = useState(null);
   const [form, setForm] = useState({
-    username: '', password: '', displayName: '', allowedGroups: [...GROUPS],
+    username: '', password: '', displayName: '', allowedGroups: [...GROUPS], canManageUsers: false,
   });
   const [error, setError] = useState('');
   const [toast, setToast] = useState('');
@@ -32,7 +32,7 @@ export default function AdminManagement() {
   const showToast = (msg) => { setToast(msg); setTimeout(() => setToast(''), 3000); };
 
   const openAdd = () => {
-    setForm({ username: '', password: '', displayName: '', allowedGroups: [...GROUPS] });
+    setForm({ username: '', password: '', displayName: '', allowedGroups: [...GROUPS], canManageUsers: false });
     setError('');
     setTarget(null);
     setModalMode('add');
@@ -44,6 +44,7 @@ export default function AdminManagement() {
       password: '',
       displayName: acc.displayName,
       allowedGroups: acc.allowedGroups ?? [...GROUPS],
+      canManageUsers: acc.canManageUsers ?? false,
     });
     setError('');
     setTarget(acc);
@@ -67,15 +68,17 @@ export default function AdminManagement() {
           password: form.password,
           displayName: form.displayName.trim(),
           allowedGroups: form.allowedGroups,
+          canManageUsers: form.canManageUsers,
         });
       if (result === 'duplicate') { setError(t('admin.duplicateUser')); return; }
       showToast(t('admin.adminAdded'));
     } else {
       editAdmin(target.id, {
-        username:    form.username.trim(),
-        displayName: form.displayName.trim(),
-        password:    form.password ? form.password : undefined,
-        allowedGroups: form.allowedGroups,
+        username:       form.username.trim(),
+        displayName:    form.displayName.trim(),
+        password:       form.password ? form.password : undefined,
+        allowedGroups:  form.allowedGroups,
+        canManageUsers: form.canManageUsers,
       });
       showToast(t('admin.adminUpdated'));
     }
@@ -122,9 +125,16 @@ export default function AdminManagement() {
                 {(acc.allowedGroups ?? GROUPS).join(', ')}
               </span>
             </div>
-            <span className={`amp-row__role ${acc.role === 'superadmin' ? 'role--super' : 'role--admin'}`}>
-              {roleLabel(acc.role)}
-            </span>
+            <div className="amp-row__badges">
+              <span className={`amp-row__role ${acc.role === 'superadmin' ? 'role--super' : 'role--admin'}`}>
+                {roleLabel(acc.role)}
+              </span>
+              {acc.canManageUsers && acc.role !== 'superadmin' && (
+                <span className="amp-row__role role--users">
+                  {lang === 'ar' ? 'يدير المستخدمين' : 'Users'}
+                </span>
+              )}
+            </div>
             {acc.id === admin.id && (
               <span className="amp-row__you">{lang === 'ar' ? 'أنت' : 'You'}</span>
             )}
@@ -189,6 +199,16 @@ export default function AdminManagement() {
               placeholder={modalMode === 'add' ? '••••••••' : lang === 'ar' ? 'اتركه فارغاً للإبقاء' : 'Leave blank to keep'}
               dir="ltr"
             />
+          </div>
+          <div className="amp-group">
+            <label className="amp-check-row">
+              <input
+                type="checkbox"
+                checked={form.canManageUsers}
+                onChange={(e) => setForm((f) => ({ ...f, canManageUsers: e.target.checked }))}
+              />
+              {lang === 'ar' ? 'صلاحية إدارة المستخدمين' : 'Can manage users'}
+            </label>
           </div>
           <div className="amp-group">
             <label className="amp-label">{t('admin.groupAccess')}</label>
