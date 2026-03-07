@@ -9,7 +9,7 @@ import Comments from '../Auth/Comments';
 import './DayCard.css';
 
 /* ── Theme-based reaction SVG icons ──────────────────────────── */
-const REACTION_SHAPES = {
+export const REACTION_SHAPES = {
   white: {
     happy:  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="1.6"/><path d="M8 14s1.5 2 4 2 4-2 4-2" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/><circle cx="9" cy="10" r="1" fill="currentColor"/><circle cx="15" cy="10" r="1" fill="currentColor"/></svg>,
     afraid: <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="1.6"/><ellipse cx="12" cy="16" rx="2.5" ry="3" fill="none" stroke="currentColor" strokeWidth="1.4"/><ellipse cx="9" cy="9.5" r="1.8" fill="none" stroke="currentColor" strokeWidth="1.2"/><circle cx="9" cy="9.5" r="0.7" fill="currentColor"/><ellipse cx="15" cy="9.5" r="1.8" fill="none" stroke="currentColor" strokeWidth="1.2"/><circle cx="15" cy="9.5" r="0.7" fill="currentColor"/><path d="M7 6.5l3.5 1.5M17 6.5l-3.5 1.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/><circle cx="17.5" cy="12" r="1" fill="currentColor" opacity="0.3"/></svg>,
@@ -173,14 +173,22 @@ function EventItem({ event, lang, t }) {
   const handleComplete = useCallback(async () => {
     if (!user) return;
     const next = !completed;
-    setCompleted(next);
+    setCompleted(next); // optimistic
+    let dbErr;
     if (next) {
-      await supabase.from('event_completions').upsert(
+      const { error } = await supabase.from('event_completions').upsert(
         { user_id: user.id, event_id: String(event.id), completed_at: new Date().toISOString() },
         { onConflict: 'user_id,event_id' }
       );
+      dbErr = error;
     } else {
-      await supabase.from('event_completions').delete().eq('user_id', user.id).eq('event_id', String(event.id));
+      const { error } = await supabase.from('event_completions').delete()
+        .eq('user_id', user.id).eq('event_id', String(event.id));
+      dbErr = error;
+    }
+    if (dbErr) {
+      console.error('event_completions error:', dbErr.message);
+      setCompleted(!next); // revert on failure
     }
   }, [event.id, user, completed]);
 

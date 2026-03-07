@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useUserAuth } from '../../contexts/UserAuthContext';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { useTheme } from '../../contexts/ThemeContext';
+import { REACTION_SHAPES } from '../Schedule/DayCard';
 import { supabase } from '../../firebase';
 import './UserProfile.css';
 
@@ -16,6 +18,7 @@ function getRank(n) { return RANKS.find(r => n >= r.min) || RANKS[RANKS.length -
 export default function UserProfile() {
   const { user, logout, updateProfile, loading } = useUserAuth();
   const { lang } = useLanguage();
+  const { theme } = useTheme();
   const ar = lang === 'ar';
 
   const [displayName, setDisplayName] = useState(user?.displayName || '');
@@ -107,7 +110,7 @@ export default function UserProfile() {
                 <span className="stat-label">{ar ? 'مهام أنجزت' : 'Events Done'}</span>
               </div>
               <div className="stat-card">
-                <span className="stat-icon">😊</span>
+                <span className="stat-icon stat-icon--svg">{(REACTION_SHAPES[theme] || REACTION_SHAPES.white).happy}</span>
                 <span className="stat-value">{stats.reactions}</span>
                 <span className="stat-label">{ar ? 'تفاعلات' : 'Reactions'}</span>
               </div>
