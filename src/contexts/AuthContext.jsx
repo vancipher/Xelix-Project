@@ -16,6 +16,20 @@ const saveToSupabase = async (accounts) => {
   if (error) console.error('Admins save error:', error.message);
 };
 
+// Ensures every account in ADMIN_ACCOUNTS seed always exists.
+// DB version wins (preserves any profile changes), but missing seed
+// accounts are re-added — so a DB wipe never permanently removes them.
+const mergeWithSeed = (existing) => {
+  const result = [...existing];
+  for (const seed of ADMIN_ACCOUNTS) {
+    const alreadyExists = result.find(
+      (a) => a.id === seed.id || a.username === seed.username
+    );
+    if (!alreadyExists) result.push(seed);
+  }
+  return result;
+};
+
 export function AuthProvider({ children }) {
   const [accounts, setAccounts] = useState(ADMIN_ACCOUNTS);
   const [ready, setReady] = useState(false);
@@ -38,8 +52,13 @@ export function AuthProvider({ children }) {
         .single();
 
       if (!error && data?.data && Array.isArray(data.data) && data.data.length > 0) {
-        // Supabase has accounts — use them
-        setAccounts(data.data);
+        // Supabase has accounts — merge with seed so protected admins always exist
+        const merged = mergeWithSeed(data.data);
+        setAccounts(merged);
+        // Write back if any seed accounts were re-added after a partial wipe
+        if (merged.length !== data.data.length) {
+          await saveToSupabase(merged);
+        }
       } else {
         // Supabase empty — migrate from localStorage or use seed
         const raw = localStorage.getItem(OLD_ACCOUNTS_KEY);
@@ -47,7 +66,7 @@ export function AuthProvider({ children }) {
         if (raw) {
           try { local = JSON.parse(raw); } catch { /* ignore */ }
         }
-        const toSave = (local && local.length > 0) ? local : ADMIN_ACCOUNTS;
+        const toSave = (local && local.length > 0) ? mergeWithSeed(local) : ADMIN_ACCOUNTS;
         setAccounts(toSave);
         await saveToSupabase(toSave);
       }

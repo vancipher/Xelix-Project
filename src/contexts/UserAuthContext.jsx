@@ -4,6 +4,16 @@ import { supabase } from '../firebase';
 const UserAuthContext = createContext(null);
 
 const USER_SESSION_KEY = 'xelix-user-session';
+const PENDING_BACKUP_KEY = 'xelix-pending-users';
+
+// localStorage backup helpers — protect pending registrations from DB wipes
+const getPendingBackup = () => {
+  try { return JSON.parse(localStorage.getItem(PENDING_BACKUP_KEY) || '[]'); }
+  catch { return []; }
+};
+const setPendingBackup = (list) => {
+  localStorage.setItem(PENDING_BACKUP_KEY, JSON.stringify(list));
+};
 
 export function UserAuthProvider({ children }) {
   const [user, setUser] = useState(() => {
@@ -53,6 +63,11 @@ export function UserAuthProvider({ children }) {
 
       if (err) throw err;
 
+      // Back up to localStorage — protects this pending request if DB is wiped
+      const backup = getPendingBackup();
+      if (!backup.find((u) => u.username === data.username)) {
+        setPendingBackup([...backup, data]);
+      }
 
       setLoading(false);
       return true;
@@ -86,6 +101,9 @@ export function UserAuthProvider({ children }) {
         email: data.email,
         role: data.role,
       };
+
+      // User is approved & logged in — remove from pending backup
+      setPendingBackup(getPendingBackup().filter((u) => u.username !== data.username));
 
       setUser(session);
       localStorage.setItem(USER_SESSION_KEY, JSON.stringify(session));

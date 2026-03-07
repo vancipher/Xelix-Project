@@ -6,6 +6,29 @@ import { supabase } from '../../firebase';
 import { sendEventPushNotification } from '../../utils/notifications';
 import './UserManagement.css';
 
+const PENDING_BACKUP_KEY = 'xelix-pending-users';
+const getPendingBackup = () => {
+  try { return JSON.parse(localStorage.getItem(PENDING_BACKUP_KEY) || '[]'); }
+  catch { return []; }
+};
+const removePendingBackup = (userId) => {
+  const updated = getPendingBackup().filter((u) => u.id !== userId);
+  localStorage.setItem(PENDING_BACKUP_KEY, JSON.stringify(updated));
+};
+// Proactively snapshot all current pending users into localStorage backup.
+// Called every time an admin loads the user list — ensures existing pending
+// requests are protected even if they predate the backup system.
+const syncPendingBackup = (allUsers) => {
+  const pending = allUsers.filter((u) => !u.approved && !u.banned);
+  if (pending.length === 0) return;
+  const backup = getPendingBackup();
+  const backupIds = new Set(backup.map((u) => u.id));
+  const toAdd = pending.filter((u) => !backupIds.has(u.id));
+  if (toAdd.length > 0) {
+    localStorage.setItem(PENDING_BACKUP_KEY, JSON.stringify([...backup, ...toAdd]));
+  }
+};
+
 export default function UserManagement() {
   const { isSuperAdmin, canManageUsers } = useAuth();
   const canAccess = isSuperAdmin || canManageUsers;
@@ -26,8 +49,34 @@ export default function UserManagement() {
       .from('users')
       .select('*')
       .order('created_at', { ascending: false });
-    
-    if (data) setUsers(data);
+
+    // Restore any pending registrations lost due to a DB wipe
+    const backup = getPendingBackup();
+    if (backup.length > 0) {
+      const dbUsernames = new Set((data || []).map((u) => u.username));
+      const missing = backup.filter((u) => !dbUsernames.has(u.username));
+      if (missing.length > 0) {
+        for (const u of missing) {
+          await supabase.from('users').upsert(u);
+        }
+        // Reload after restore
+        const { data: refreshed } = await supabase
+          .from('users')
+          .select('*')
+          .order('created_at', { ascending: false });
+        if (refreshed) {
+          syncPendingBackup(refreshed);
+          setUsers(refreshed);
+        }
+        setLoading(false);
+        return;
+      }
+    }
+
+    if (data) {
+      syncPendingBackup(data); // snapshot current pending users into backup
+      setUsers(data);
+    }
     setLoading(false);
   };
 
@@ -47,6 +96,8 @@ export default function UserManagement() {
       return;
     }
 
+    // Remove from pending backup — user is now approved
+    removePendingBackup(userId);
     showToast(`${displayName} — ${t('admin.userMgmt.approved')}`);
     await loadUsers();
 
@@ -92,6 +143,8 @@ export default function UserManagement() {
       return;
     }
 
+    // Remove from pending backup — intentionally deleted
+    removePendingBackup(userId);
     showToast(t('admin.userMgmt.deletedOk'));
     await loadUsers();
   };
