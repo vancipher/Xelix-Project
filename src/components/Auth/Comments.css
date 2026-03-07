@@ -203,3 +203,81 @@
 .comment-delete-btn:hover {
   color: var(--danger, #ef4444);
 }
+
+/* ── Admin Reply ────────────────────────────────────────────── */
+.comment-reply-btn {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 2px 4px;
+  margin-top: 6px;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.comment-reply-btn:hover {
+  background: var(--accent-soft);
+}
+
+.comment-reply-form {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--border);
+}
+
+.comment-reply-textarea {
+  margin-bottom: 8px !important;
+  font-size: 13px !important;
+}
+
+.comment-reply-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.comment-reply-submit {
+  padding: 6px 14px !important;
+  font-size: 12px !important;
+}
+
+.comment-cancel-btn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.comment-cancel-btn:hover {
+  background: var(--bg-secondary);
+}
+
+/* ── Admin Comment Card ─────────────────────────────────────── */
+.comment-card--admin {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-soft, rgba(99,102,241,0.06));
+}
+
+.comment-avatar--admin {
+  background: linear-gradient(135deg, var(--accent), var(--accent-light)) !important;
+}
+
+.comment-admin-badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 4px;
+  padding: 1px 5px;
+  margin-left: 6px;
+  vertical-align: middle;
+  letter-spacing: 0.03em;
+}

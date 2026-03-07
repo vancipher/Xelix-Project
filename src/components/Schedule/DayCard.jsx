@@ -113,11 +113,15 @@ function EventItem({ event, lang, t }) {
   const [counts, setCounts] = useState({ happy: 0, afraid: 0, angry: 0 });
   const [completed, setCompleted] = useState(false);
   const [showComments, setShowComments] = useState(false);
+  const [commentCount, setCommentCount] = useState(0);
   const deviceId = useRef(getDeviceId()).current;
 
   useEffect(() => {
     let cancelled = false;
     // Load counts from both logged-in and guest reaction tables
+    supabase.from('comments').select('id', { count: 'exact', head: true }).eq('event_id', String(event.id))
+      .then(({ count }) => { if (!cancelled) setCommentCount(count ?? 0); });
+
     Promise.all([
       supabase.from('user_reactions').select('reaction').eq('event_id', String(event.id)),
       supabase.from('guest_reactions').select('reaction').eq('event_id', String(event.id)),
@@ -284,15 +288,16 @@ function EventItem({ event, lang, t }) {
         {/* Comments toggle */}
         <button
           type="button"
-          className={`event-comments-toggle ${showComments ? 'open' : ''}`}
+          className={`event-comments-toggle ${showComments ? 'open' : ''} ${commentCount > 0 ? 'has-comments' : ''}`}
           onClick={() => setShowComments(v => !v)}
         >
           <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
             <path d="M14 2H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h3l3 3 3-3h3a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/>
           </svg>
           {t('schedule.comments')}
+          {commentCount > 0 && <span className="comments-count-badge">{commentCount}</span>}
         </button>
-        {showComments && <Comments eventId={String(event.id)} />}
+        {showComments && <Comments eventId={String(event.id)} onCountChange={setCommentCount} />}
       </div>
     </div>
   );
