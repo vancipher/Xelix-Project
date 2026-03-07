@@ -27,7 +27,7 @@ export default function Comments({ eventId, onCountChange }) {
     if (!eventId) return;
     const { data } = await supabase
       .from('comments')
-      .select('*, users(username, display_name)')
+      .select('id, user_id, event_id, text, created_at, commenter')
       .eq('event_id', String(eventId))
       .order('created_at', { ascending: false });
     if (data) {
@@ -41,10 +41,12 @@ export default function Comments({ eventId, onCountChange }) {
     if (!newComment.trim()) { setError(t('schedule.commentEmpty')); return; }
     setLoading(true);
     setError('');
+    const commenter = user.displayName || user.username || 'User';
     const { error: err } = await supabase.from('comments').insert({
       user_id: user.id,
       event_id: String(eventId),
       text: newComment.trim(),
+      commenter,
     });
     if (err) { setError(t('schedule.commentFailed')); setLoading(false); return; }
     setNewComment('');
@@ -65,9 +67,9 @@ export default function Comments({ eventId, onCountChange }) {
     const adminName = admin?.displayName || admin?.username || 'Admin';
     const { error: err } = await supabase.from('comments').insert({
       user_id: null,
-      admin_display_name: adminName,
       event_id: String(eventId),
       text: replyText.trim(),
+      commenter: adminName,
     });
     if (!err) {
       setReplyText('');
@@ -77,10 +79,8 @@ export default function Comments({ eventId, onCountChange }) {
     setReplyLoading(false);
   };
 
-  const displayName = (c) => {
-    if (c.admin_display_name) return c.admin_display_name;
-    return c.users?.display_name || c.users?.username || '?';
-  };
+  const displayName = (c) => c.commenter || '?';
+  const isAdminComment = (c) => !c.user_id;
 
   return (
     <div className="comments-section">
@@ -101,33 +101,30 @@ export default function Comments({ eventId, onCountChange }) {
             {loading ? t('schedule.commentPosting') : t('schedule.commentPost')}
           </button>
         </form>
-      ) : !isAdmin ? (
+      ) : isAdmin ? null : (
         <div className="comment-login-prompt">
           <p>{t('schedule.loginToComment')} <Link to="/login">{t('auth.signIn')}</Link></p>
         </div>
-      ) : null}
+      )}
 
       <div className="comments-list">
         {comments.length === 0 ? (
           <p className="no-comments">{t('schedule.noCommentsYet')}</p>
         ) : (
           comments.map((comment) => (
-            <div key={comment.id} className={`comment-card${comment.admin_display_name ? ' comment-card--admin' : ''}`}>
+            <div key={comment.id} className={`comment-card${isAdminComment(comment) ? ' comment-card--admin' : ''}`}>
               <div className="comment-header">
                 <div className="comment-author">
-                  <div className={`comment-avatar${comment.admin_display_name ? ' comment-avatar--admin' : ''}`}>
+                  <div className={`comment-avatar${isAdminComment(comment) ? ' comment-avatar--admin' : ''}`}>
                     {displayName(comment).charAt(0).toUpperCase()}
                   </div>
                   <div>
                     <p className="comment-author-name">
                       {displayName(comment)}
-                      {comment.admin_display_name && (
+                      {isAdminComment(comment) && (
                         <span className="comment-admin-badge">{ar ? 'مسؤول' : 'Admin'}</span>
                       )}
                     </p>
-                    {!comment.admin_display_name && (
-                      <p className="comment-author-handle">@{comment.users?.username}</p>
-                    )}
                   </div>
                 </div>
                 <div className="comment-date-wrap">
@@ -146,7 +143,7 @@ export default function Comments({ eventId, onCountChange }) {
                 </div>
               </div>
               <p className="comment-body">{comment.text}</p>
-              {isAdmin && (
+              {isAdmin && !isAdminComment(comment) && (
                 <button
                   className="comment-reply-btn"
                   onClick={() => {
