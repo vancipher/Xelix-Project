@@ -475,15 +475,6 @@ export default function ThemeEffects() {
         </div>
       )}
 
-      {/* Blurred giant X — dark/crimson theme */}
-      {theme === 'black' && (
-        <div className="txfx-dark-bg" aria-hidden="true">
-          <div className="txfx-x txfx-x--main">X</div>
-          <div className="txfx-x txfx-x--echo">X</div>
-          <div className="txfx-crimson-glow" />
-        </div>
-      )}
-
       {/* Lava blobs — ember/orange theme */}
       {theme === 'orange' && (
         <div className="txfx-lava-bg" aria-hidden="true">

@@ -112,65 +112,6 @@
 }
 
 /* ── Blurred X — dark/crimson theme ───────────────────────────── */
-.txfx-dark-bg {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  overflow: hidden;
-}
-
-.txfx-x {
-  position: absolute;
-  font-family: var(--font-en);
-  font-weight: 900;
-  color: #c41230;
-  line-height: 1;
-  user-select: none;
-}
-
-.txfx-x--main {
-  font-size: clamp(380px, 55vw, 700px);
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  opacity: 0.07;
-  filter: blur(28px);
-  animation: txfxXPulse 8s ease-in-out infinite alternate;
-}
-
-.txfx-x--echo {
-  font-size: clamp(220px, 32vw, 420px);
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) rotate(18deg);
-  opacity: 0.04;
-  filter: blur(48px);
-  animation: txfxXPulse 12s ease-in-out infinite alternate-reverse;
-}
-
-@keyframes txfxXPulse {
-  0%   { opacity: 0.04; filter: blur(28px);  transform: translate(-50%, -50%) scale(0.95); }
-  50%  { opacity: 0.09; filter: blur(20px);  transform: translate(-50%, -50%) scale(1.02); }
-  100% { opacity: 0.06; filter: blur(34px);  transform: translate(-50%, -50%) scale(0.98); }
-}
-
-/* corner crimson vignette glow */
-.txfx-crimson-glow {
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 60% 50% at 0% 100%,   rgba(180,0,25,0.18) 0%, transparent 70%),
-    radial-gradient(ellipse 60% 50% at 100% 0%,   rgba(180,0,25,0.14) 0%, transparent 70%),
-    radial-gradient(ellipse 50% 40% at 100% 100%,  rgba(140,0,20,0.12) 0%, transparent 70%),
-    radial-gradient(ellipse 50% 40% at 0% 0%,      rgba(140,0,20,0.10) 0%, transparent 70%);
-  animation: txfxCrimsonFade 7s ease-in-out infinite alternate;
-}
-@keyframes txfxCrimsonFade {
-  0%   { opacity: 0.6; }
-  100% { opacity: 1;   }
-}
-
 /* ── Lava blobs — ember/orange theme ─────────────────────────── */
 .txfx-lava-bg {
   position: fixed;
