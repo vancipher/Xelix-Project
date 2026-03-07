@@ -123,6 +123,92 @@ const STAR_SHAPE = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
   <path d="M12 2l2.4 7.2H22l-6 4.4 2.3 7.2L12 16.4 5.7 20.8 8 13.6 2 9.2h7.6z" fill="currentColor" opacity="0.8"/>
 </svg>`;
 
+/* ── Parthenon SVG (Athena theme) ─────────────────────────── */
+const PARTHENON_SVG = (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 300" fill="none">
+    {/* Steps */}
+    <rect x="10"  y="288" width="540" height="12" rx="3" fill="rgba(250,245,232,0.55)"/>
+    <rect x="24"  y="276" width="512" height="13" rx="3" fill="rgba(252,248,238,0.52)"/>
+    <rect x="38"  y="265" width="484" height="12" rx="3" fill="rgba(248,242,228,0.50)"/>
+    {/* Column 1 */}
+    <rect x="52"  y="88" width="24" height="177" rx="3" fill="rgba(252,248,238,0.80)"/>
+    <line x1="58"  y1="90" x2="58"  y2="265" stroke="rgba(185,175,155,0.20)" strokeWidth="2"/>
+    <line x1="65"  y1="90" x2="65"  y2="265" stroke="rgba(185,175,155,0.20)" strokeWidth="2"/>
+    <line x1="72"  y1="90" x2="72"  y2="265" stroke="rgba(185,175,155,0.20)" strokeWidth="2"/>
+    <rect x="44"  y="77" width="40" height="13" rx="3" fill="rgba(250,245,232,0.86)"/>
+    {/* Column 2 */}
+    <rect x="118" y="88" width="24" height="177" rx="3" fill="rgba(248,242,228,0.76)"/>
+    <line x1="124" y1="90" x2="124" y2="265" stroke="rgba(185,175,155,0.20)" strokeWidth="2"/>
+    <line x1="131" y1="90" x2="131" y2="265" stroke="rgba(185,175,155,0.20)" strokeWidth="2"/>
+    <rect x="110" y="77" width="40" height="13" rx="3" fill="rgba(248,243,230,0.84)"/>
+    {/* Column 3 */}
+    <rect x="184" y="88" width="24" height="177" rx="3" fill="rgba(252,248,238,0.80)"/>
+    <line x1="190" y1="90" x2="190" y2="265" stroke="rgba(185,175,155,0.20)" strokeWidth="2"/>
+    <line x1="197" y1="90" x2="197" y2="265" stroke="rgba(185,175,155,0.20)" strokeWidth="2"/>
+    <rect x="176" y="77" width="40" height="13" rx="3" fill="rgba(250,245,232,0.86)"/>
+    {/* Column 4 */}
+    <rect x="250" y="88" width="24" height="177" rx="3" fill="rgba(248,242,228,0.76)"/>
+    <line x1="256" y1="90" x2="256" y2="265" stroke="rgba(185,175,155,0.20)" strokeWidth="2"/>
+    <line x1="263" y1="90" x2="263" y2="265" stroke="rgba(185,175,155,0.20)" strokeWidth="2"/>
+    <rect x="242" y="77" width="40" height="13" rx="3" fill="rgba(248,243,230,0.84)"/>
+    {/* Column 5 */}
+    <rect x="316" y="88" width="24" height="177" rx="3" fill="rgba(252,248,238,0.80)"/>
+    <line x1="322" y1="90" x2="322" y2="265" stroke="rgba(185,175,155,0.20)" strokeWidth="2"/>
+    <line x1="329" y1="90" x2="329" y2="265" stroke="rgba(185,175,155,0.20)" strokeWidth="2"/>
+    <rect x="308" y="77" width="40" height="13" rx="3" fill="rgba(250,245,232,0.86)"/>
+    {/* Column 6 */}
+    <rect x="382" y="88" width="24" height="177" rx="3" fill="rgba(248,242,228,0.76)"/>
+    <line x1="388" y1="90" x2="388" y2="265" stroke="rgba(185,175,155,0.20)" strokeWidth="2"/>
+    <line x1="395" y1="90" x2="395" y2="265" stroke="rgba(185,175,155,0.20)" strokeWidth="2"/>
+    <rect x="374" y="77" width="40" height="13" rx="3" fill="rgba(248,243,230,0.84)"/>
+    {/* Column 7 */}
+    <rect x="448" y="88" width="24" height="177" rx="3" fill="rgba(252,248,238,0.80)"/>
+    <line x1="454" y1="90" x2="454" y2="265" stroke="rgba(185,175,155,0.20)" strokeWidth="2"/>
+    <line x1="461" y1="90" x2="461" y2="265" stroke="rgba(185,175,155,0.20)" strokeWidth="2"/>
+    <rect x="440" y="77" width="40" height="13" rx="3" fill="rgba(250,245,232,0.86)"/>
+    {/* Column 8 */}
+    <rect x="490" y="88" width="24" height="177" rx="3" fill="rgba(248,242,228,0.76)"/>
+    <line x1="496" y1="90" x2="496" y2="265" stroke="rgba(185,175,155,0.20)" strokeWidth="2"/>
+    <line x1="503" y1="90" x2="503" y2="265" stroke="rgba(185,175,155,0.20)" strokeWidth="2"/>
+    <rect x="482" y="77" width="40" height="13" rx="3" fill="rgba(248,243,230,0.84)"/>
+    {/* Entablature */}
+    <rect x="40"  y="65" width="480" height="15" rx="2" fill="rgba(250,245,232,0.88)"/>
+    {/* Frieze */}
+    <rect x="40"  y="53" width="480" height="14" rx="2" fill="rgba(244,237,215,0.68)"/>
+    {/* Pediment */}
+    <polygon
+      points="34,53 280,4 526,53"
+      fill="rgba(248,242,228,0.60)"
+      stroke="rgba(225,215,192,0.60)"
+      strokeWidth="2"
+    />
+    <line x1="34"  y1="53" x2="280" y2="4"  stroke="rgba(255,252,242,0.50)" strokeWidth="1.5"/>
+    <line x1="280" y1="4"  x2="526" y2="53" stroke="rgba(255,252,242,0.50)" strokeWidth="1.5"/>
+    {/* Acroterion */}
+    <ellipse cx="280" cy="5"  rx="9" ry="7" fill="rgba(255,252,242,0.72)"/>
+    <ellipse cx="34"  cy="53" rx="5" ry="4" fill="rgba(250,245,232,0.55)"/>
+    <ellipse cx="526" cy="53" rx="5" ry="4" fill="rgba(250,245,232,0.55)"/>
+  </svg>
+);
+
+/* ── Laurel leaf + Owl (Athena theme) ────────────────────────── */
+const LAUREL_LEAF = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <path d="M12 22C7 15 5 10 8 5c2-3 6-4 8-2-1 4-3 8-4 19z" fill="currentColor" opacity="0.80"/>
+  <path d="M11 8 L13 20" stroke="rgba(0,0,0,0.18)" stroke-width="0.6" opacity="0.5"/>
+  <path d="M10 13 L14 17" stroke="rgba(0,0,0,0.14)" stroke-width="0.5" opacity="0.4"/>
+</svg>`;
+
+const OWL_SHAPE = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <ellipse cx="12" cy="14" rx="7" ry="7" fill="currentColor" opacity="0.65"/>
+  <circle cx="9" cy="11" r="2.4" fill="white" opacity="0.55"/>
+  <circle cx="15" cy="11" r="2.4" fill="white" opacity="0.55"/>
+  <circle cx="9.5" cy="11.5" r="1.1" fill="currentColor" opacity="0.85"/>
+  <circle cx="15.5" cy="11.5" r="1.1" fill="currentColor" opacity="0.85"/>
+  <path d="M10 17 L12 15.5 L14 17" stroke="white" stroke-width="0.8" opacity="0.5"/>
+  <path d="M9.5 7.5 L11 9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.7"/>
+  <path d="M14.5 7.5 L13 9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.7"/>
+</svg>`;
+
 /* ── Hello Kitty (lavender theme) ────────────────────────────── */
 const HELLO_KITTY_SHAPE = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
   <ellipse cx="12" cy="14" rx="8" ry="7" fill="currentColor" opacity="0.7"/>
@@ -327,8 +413,19 @@ const CONFIGS = {
     spawnDelay: 0,
     minDur: 4, durRange: 6,
     drift: 100,
-    interval: 400,
-    maxParticles: 30,
+    interval: 99999,
+    maxParticles: 0,
+  },
+  athena: {
+    shapes: [LAUREL_LEAF, OWL_SHAPE],
+    color: '#5a8a25',
+    minSize: 8, maxSize: 24,
+    minOpacity: 0.30, maxOpacity: 0.65,
+    spawnDelay: 0,
+    minDur: 8, durRange: 7,
+    drift: 90,
+    interval: 750,
+    maxParticles: 20,
   },
 };
 
@@ -437,6 +534,19 @@ export default function ThemeEffects() {
           <div className="txfx-gold-glow txfx-gold-glow--left" />
           <div className="txfx-gold-glow txfx-gold-glow--right" />
           <div className="txfx-gold-lines" />
+        </div>
+      )}
+
+      {/* Athena — Mediterranean landscape */}
+      {theme === 'athena' && (
+        <div className="txfx-athena-bg" aria-hidden="true">
+          <div className="txfx-athena-sky" />
+          <div className="txfx-athena-col txfx-athena-col--1" />
+          <div className="txfx-athena-col txfx-athena-col--2" />
+          <div className="txfx-athena-col txfx-athena-col--3" />
+          <div className="txfx-athena-col txfx-athena-col--4" />
+          <div className="txfx-athena-laurel" />
+          <div className="txfx-athena-ground" />
         </div>
       )}
 

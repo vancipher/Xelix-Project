@@ -144,6 +144,8 @@ export const translations = {
       sea:      'Sea',
       purple:   'Purple',
       sun:      'Sun',
+      gold:     'Gold',
+      athena:   'Athena',
     },
     footer: {
       poweredBy: 'Designed by',
@@ -412,6 +414,8 @@ export const translations = {
       sea:      'بحر',
       purple:   'بنفسجي',
       sun:      'شمس',
+      gold:     'ذهبي',
+      athena:   'أثينا',
     },
     footer: {
       poweredBy: 'تصميم',

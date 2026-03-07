@@ -459,6 +459,96 @@
     linear-gradient(180deg, transparent 0%, rgba(201,162,39,0.03) 50%, transparent 100%);
   background-size: 200px 100%, 100% 200px;
 }
+/* ── Athena theme ─────────────────────────────────────────────── */
+.txfx-athena-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.txfx-athena-sky {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(120,185,240,0.20) 0%,
+    rgba(180,220,255,0.10) 40%,
+    rgba(255,235,190,0.10) 75%,
+    rgba(255,215,140,0.08) 100%
+  );
+}
+
+.txfx-athena-col {
+  position: absolute;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(210,200,182,0.40) 0%,
+    rgba(250,245,232,0.62) 45%,
+    rgba(240,232,215,0.52) 70%,
+    rgba(195,186,168,0.38) 100%
+  );
+  border-radius: 3px 3px 0 0;
+  box-shadow: inset 2px 0 4px rgba(255,255,240,0.30), inset -2px 0 4px rgba(0,0,0,0.06);
+}
+.txfx-athena-col::before {
+  content: '';
+  position: absolute;
+  top: -14px;
+  left: -10px;
+  right: -10px;
+  height: 14px;
+  background: inherit;
+  border-radius: 2px;
+  opacity: 0.85;
+}
+.txfx-athena-col::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: -7px;
+  right: -7px;
+  height: 12px;
+  background: inherit;
+  opacity: 0.75;
+}
+.txfx-athena-col--1 { left: 2%;  width: 34px; height: 46vh; opacity: 0.58; }
+.txfx-athena-col--2 { left: 9%;  width: 28px; height: 37vh; opacity: 0.40; }
+.txfx-athena-col--3 { right: 2%; width: 34px; height: 50vh; opacity: 0.58; }
+.txfx-athena-col--4 { right: 9%; width: 28px; height: 40vh; opacity: 0.42; }
+
+.txfx-athena-laurel {
+  position: absolute;
+  top: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 360px;
+  height: 180px;
+  background: radial-gradient(ellipse, rgba(80,160,40,0.18) 0%, transparent 70%);
+  animation: txfxAthenaLaurel 7s ease-in-out infinite alternate;
+}
+@keyframes txfxAthenaLaurel {
+  0%   { opacity: 0.40; transform: translateX(-50%) scale(0.93); }
+  100% { opacity: 1;    transform: translateX(-50%) scale(1.07); }
+}
+
+.txfx-athena-ground {
+  position: absolute;
+  bottom: -90px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 240px;
+  background: radial-gradient(ellipse, rgba(255,215,140,0.18) 0%, rgba(220,190,145,0.08) 50%, transparent 75%);
+  animation: txfxAthenaGround 9s ease-in-out infinite alternate;
+}
+@keyframes txfxAthenaGround {
+  0%   { opacity: 0.45; }
+  100% { opacity: 1; }
+}
+
 /* ── Purple theme — dreamy orbs ──────────────────────────────── */
 .txfx-purple-bg {
   position: fixed;

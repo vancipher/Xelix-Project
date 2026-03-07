@@ -19,6 +19,7 @@ const ThemeIcon = ({ theme }) => {
     purple:   <span className="theme-dot purple-dot" />,
     sun:      <span className="theme-dot sun-dot" />,
     gold:     <span className="theme-dot gold-dot" />,
+    athena:   <span className="theme-dot athena-dot" />,
   };
   return icons[theme] || <span className="theme-dot" />;
 };
@@ -74,6 +75,8 @@ export default function Header() {
     sea:      t('themes.sea'),
     purple:   t('themes.purple'),
     sun:      t('themes.sun'),
+    gold:     t('themes.gold'),
+    athena:   t('themes.athena'),
   };
 
   const navLinks = [

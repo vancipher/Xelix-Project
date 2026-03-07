@@ -682,6 +682,69 @@ body::before {
   0%   { box-shadow: var(--shadow-md); }
   100% { box-shadow: var(--shadow-md), 0 0 28px 6px rgba(200,155,25,0.20), inset 0 0 0 1px rgba(201,162,39,0.15); }
 }
+/* ════════════════════════════════════════════════════════════════
+   THEME: ATHENA (ancient Greece — marble, laurel & sky)
+════════════════════════════════════════════════════════════════ */
+[data-theme="athena"] {
+  --bg-primary:        #dce8f5;
+  --bg-secondary:      #c8ddf0;
+  --bg-card:           #faf7f0;
+  --bg-card-hover:     #fff9f2;
+  --bg-header:         rgba(220,232,245,0.92);
+  --bg-sidebar:        #c8ddf0;
+  --bg-input:          #faf7f0;
+  --bg-modal:          #faf7f0;
+  --bg-overlay:        rgba(20,40,80,0.52);
+  --bg-badge:          #ddeece;
+  --border:            #c0b898;
+  --border-focus:      #5a8a25;
+  --text-primary:      #1a1000;
+  --text-secondary:    #4a3a18;
+  --text-muted:        #8a7858;
+  --text-inverse:      #faf7f0;
+  --accent:            #5a8a25;
+  --accent-soft:       #ddeece;
+  --accent-hover:      #6aaa2d;
+  --accent-light:      #a0cc5a;
+  --danger:            #b83030;
+  --danger-soft:       #fce8e8;
+  --warning:           #c87020;
+  --warning-soft:      #fdf0d8;
+  --success:           #2a8040;
+  --success-soft:      #d8f0e0;
+  --day-alert-bg:      #fce8e8;
+  --day-alert-border:  #b83030;
+  --day-alert-text:    #880808;
+  --shadow-sm:         0 1px 4px rgba(0,0,0,0.10);
+  --shadow-md:         0 4px 20px rgba(0,0,0,0.14);
+  --shadow-lg:         0 12px 48px rgba(0,0,0,0.20);
+  --noise-opacity:     0.03;
+}
+
+/* ATHENA — Mediterranean sunlight + marble glow */
+[data-theme="athena"] body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 40% at 50% 0%, rgba(255,220,140,0.22) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 85% 15%, rgba(160,210,255,0.16) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 50% at 15% 15%, rgba(180,220,255,0.14) 0%, transparent 55%),
+    linear-gradient(180deg, rgba(150,195,240,0.10) 0%, rgba(255,235,190,0.10) 100%);
+  animation: xelixAthenaGlow 12s ease-in-out infinite alternate;
+}
+@keyframes xelixAthenaGlow {
+  0%   { opacity: 0.55; }
+  50%  { opacity: 1; }
+  100% { opacity: 0.65; }
+}
+
+[data-theme="athena"] .glass {
+  border-color: rgba(90,138,37,0.28) !important;
+  box-shadow: var(--shadow-md), 0 0 0 1px rgba(192,184,152,0.22);
+}
 /* ── RTL Support ─────────────────────────────────────────────── */
 [dir="rtl"] body,
 [dir="rtl"] {
