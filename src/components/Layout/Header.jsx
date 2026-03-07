@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useAuth } from '../../contexts/AuthContext';
+import { useUserAuth } from '../../contexts/UserAuthContext';
 import { useT } from '../../utils/i18n';
 import NotificationBell from '../UI/NotificationBell';
 import './Header.css';
@@ -25,6 +26,7 @@ export default function Header() {
   const { theme, setTheme, themes } = useTheme();
   const { lang, toggleLang } = useLanguage();
   const { isLoggedIn, admin, logout, isSuperAdmin } = useAuth();
+  const { user: currentUser, logout: userLogout } = useUserAuth();
   const [themeOpen, setThemeOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const themePickerRef = useRef(null);
@@ -48,6 +50,12 @@ export default function Header() {
 
   const handleLogout = () => {
     logout();
+    navigate('/');
+    setMobileOpen(false);
+  };
+
+  const handleUserLogout = () => {
+    userLogout();
     navigate('/');
     setMobileOpen(false);
   };
@@ -100,14 +108,6 @@ export default function Header() {
             </Link>
           ))}
           {isLoggedIn && <span className="nav-badge">{admin?.displayName}</span>}
-          {!isLoggedIn && (
-            <Link
-              to="/admin/login"
-              className={`nav-link ${location.pathname === '/admin/login' ? 'active' : ''}`}
-            >
-              {t('nav.admin')}
-            </Link>
-          )}
         </nav>
 
         {/* Controls */}
@@ -165,6 +165,31 @@ export default function Header() {
             )}
           </div>
 
+          {/* User auth buttons */}
+          {currentUser ? (
+            <>
+              <Link
+                to="/profile"
+                className={`ctrl-btn user-profile-btn ${location.pathname === '/profile' ? 'active' : ''}`}
+              >
+                <span className="user-avatar-mini">{currentUser.displayName.charAt(0).toUpperCase()}</span>
+                <span className="user-name-mini">{currentUser.displayName}</span>
+              </Link>
+              <button className="ctrl-btn logout-btn" onClick={handleUserLogout}>
+                {t('nav.logout')}
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to="/login" className={`ctrl-btn login-btn ${location.pathname === '/login' ? 'active' : ''}`}>
+                Sign In
+              </Link>
+              <Link to="/register" className="ctrl-btn register-btn">
+                Register
+              </Link>
+            </>
+          )}
+
           {isLoggedIn && (
             <button className="ctrl-btn logout-btn" onClick={handleLogout}>
               {t('nav.logout')}
@@ -197,14 +222,30 @@ export default function Header() {
               {l.label}
             </Link>
           ))}
-          {!isLoggedIn && (
-            <Link
-              to="/admin/login"
-              className={`mobile-link ${location.pathname === '/admin/login' ? 'active' : ''}`}
-              onClick={() => setMobileOpen(false)}
-            >
-              {t('nav.admin')}
-            </Link>
+          <div className="mobile-divider" />
+          {/* Mobile user auth */}
+          {currentUser ? (
+            <>
+              <Link
+                to="/profile"
+                className="mobile-link"
+                onClick={() => setMobileOpen(false)}
+              >
+                👤 {currentUser.displayName}
+              </Link>
+              <button className="mobile-link mobile-logout" onClick={handleUserLogout}>
+                Sign Out
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to="/login" className="mobile-link" onClick={() => setMobileOpen(false)}>
+                Sign In
+              </Link>
+              <Link to="/register" className="mobile-link" onClick={() => setMobileOpen(false)}>
+                Register
+              </Link>
+            </>
           )}
           <div className="mobile-divider" />
           <button className="mobile-link mobile-lang" onClick={toggleLang}>
