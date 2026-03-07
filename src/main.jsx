@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { AuthProvider } from './contexts/AuthContext';
+import { UserAuthProvider } from './contexts/UserAuthContext';
 import { ScheduleProvider } from './contexts/ScheduleContext';
 import { GroupProvider } from './contexts/GroupContext';
 import { ResourcesProvider } from './contexts/ResourcesContext';
@@ -16,13 +17,15 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <ThemeProvider>
         <LanguageProvider>
           <AuthProvider>
-            <ScheduleProvider>
-              <GroupProvider>
-                <ResourcesProvider>
-                  <App />
-                </ResourcesProvider>
-              </GroupProvider>
-            </ScheduleProvider>
+            <UserAuthProvider>
+              <ScheduleProvider>
+                <GroupProvider>
+                  <ResourcesProvider>
+                    <App />
+                  </ResourcesProvider>
+                </GroupProvider>
+              </ScheduleProvider>
+            </UserAuthProvider>
           </AuthProvider>
         </LanguageProvider>
       </ThemeProvider>
