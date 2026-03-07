@@ -5,7 +5,7 @@
   align-items: center;
   justify-content: center;
   padding: 20px;
-  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+  background: var(--bg-primary);
 }
 
 .auth-card {
@@ -13,9 +13,9 @@
   max-width: 400px;
   padding: 40px;
   border-radius: 16px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
 }
 
 .auth-brand {
@@ -54,9 +54,9 @@
 }
 
 .auth-error {
-  background: rgba(239, 68, 68, 0.1);
-  border: 1px solid rgba(239, 68, 68, 0.3);
-  color: #ef4444;
+  background: var(--danger-soft);
+  border: 1px solid var(--danger);
+  color: var(--danger);
   padding: 12px;
   border-radius: 8px;
   font-size: 14px;
@@ -87,20 +87,21 @@
 
 .af-input {
   padding: 10px 12px;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--border);
   border-radius: 8px;
-  background: var(--input-bg);
+  background: var(--bg-input);
   color: var(--text-primary);
   font-size: 14px;
   transition: all 0.2s ease;
   font-family: inherit;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .af-input:focus {
   outline: none;
-  border-color: var(--accent);
-  background: var(--input-bg-focus);
-  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.1);
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px var(--accent-soft);
 }
 
 .af-input:disabled {
@@ -155,7 +156,7 @@
 .af-submit {
   padding: 12px 16px;
   background: var(--accent);
-  color: white;
+  color: var(--text-inverse);
   border: none;
   border-radius: 8px;
   font-size: 14px;
@@ -163,11 +164,13 @@
   cursor: pointer;
   transition: all 0.3s ease;
   margin-top: 8px;
+  width: 100%;
 }
 
 .af-submit:hover:not(:disabled) {
+  background: var(--accent-hover);
   transform: translateY(-2px);
-  box-shadow: 0 8px 16px rgba(var(--accent-rgb), 0.3);
+  box-shadow: var(--shadow-md);
 }
 
 .af-submit:disabled {
@@ -186,9 +189,9 @@
   color: var(--accent);
   text-decoration: none;
   font-weight: 600;
-  transition: opacity 0.2s;
+  transition: color 0.2s;
 }
 
 .auth-footer a:hover {
-  opacity: 0.8;
+  color: var(--accent-hover);
 }

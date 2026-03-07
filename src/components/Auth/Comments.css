@@ -1,9 +1,9 @@
 /* ── Comments Section ──────────────────────────────────────────── */
 .comments-section {
   padding: 24px;
-  background: var(--bg-secondary);
+  background: var(--bg-card);
   border-radius: 12px;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--border);
   margin-top: 24px;
 }
 
@@ -22,33 +22,34 @@
 }
 
 .comment-error {
-  background: rgba(239, 68, 68, 0.1);
-  color: #ef4444;
+  background: var(--danger-soft);
+  color: var(--danger);
   padding: 10px 12px;
   border-radius: 6px;
   font-size: 13px;
   margin-bottom: 12px;
-  border: 1px solid rgba(239, 68, 68, 0.3);
+  border: 1px solid var(--danger);
 }
 
 .comment-textarea {
   width: 100%;
   padding: 12px;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--border);
   border-radius: 8px;
-  background: var(--bg-primary);
+  background: var(--bg-input);
   color: var(--text-primary);
   font-size: 14px;
   font-family: inherit;
   resize: vertical;
   margin-bottom: 12px;
   transition: all 0.2s;
+  box-sizing: border-box;
 }
 
 .comment-textarea:focus {
   outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.1);
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px var(--accent-soft);
 }
 
 .comment-textarea:disabled {
@@ -59,7 +60,7 @@
 .comment-submit {
   padding: 10px 16px;
   background: var(--accent);
-  color: white;
+  color: var(--text-inverse);
   border: none;
   border-radius: 6px;
   font-size: 13px;
@@ -69,8 +70,9 @@
 }
 
 .comment-submit:hover:not(:disabled) {
+  background: var(--accent-hover);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(var(--accent-rgb), 0.3);
+  box-shadow: var(--shadow-md);
 }
 
 .comment-submit:disabled {
@@ -111,16 +113,16 @@
   color: var(--text-secondary);
   font-size: 13px;
   padding: 20px;
-  background: var(--bg-primary);
+  background: var(--bg-secondary);
   border-radius: 8px;
 }
 
 /* ── Comment Card ──────────────────────────────────────────── */
 .comment-card {
   padding: 16px;
-  background: var(--bg-primary);
+  background: var(--bg-secondary);
   border-radius: 8px;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--border);
 }
 
 .comment-header {

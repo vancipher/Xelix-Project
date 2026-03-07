@@ -180,14 +180,9 @@ export default function Header() {
               </button>
             </>
           ) : (
-            <>
-              <Link to="/login" className={`ctrl-btn login-btn ${location.pathname === '/login' ? 'active' : ''}`}>
-                Sign In
-              </Link>
-              <Link to="/register" className="ctrl-btn register-btn">
-                Register
-              </Link>
-            </>
+            <Link to="/login" className={`ctrl-btn login-btn ${location.pathname === '/login' ? 'active' : ''}`}>
+              Sign In
+            </Link>
           )}
 
           {isLoggedIn && (
@@ -238,14 +233,9 @@ export default function Header() {
               </button>
             </>
           ) : (
-            <>
-              <Link to="/login" className="mobile-link" onClick={() => setMobileOpen(false)}>
-                Sign In
-              </Link>
-              <Link to="/register" className="mobile-link" onClick={() => setMobileOpen(false)}>
-                Register
-              </Link>
-            </>
+            <Link to="/login" className="mobile-link" onClick={() => setMobileOpen(false)}>
+              Sign In
+            </Link>
           )}
           <div className="mobile-divider" />
           <button className="mobile-link mobile-lang" onClick={toggleLang}>
