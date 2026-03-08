@@ -131,5 +131,11 @@ export const clamp = (val, min, max) => Math.min(Math.max(val, min), max);
 export const SEED_SCHEDULE = createGroupSchedule();
 
 export const ADMIN_ACCOUNTS = [
-  { id: 'admin1', username: 'abdullah', password: 'admin123', displayName: 'Abdullah', role: 'superadmin', allowedGroups: ['A', 'B', 'C', 'MA', 'MB', 'MC'] },
+  { id: 'admin1', username: 'abdullah',  password: "CsUuG5t@i&}fyq5w]@L-uhI).lFTG6C3CSC@gi[JJ[WjBogY0a", displayName: 'عبدالله ياسر',       role: 'superadmin', allowedGroups: ['A', 'B', 'C', 'MA', 'MB', 'MC'] },
+  { id: 'admin2', username: 'Elaf',      password: 'elafcipher',                                           displayName: '♡ إيلاف محمود ♡',   role: 'admin',      allowedGroups: ['A'] },
+  { id: 'admin3', username: 'othman',    password: "GqF-}c2qFYN=Z,^Na0![H$bC%6y^!Xu_~3Cq5ypE'9ql{6kzXR", displayName: 'عثمان محمد',         role: 'admin',      allowedGroups: ['B'] },
+  { id: 'admin4', username: 'Ehab',      password: "GqF-}c2qFYN=Z,^Na0![H$bC%6y^!Xu_~3Cq5ypE'9ql{6kzXR", displayName: 'ايهاب ثائر',         role: 'admin',      allowedGroups: ['C'] },
+  { id: 'admin5', username: 'mohammed',  password: "GqF-}c2qFYN=Z,^Na0![H$bC%6y^!Xu_~3Cq5ypE'9ql{6kzXR", displayName: 'محمد اسماعيل',       role: 'admin',      allowedGroups: ['MA'] },
+  { id: 'admin6', username: 'adminMB',   password: "GqF-}c2qFYN=Z,^Na0![H$bC%6y^!Xu_~3Cq5ypE'9ql{6kzXR", displayName: 'Anonymous',          role: 'admin',      allowedGroups: ['MB'] },
+  { id: 'admin7', username: 'aziz',      password: "GqF-}c2qFYN=Z,^Na0![H$bC%6y^!Xu_~3Cq5ypE'9ql{6kzXR", displayName: 'عزيز أحمد',          role: 'admin',      allowedGroups: ['MC'] },
 ];
