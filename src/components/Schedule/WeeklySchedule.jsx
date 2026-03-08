@@ -40,7 +40,8 @@ export default function WeeklySchedule() {
     let cancelled = false;
     (async () => {
       const { data } = await supabase.from('visits').select('count').eq('id', 'global').single();
-      const newCount = (data?.count ?? 1482) + 1;
+      const VISIT_FLOOR = 1482;
+      const newCount = Math.max(data?.count ?? VISIT_FLOOR, VISIT_FLOOR) + 1;
       await supabase.from('visits').upsert({ id: 'global', count: newCount });
       if (!cancelled) setVisits(newCount);
     })();
