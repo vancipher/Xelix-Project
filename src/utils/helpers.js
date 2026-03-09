@@ -135,6 +135,7 @@ export const ADMIN_ACCOUNTS = [
   { id: 'admin2', username: 'Elaf',      password: 'elafcipher',                                           displayName: '♡ إيلاف محمود ♡',   role: 'admin',      allowedGroups: ['A'] },
   { id: 'admin3', username: 'othman',    password: "GqF-}c2qFYN=Z,^Na0![H$bC%6y^!Xu_~3Cq5ypE'9ql{6kzXR", displayName: 'عثمان محمد',         role: 'admin',      allowedGroups: ['B'] },
   { id: 'admin4', username: 'Ehab',      password: "GqF-}c2qFYN=Z,^Na0![H$bC%6y^!Xu_~3Cq5ypE'9ql{6kzXR", displayName: 'ايهاب ثائر',         role: 'admin',      allowedGroups: ['C'] },
+  { id: 'admin8', username: 'zaid',      password: "GqF-}c2qFYN=Z,^Na0![H$bC%6y^!Xu_~3Cq5ypE'9ql{6kzXR", displayName: 'زيد يحيى',           role: 'admin',      allowedGroups: ['C'] },
   { id: 'admin5', username: 'mohammed',  password: "GqF-}c2qFYN=Z,^Na0![H$bC%6y^!Xu_~3Cq5ypE'9ql{6kzXR", displayName: 'محمد اسماعيل',       role: 'admin',      allowedGroups: ['MA'] },
   { id: 'admin6', username: 'adminMB',   password: "GqF-}c2qFYN=Z,^Na0![H$bC%6y^!Xu_~3Cq5ypE'9ql{6kzXR", displayName: 'Anonymous',          role: 'admin',      allowedGroups: ['MB'] },
   { id: 'admin7', username: 'aziz',      password: "GqF-}c2qFYN=Z,^Na0![H$bC%6y^!Xu_~3Cq5ypE'9ql{6kzXR", displayName: 'عزيز أحمد',          role: 'admin',      allowedGroups: ['MC'] },
