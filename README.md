@@ -2,7 +2,10 @@
 
 **A modern university schedule platform — weekly timetables, learning resources, student community, and admin tools in one PWA.**
 
-Built by [Van De Cipher](https://github.com/vancipher)
+[![Live App](https://img.shields.io/badge/Live-xelix--project.vercel.app-purple?style=for-the-badge)](https://xelix-project.vercel.app/)
+[![PWA](https://img.shields.io/badge/PWA-Installable-blue?style=flat-square)](https://xelix-project.vercel.app/)
+
+Built by [Van De Cipher](https://github.com/vancipher) · **[Try it live →](https://xelix-project.vercel.app/)**
 
 ---
 
@@ -161,6 +164,8 @@ Set these in your Vercel project dashboard for the push notification endpoint:
 ---
 
 ## Deployment
+
+**Live app:** [https://xelix-project.vercel.app/](https://xelix-project.vercel.app/)
 
 Xelix is designed for **Vercel**:
 
