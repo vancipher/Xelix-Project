@@ -1,0 +1,26 @@
+Van Cipher Restricted License v1.0
+
+Copyright (c) 2024-2026 Abdullah Y. Habash ("Van De Cipher", @vancipher)
+All rights reserved.
+
+This repository and all associated source code, documentation, and assets are
+proprietary to the copyright holder.
+
+PERMITTED WITHOUT PRIOR APPROVAL:
+  - Reading and studying the public source on GitHub for personal learning
+  - Opening issues or pull requests that discuss bugs or documentation
+
+NOT PERMITTED WITHOUT EXPLICIT WRITTEN PERMISSION FROM THE COPYRIGHT HOLDER:
+  - Using, running, or deploying Xelix for any college, university, or institution
+  - Copying, modifying, or creating derivative works for any purpose
+  - Redistributing, sublicensing, selling, or republishing any part of this project
+  - Commercial licensing or white-label deployment of the schedule platform
+  - Incorporating this code into other products or services
+
+PERMISSION REQUESTS
+  Contact Abdullah Y. Habash before any use beyond reading the public repo:
+    GitHub:  https://github.com/vancipher
+    Web:     https://xelix-project.vercel.app (demo) · https://github.com/vancipher
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND. IN NO EVENT
+SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY.

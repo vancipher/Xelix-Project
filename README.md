@@ -215,7 +215,9 @@ Each group has its own independent schedule document synced in realtime.
 
 ## License
 
-Private project — contact the maintainer for usage inquiries.
+**Van Cipher Restricted License v1.0** — see [LICENSE](LICENSE).
+
+You may read this repo on GitHub for learning. **Deploying Xelix at any institution or commercial use requires written permission** from [Abdullah Y. Habash (@vancipher)](https://github.com/vancipher).
 
 ---
 
