@@ -130,7 +130,9 @@
 }
 
 /* ── Tabs / week nav (scoped — do not leak to public schedule) ─── */
-.admin-page .section-tabs {
+
+/* Filter-style tabs (User Management, etc.) */
+.admin-page .section-tabs:not(.section-tabs--shift) {
   display: flex;
   gap: 8px;
   margin: 0;
@@ -138,7 +140,7 @@
   justify-content: center;
 }
 
-.admin-page .section-tab {
+.admin-page .section-tabs:not(.section-tabs--shift) .section-tab {
   padding: 8px 20px;
   border-radius: 10px;
   border: 1.5px solid var(--border);
@@ -151,18 +153,83 @@
   font-family: inherit;
 }
 
-.admin-page .section-tab:hover {
+.admin-page .section-tabs:not(.section-tabs--shift) .section-tab:hover {
   border-color: var(--accent);
   color: var(--accent);
 }
 
-.admin-page .section-tab--active {
+.admin-page .section-tabs:not(.section-tabs--shift) .section-tab--active {
   background: var(--accent);
   border-color: var(--accent);
   color: var(--on-accent, #fff);
 }
 
-.admin-page .group-tabs {
+/* Home-matching sliding pills (Admin Dashboard) */
+.admin-page .section-tabs--shift {
+  --section-count: 2;
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--section-count), 1fr);
+  align-items: stretch;
+  gap: 0;
+  width: min(100%, 320px);
+  margin: 0 auto;
+  padding: 4px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--bg-input) 75%, var(--bg-card));
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 0 color-mix(in srgb, #fff 40%, transparent) inset;
+}
+
+.admin-page .section-tabs-thumb {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc((100% - 8px) / var(--section-count));
+  border-radius: 999px;
+  background: var(--accent);
+  box-shadow:
+    0 4px 14px color-mix(in srgb, var(--accent) 35%, transparent),
+    0 1px 0 color-mix(in srgb, #fff 25%, transparent) inset;
+  transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.admin-page .section-tabs--shift .section-tab {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  padding: 9px 12px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: color 0.22s ease;
+  font-family: inherit;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.admin-page .section-tabs--shift .section-tab:hover:not(.section-tab--active) {
+  color: var(--text-secondary);
+}
+
+.admin-page .section-tabs--shift .section-tab--active {
+  color: var(--on-accent, #fff);
+  background: transparent;
+}
+
+.admin-page .section-tabs--shift .section-tab:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.admin-page .group-tabs:not(.group-tabs--shift) {
   display: flex;
   gap: 8px;
   margin: 0;
@@ -174,7 +241,7 @@
   margin-bottom: 4px;
 }
 
-.admin-page .group-tab {
+.admin-page .group-tabs:not(.group-tabs--shift) .group-tab {
   padding: 8px 22px;
   border-radius: 999px;
   border: 1.5px solid var(--border);
@@ -187,23 +254,106 @@
   font-family: inherit;
 }
 
-.admin-page .group-tab:hover {
+.admin-page .group-tabs:not(.group-tabs--shift) .group-tab:hover {
   border-color: var(--accent);
   color: var(--accent);
 }
 
-.admin-page .group-tab--active {
+.admin-page .group-tabs:not(.group-tabs--shift) .group-tab--active {
   background: var(--accent);
   border-color: var(--accent);
   color: var(--on-accent, #fff);
+}
+
+.admin-page .group-tabs--shift {
+  --group-count: 3;
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--group-count), 1fr);
+  align-items: stretch;
+  gap: 0;
+  width: min(100%, 200px);
+  margin: 0 auto;
+  padding: 4px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--bg-input) 75%, var(--bg-card));
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 0 color-mix(in srgb, #fff 40%, transparent) inset;
+}
+
+.admin-page .group-tabs-thumb {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc((100% - 8px) / var(--group-count));
+  border-radius: 999px;
+  background: var(--accent);
+  box-shadow:
+    0 4px 14px color-mix(in srgb, var(--accent) 35%, transparent),
+    0 1px 0 color-mix(in srgb, #fff 25%, transparent) inset;
+  transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.admin-page .group-tabs--shift .group-tab {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  padding: 8px 10px;
+  min-width: 0;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: color 0.22s ease;
+  font-family: inherit;
+  line-height: 1.2;
+}
+
+.admin-page .group-tabs--shift .group-tab:hover:not(.group-tab--active) {
+  color: var(--text-secondary);
+}
+
+.admin-page .group-tabs--shift .group-tab--active {
+  color: var(--on-accent, #fff);
+  background: transparent;
+}
+
+.admin-page .group-tabs--shift .group-tab:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 .admin-page .week-nav {
   margin: 0;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .admin-page .section-tabs-thumb,
+  .admin-page .group-tabs-thumb {
+    transition: none;
+  }
+}
+
 @media (max-width: 520px) {
   .admin-page { padding: 12px var(--page-pad) 48px; }
-  .admin-page .group-tab,
-  .admin-page .section-tab { padding: 7px 14px; font-size: 0.8rem; }
+  .admin-page .group-tabs:not(.group-tabs--shift) .group-tab,
+  .admin-page .section-tabs:not(.section-tabs--shift) .section-tab {
+    padding: 7px 14px;
+    font-size: 0.8rem;
+  }
+  .admin-page .group-tabs--shift .group-tab {
+    padding: 7px 6px;
+    font-size: 0.8rem;
+  }
+  .admin-page .section-tabs--shift .section-tab {
+    padding: 8px 10px;
+    font-size: 0.8rem;
+  }
 }

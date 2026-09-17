@@ -5,7 +5,7 @@
   flex-direction: column;
   position: relative;
   z-index: 1;
-  padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
+  padding-bottom: var(--app-bottom-scroll-pad);
 }
 .app-main {
   flex: 1;

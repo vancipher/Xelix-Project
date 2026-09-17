@@ -31,6 +31,9 @@ export default function AdminDashboard() {
     }
     return SECTIONS[0];
   });
+  const visibleSections = SECTIONS.filter((s) =>
+    SECTION_GROUPS[s].some((g) => accessibleGroups.includes(g)),
+  );
   const sectionGroups = SECTION_GROUPS[activeSection]?.filter((g) => accessibleGroups.includes(g)) ?? [];
   const [activeGroup, setActiveGroup] = useState(sectionGroups[0] ?? accessibleGroups[0] ?? 'A');
 
@@ -135,14 +138,26 @@ export default function AdminDashboard() {
       </header>
 
       <div className="admin-controls">
-        <div className="section-tabs">
-        {SECTIONS.map((s) => {
-          const hasAccess = SECTION_GROUPS[s].some((g) => accessibleGroups.includes(g));
-          if (!hasAccess) return null;
-          return (
+        <div
+          className="section-tabs section-tabs--shift"
+          role="radiogroup"
+          dir="ltr"
+          aria-label={`${t('sections.evening')} / ${t('sections.morning')}`}
+          style={{ '--section-count': Math.max(visibleSections.length, 1) }}
+        >
+          <span
+            className="section-tabs-thumb"
+            aria-hidden
+            style={{
+              transform: `translateX(${Math.max(0, visibleSections.indexOf(activeSection)) * 100}%)`,
+            }}
+          />
+          {visibleSections.map((s) => (
             <button
               key={s}
               type="button"
+              role="radio"
+              aria-checked={activeSection === s}
               className={`section-tab ${activeSection === s ? 'section-tab--active' : ''}`}
               onClick={() => {
                 setActiveSection(s);
@@ -152,21 +167,36 @@ export default function AdminDashboard() {
             >
               {t(`sections.${s}`)}
             </button>
-          );
-        })}
+          ))}
         </div>
 
-        <div className="group-tabs group-tabs--spaced">
-        {sectionGroups.map((g) => (
-          <button
-            key={g}
-            type="button"
-            className={`group-tab ${activeGroup === g ? 'group-tab--active' : ''}`}
-            onClick={() => setActiveGroup(g)}
-          >
-            {t(`groups.${g}`)}
-          </button>
-        ))}
+        <div
+          className="group-tabs group-tabs--shift group-tabs--spaced"
+          role="radiogroup"
+          dir="ltr"
+          aria-label={t('groups.label')}
+          style={{ '--group-count': Math.max(sectionGroups.length, 1) }}
+        >
+          <span
+            className="group-tabs-thumb"
+            aria-hidden
+            style={{
+              transform: `translateX(${Math.max(0, sectionGroups.indexOf(activeGroup)) * 100}%)`,
+            }}
+          />
+          {sectionGroups.map((g) => (
+            <button
+              key={g}
+              type="button"
+              role="radio"
+              aria-checked={activeGroup === g}
+              className={`group-tab ${activeGroup === g ? 'group-tab--active' : ''}`}
+              onClick={() => setActiveGroup(g)}
+              aria-label={t(`groups.${g}`)}
+            >
+              {g.replace(/^M/, '')}
+            </button>
+          ))}
         </div>
 
         <WeekNav

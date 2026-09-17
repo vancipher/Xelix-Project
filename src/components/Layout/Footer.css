@@ -1,7 +1,9 @@
 /* ── Footer (minimal app credit) ─────────────────────────────────── */
 .footer {
+  position: relative;
+  z-index: 105;
   margin-top: auto;
-  padding: 8px var(--page-pad) 4px;
+  padding: 12px var(--page-pad) 4px;
   background: transparent;
   border: none;
 }

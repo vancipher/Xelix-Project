@@ -1,45 +1,71 @@
-# Xelix
+# After Break (Xelix)
 
-**A modern university schedule platform — weekly timetables, learning resources, student community, and admin tools in one PWA.**
+**Version 2.0** — A production-ready university schedule PWA for students and administrators.
 
 [![Live App](https://img.shields.io/badge/Live-xelix--project.vercel.app-purple?style=for-the-badge)](https://xelix-project.vercel.app/)
+[![Version](https://img.shields.io/badge/v2.0-After%20Break-orange?style=flat-square)](https://xelix-project.vercel.app/)
 [![PWA](https://img.shields.io/badge/PWA-Installable-blue?style=flat-square)](https://xelix-project.vercel.app/)
 
-Built by [Van De Cipher](https://github.com/vancipher) · **[Try it live →](https://xelix-project.vercel.app/)**
+Built by [Van De Cipher](https://github.com/vancipher) · **[Open the live app →](https://xelix-project.vercel.app/)**
 
 ---
 
-## Overview
+## What is After Break?
 
-Xelix is a full-stack web application built for university students and administrators. It replaces scattered spreadsheets and chat messages with a single, always-up-to-date schedule hub — with realtime sync, bilingual support, and mobile-first design.
+After Break is a bilingual (Arabic / English) web application that centralizes the academic week: group schedules, course resources, student engagement, and admin operations — delivered as an installable progressive web app with realtime sync.
 
-Students browse their group's weekly timetable, access course materials, react to events, leave comments, and mark tasks complete. Admins manage schedules, resources, users, and push notifications from a dedicated dashboard.
+It is designed for institutions that need a mobile-first schedule hub without relying on scattered spreadsheets or chat threads.
 
 ---
 
-## Features
+## What’s new in v2.0
 
-### For students
+Version 2.0 is a major product and UX refresh. The focus is clarity, speed of admin workflows, and a cohesive mobile interface.
+
+### Interface & navigation
+- **Fluid bottom dock** — full-width abstract nav bar with a center floating action button (schedule), animated active indicator, and safe-area support
+- **Reorganized More menu** — grouped Workspace / Management sections, iconized links, and a dedicated account card (no confusing Sign In while already authenticated)
+- **Profile entry points** — admin shield icon and student user icon in the header, both open the correct profile route
+- **Theme-aware chrome** — upward fade blur behind the dock on high-impact themes; polished glass sheets for theme and more menus
+
+### Admin experience
+- **Sliding section & group controls** — evening/morning and A/B/C switches match the public schedule UI
+- **Enhanced event composer** — compact modal layout, typed event chips with icons, accent-aware toggles, sticky actions, and validation without page scroll noise
+- **Arabic-first publishing** — admins write titles in Arabic; After Break auto-translates to English for bilingual display
+- **Resource Manager overhaul** — equal PDF/YouTube type track, empty states with guidance, subject cards with badges/counts, and the same Arabic-first + translate flow
+
+### Reliability & polish
+- **Dev-friendly PWA updates** — service worker registration skipped in local development to avoid stale caches
+- **More resilient Vite watch** — polling enabled for OneDrive / synced folders
+- **Copy & i18n refinements** — corrected Arabic tagline, clearer admin labels (e.g. تعديل الجدول)
+
+---
+
+## Main features
+
+### Students
 | Feature | Description |
 |---|---|
-| **Weekly schedule** | Per-group timetables (A, B, C, MA, MB, MC) across evening & morning sections |
-| **Realtime updates** | Schedule changes sync instantly via Supabase Realtime |
-| **Learning resources** | PDFs and video links organized by section and subject |
-| **Event interactions** | Comments, reactions, and completion checklists per event |
-| **User accounts** | Register, profile, and admin-approved access |
-| **Bilingual UI** | Full Arabic / English support with RTL layout |
+| **Weekly schedule** | Timetables by evening/morning section and group (A–C / MA–MC) |
+| **Realtime sync** | Schedule and resource updates via Supabase Realtime |
+| **Resources** | PDFs and YouTube materials organized by subject |
+| **Engagement** | Reactions, comments, and completion checkmarks per event |
+| **Accounts** | Register, login, and admin-approved student profiles |
+| **Bilingual UI** | Full AR / EN with RTL layout |
 | **Themes** | Multiple visual themes (light, dark, nature, lavender, and more) |
-| **PWA** | Installable progressive web app with offline-ready service worker |
+| **PWA** | Installable app shell with background update checks |
 
-### For administrators
+### Administrators
 | Feature | Description |
 |---|---|
-| **Schedule editor** | Add, edit, and delete events per group and day |
-| **Resource manager** | Upload and organize course materials by subject |
+| **Schedule dashboard** | Create and edit events per day, group, and section |
+| **Smart event form** | Type chips, recurring / important toggles, auto EN titles |
+| **Resource manager** | Subjects + PDF/video items with Arabic-first input |
 | **User moderation** | Approve, ban, or remove student accounts |
-| **Activity analytics** | Track user engagement and platform usage |
-| **Push notifications** | Broadcast alerts to all subscribed devices |
-| **Role-based access** | Super-admin and group-scoped admin permissions |
+| **Admin management** | Super-admin tools for admin accounts and scopes |
+| **Activity insights** | Engagement overview across users |
+| **Push notifications** | Broadcast reminders to subscribed devices |
+| **Role-based access** | Super-admin vs group-scoped permissions |
 
 ---
 
@@ -48,39 +74,39 @@ Students browse their group's weekly timetable, access course materials, react t
 | Layer | Technology |
 |---|---|
 | Frontend | React 18, Vite, React Router, Framer Motion |
-| Backend | Supabase (PostgreSQL + Realtime + Auth patterns) |
-| Push API | Vercel serverless function (`api/send-push.js`) + Web Push |
-| Styling | Custom CSS with theme system |
-| i18n | Custom bilingual translation module |
-| Deployment | Vercel (SPA + API routes) |
-| PWA | `vite-plugin-pwa` + service worker |
+| Backend | Supabase (PostgreSQL + Realtime) |
+| Push | Vercel serverless (`api/send-push.js`) + Web Push |
+| Styling | Custom CSS design system with theme tokens |
+| i18n | Custom bilingual module |
+| PWA | `vite-plugin-pwa` + injectManifest service worker |
+| Deploy | Vercel (SPA rewrites + API routes) |
 
 ---
 
 ## Architecture
 
 ```
-Browser (React SPA)
+Browser (React SPA / PWA)
       │
-      ├── Supabase Client ──► PostgreSQL tables (schedule, resources, users, comments…)
-      │                       └── Realtime channels (live schedule/resource sync)
+      ├── Supabase Client ──► PostgreSQL (schedule, resources, users, comments…)
+      │                       └── Realtime channels
       │
       └── Vercel API ──► /api/send-push ──► Web Push subscriptions
 ```
 
-### Database tables (Supabase)
+### Core tables
 
 | Table | Purpose |
 |---|---|
-| `schedule` | Per-group timetable documents (JSON by day/events) |
-| `resources` | Course materials by section and subject |
-| `users` | Student accounts with approval and moderation state |
-| `admins` | Admin credentials and group permissions |
-| `comments` | Event-scoped discussion threads |
-| `user_reactions` / `guest_reactions` | Per-event sentiment (logged-in or anonymous) |
-| `event_completions` | User checklist state per schedule event |
-| `visits` | Global visit counter |
-| `push_subscriptions` | Browser push notification endpoints |
+| `schedule` | Per-group timetable documents |
+| `resources` | Course materials by section / subject |
+| `users` | Student accounts and moderation state |
+| `admins` | Admin credentials and permissions |
+| `comments` | Event discussion threads |
+| `user_reactions` / `guest_reactions` | Per-event reactions |
+| `event_completions` | Completion checklist state |
+| `visits` | Visit counter |
+| `push_subscriptions` | Push endpoints |
 
 ---
 
@@ -90,18 +116,17 @@ Browser (React SPA)
 Xelix-Project/
 ├── src/
 │   ├── components/
-│   │   ├── Schedule/       Weekly timetable views
-│   │   ├── Resources/      Learning materials browser + admin manager
-│   │   ├── Auth/           Student login, register, profile, comments
-│   │   ├── Admin/          Dashboard, user mgmt, activity, event forms
-│   │   ├── Layout/         Header, footer, theme effects
+│   │   ├── Schedule/       Weekly timetable
+│   │   ├── Resources/      Public browser + admin Resource Manager
+│   │   ├── Auth/           Student auth, profile, comments
+│   │   ├── Admin/          Dashboard, event form, users, activity
+│   │   ├── Layout/         Header dock, more sheet, footer
 │   │   └── UI/             Modal, notification bell
 │   ├── contexts/           Auth, schedule, group, resources, language, theme
-│   └── utils/              i18n, helpers, notifications
+│   └── utils/              i18n, helpers, translate, bottomNavPath, PWA updates
 ├── api/
-│   └── send-push.js        Serverless web push broadcaster
-├── public/                 PWA icons and static assets
-├── index.html
+│   └── send-push.js
+├── public/
 ├── vite.config.js
 ├── vercel.json
 └── package.json
@@ -114,84 +139,68 @@ Xelix-Project/
 ### Prerequisites
 - Node.js 18+
 - A [Supabase](https://supabase.com) project with the required tables
-- (Optional) Vercel account for deployment and push notifications
+- (Optional) Vercel for production deploy and push
 
-### 1. Install dependencies
+### Install & run
 
 ```bash
 npm install
-```
-
-### 2. Configure Supabase
-
-Update `src/firebase.js` with your Supabase project URL and anon key, or migrate to environment variables:
-
-```js
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
-const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
-```
-
-### 3. Run locally
-
-```bash
 npm run dev
 ```
 
 Open **http://localhost:5173**
 
-### 4. Build for production
+### Production build
 
 ```bash
 npm run build
 npm run preview
 ```
 
+Configure Supabase via `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` (see `.env.example`).
+
 ---
 
-## Environment variables (Vercel / push API)
-
-Set these in your Vercel project dashboard for the push notification endpoint:
+## Environment variables (Vercel / push)
 
 | Variable | Description |
 |---|---|
 | `SUPABASE_URL` | Supabase project URL |
-| `SUPABASE_SERVICE_KEY` | Service role key (server-side only) |
+| `SUPABASE_SERVICE_KEY` | Service role key (server only) |
 | `VAPID_PUBLIC_KEY` | Web Push VAPID public key |
 | `VAPID_PRIVATE_KEY` | Web Push VAPID private key |
-| `VAPID_EMAIL` | Contact email for VAPID |
+| `VAPID_EMAIL` | VAPID contact email |
 | `PUSH_SECRET` | Shared secret for admin push requests |
 
 ---
 
 ## Deployment
 
-**Live app:** [https://xelix-project.vercel.app/](https://xelix-project.vercel.app/)
-
-Xelix is designed for **Vercel**:
+**Live:** [https://xelix-project.vercel.app/](https://xelix-project.vercel.app/)
 
 ```bash
 npm run build
 vercel --prod
 ```
 
-`vercel.json` handles SPA routing — all non-API paths rewrite to `index.html`.
-
-One-command deploy script:
+Or:
 
 ```bash
 npm run ship
 ```
 
+`vercel.json` rewrites non-API routes to `index.html` for SPA routing.
+
 ---
 
-## User groups
+## Academic groups
 
 | Section | Groups |
 |---|---|
 | Evening | A, B, C |
 | Morning | MA, MB, MC |
 
-Each group has its own independent schedule document synced in realtime.
+Each group has an independent schedule document synced in realtime.
 
 ---
 
@@ -205,9 +214,10 @@ Each group has its own independent schedule document synced in realtime.
 | `/register` | Public | Student registration |
 | `/profile` | Student | User profile |
 | `/admin/login` | Public | Admin login |
-| `/admin` | Admin | Dashboard |
-| `/admin/manage` | Admin | Schedule management |
+| `/admin` | Admin | Schedule dashboard |
 | `/admin/resources` | Admin | Resource management |
+| `/admin/profile` | Admin | Admin profile |
+| `/admin/manage` | Super-admin | Admin management |
 | `/admin/users` | Admin | User moderation |
 | `/admin/activity` | Admin | Activity analytics |
 
@@ -217,10 +227,10 @@ Each group has its own independent schedule document synced in realtime.
 
 **Van Cipher Restricted License v1.0** — see [LICENSE](LICENSE).
 
-You may read this repo on GitHub for learning. **Deploying Xelix at any institution or commercial use requires written permission** from [Abdullah Y. Habash (@vancipher)](https://github.com/vancipher).
+You may read this repository for learning. **Deploying After Break / Xelix for any institution or commercial use requires written permission** from [Abdullah Y. Habash (@vancipher)](https://github.com/vancipher).
 
 ---
 
 <p align="center">
-  <strong>Xelix</strong> — your academic week, always in sync.
+  <strong>After Break v2.0</strong> — organize the academic week, remind what gets forgotten.
 </p>

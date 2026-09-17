@@ -38,6 +38,13 @@ html {
   --font-display-ar: 'Almarai', sans-serif;
   --page-max: 1280px;
   --page-pad: 32px;
+  --app-bottom-fade-height: 228px;
+  /* Dock footprint + small gap (scroll pad is not tied to fade height) */
+  --app-bottom-dock-height: 108px;
+  --app-bottom-footer-gap: 20px;
+  --app-bottom-scroll-pad: calc(
+    var(--app-bottom-dock-height) + var(--app-bottom-footer-gap) + env(safe-area-inset-bottom, 0px)
+  );
   --on-accent: #ffffff;
   --footer-logo-color: var(--accent);
   --footer-logo-color-hover: var(--accent-hover);

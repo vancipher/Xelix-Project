@@ -3,9 +3,19 @@ import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
+  server: {
+    // OneDrive paths often miss native FS events; polling keeps HMR reliable.
+    watch: {
+      usePolling: true,
+      interval: 300,
+    },
+  },
   plugins: [
     react(),
     VitePWA({
+      devOptions: {
+        enabled: false,
+      },
       registerType: 'autoUpdate',
       injectRegister: false,
       strategies: 'injectManifest',

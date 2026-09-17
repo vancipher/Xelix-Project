@@ -9,11 +9,12 @@ import { useUserAuth } from '../../contexts/UserAuthContext';
 import { useT } from '../../utils/i18n';
 import NotificationBell from '../UI/NotificationBell';
 import { applyAppUpdate } from '../../utils/pwaUpdate';
+import { buildBottomNavPath, NAV_PILL_H } from '../../utils/bottomNavPath';
 import BrandLogo from './BrandLogo';
 import {
   IconRefresh, IconGlobe,
-  IconCalendar, IconMore, IconLogin, IconUser,
-  IconPalette, IconResources,
+  IconCalendar, IconMore, IconLogin, IconUser, IconAdmin,
+  IconPalette, IconResources, IconUsers, IconActivity, IconFolder, IconScheduleEdit,
 } from './HeaderIcons';
 import './Header.css';
 
@@ -56,6 +57,7 @@ export default function Header() {
   const bottomInnerRef = useRef(null);
   const tabRefs = useRef([]);
   const [tabDot, setTabDot] = useState({ x: 0, ready: false });
+  const [navFrame, setNavFrame] = useState({ w: 0 });
   const CENTER_TAB_INDEX = 2;
 
   const setTabRef = (index) => (node) => {
@@ -198,13 +200,13 @@ export default function Header() {
   );
 
   const navLinks = [
-    { to: '/', label: t('nav.schedule'), always: true },
-    { to: '/admin', label: t('nav.admin'), auth: true },
-    { to: '/admin/resources', label: t('resources.manageResources'), auth: true },
-    { to: '/admin/profile', label: t('admin.myProfile'), auth: true },
-    { to: '/admin/manage', label: t('admin.manageAdmins'), superadmin: true },
-    { to: '/admin/users', label: t('admin.manageUsers'), auth: true },
-    { to: '/admin/activity', label: t('admin.userActivity'), auth: true },
+    { to: '/', label: t('nav.schedule'), always: true, icon: null, group: 'main' },
+    { to: '/admin', label: t('nav.admin'), auth: true, icon: 'schedule', group: 'workspace' },
+    { to: '/admin/resources', label: t('resources.manageResources'), auth: true, icon: 'folder', group: 'workspace' },
+    { to: '/admin/profile', label: t('admin.myProfile'), auth: true, icon: 'admin', group: 'manage' },
+    { to: '/admin/manage', label: t('admin.manageAdmins'), superadmin: true, icon: 'users', group: 'manage' },
+    { to: '/admin/users', label: t('admin.manageUsers'), auth: true, icon: 'users', group: 'manage' },
+    { to: '/admin/activity', label: t('admin.userActivity'), auth: true, icon: 'activity', group: 'manage' },
   ].filter((l) => {
     if (l.always) return true;
     if (l.superadmin) return isSuperAdmin;
@@ -212,10 +214,37 @@ export default function Header() {
     return !isLoggedIn;
   });
 
-  const isActive = (to) =>
-    to === '/' ? location.pathname === '/' : location.pathname.startsWith(to);
+  const isActive = (to) => {
+    if (to === '/') return location.pathname === '/';
+    if (to === '/admin') return location.pathname === '/admin';
+    return location.pathname.startsWith(to);
+  };
 
   const moreNavLinks = navLinks.filter((l) => l.to !== '/');
+  const workspaceLinks = moreNavLinks.filter((l) => l.group === 'workspace');
+  const manageLinks = moreNavLinks.filter((l) => l.group === 'manage');
+
+  const moreLinkIcon = (key) => {
+    if (key === 'schedule') return <IconScheduleEdit />;
+    if (key === 'folder') return <IconFolder />;
+    if (key === 'admin') return <IconAdmin />;
+    if (key === 'users') return <IconUsers />;
+    if (key === 'activity') return <IconActivity />;
+    return null;
+  };
+
+  const renderMoreLink = (l, index, baseDelay = 0.06) => (
+    <Link
+      key={l.to}
+      to={l.to}
+      className={`mobile-link mobile-link--icon app-sheet-option ${isActive(l.to) ? 'active' : ''}`}
+      style={{ animationDelay: moreOpen ? `${baseDelay + index * 0.03}s` : undefined }}
+      onClick={closeMore}
+    >
+      <span className="app-sheet-link-icon" aria-hidden>{moreLinkIcon(l.icon)}</span>
+      <span className="app-sheet-link-label">{l.label}</span>
+    </Link>
+  );
 
   const moreActive = moreVisible || navLinks.some(
     (l) => l.to !== '/' && !l.to.startsWith('/resources') && isActive(l.to),
@@ -245,12 +274,18 @@ export default function Header() {
       } else {
         x = tabRect.left - innerRect.left + tabRect.width / 2;
       }
+      setNavFrame({ w: innerRect.width });
       setTabDot((prev) => {
         if (prev.ready && prev.x === x) return prev;
         return { x, ready: true };
       });
     });
   }, [activeTabIndex]);
+
+  const navPath = useMemo(
+    () => buildBottomNavPath(navFrame.w, NAV_PILL_H),
+    [navFrame.w],
+  );
 
   useLayoutEffect(() => {
     layoutTabIndicator();
@@ -289,13 +324,23 @@ export default function Header() {
             )}
           </div>
           {isLoggedIn && (
-            <Link to="/admin" className="app-top-admin" title={admin?.displayName}>
-              {admin?.displayName?.charAt(0).toUpperCase() || 'A'}
+            <Link
+              to="/admin/profile"
+              className="app-top-admin"
+              title={admin?.displayName}
+              aria-label={t('admin.myProfile')}
+            >
+              <IconAdmin />
             </Link>
           )}
           {!isLoggedIn && currentUser && (
-            <Link to="/profile" className="app-top-admin" title={currentUser.displayName}>
-              {currentUser.displayName.charAt(0).toUpperCase()}
+            <Link
+              to="/profile"
+              className="app-top-admin"
+              title={currentUser.displayName}
+              aria-label={currentUser.displayName}
+            >
+              <IconUser />
             </Link>
           )}
         </div>
@@ -382,89 +427,120 @@ export default function Header() {
               </button>
             </div>
 
-            {moreNavLinks.length > 0 && (
-              <>
+            {workspaceLinks.length > 0 && (
+              <section className="app-sheet-section app-sheet-option" style={{ animationDelay: moreOpen ? '0.05s' : undefined }}>
+                <p className="app-sheet-section__label">
+                  {lang === 'ar' ? 'مساحة العمل' : 'Workspace'}
+                </p>
                 <nav className="app-sheet-nav">
-                  {moreNavLinks.map((l, index) => (
-                    <Link
-                      key={l.to}
-                      to={l.to}
-                      className={`mobile-link app-sheet-option ${isActive(l.to) ? 'active' : ''}`}
-                      style={{ animationDelay: moreOpen ? `${0.06 + index * 0.035}s` : undefined }}
-                      onClick={closeMore}
-                    >
-                      {l.label}
-                    </Link>
-                  ))}
+                  {workspaceLinks.map((l, i) => renderMoreLink(l, i, 0.06))}
                 </nav>
-                <div
-                  className="mobile-divider app-sheet-option"
-                  style={{ animationDelay: moreOpen ? '0.12s' : undefined }}
-                />
-              </>
+              </section>
             )}
 
-            {currentUser ? (
-              <>
-                <Link
-                  to="/profile"
-                  className="mobile-link mobile-link--icon app-sheet-option"
-                  style={{ animationDelay: moreOpen ? '0.14s' : undefined }}
-                  onClick={closeMore}
-                >
-                  <IconUser />
-                  <span>{currentUser.displayName}</span>
-                </Link>
-                <button
-                  type="button"
-                  className="mobile-link mobile-logout app-sheet-option"
-                  style={{ animationDelay: moreOpen ? '0.17s' : undefined }}
-                  onClick={handleUserLogout}
-                >
-                  {t('admin.userMgmt.signOut')}
-                </button>
-              </>
-            ) : (
-              <Link
-                to="/login"
-                className="mobile-link mobile-link--icon app-sheet-option"
-                style={{ animationDelay: moreOpen ? '0.14s' : undefined }}
-                onClick={closeMore}
-              >
-                <IconLogin />
-                <span>{t('admin.userMgmt.signIn')}</span>
-              </Link>
+            {manageLinks.length > 0 && (
+              <section className="app-sheet-section app-sheet-option" style={{ animationDelay: moreOpen ? '0.1s' : undefined }}>
+                <p className="app-sheet-section__label">
+                  {lang === 'ar' ? 'الإدارة' : 'Management'}
+                </p>
+                <nav className="app-sheet-nav">
+                  {manageLinks.map((l, i) => renderMoreLink(l, i, 0.12))}
+                </nav>
+              </section>
             )}
 
-            {isLoggedIn && (
-              <>
-                <div className="mobile-divider app-sheet-option" style={{ animationDelay: moreOpen ? '0.23s' : undefined }} />
-                <span
-                  className="app-sheet-badge app-sheet-option"
-                  style={{ animationDelay: moreOpen ? '0.26s' : undefined }}
-                >
-                  {admin?.displayName}
-                </span>
-                <button
-                  type="button"
-                  className="mobile-link mobile-logout app-sheet-option"
-                  style={{ animationDelay: moreOpen ? '0.29s' : undefined }}
-                  onClick={handleLogout}
-                >
-                  {t('nav.logout')}
-                </button>
-              </>
+            {(currentUser || isLoggedIn || !isLoggedIn) && (
+              <section className="app-sheet-account app-sheet-option" style={{ animationDelay: moreOpen ? '0.18s' : undefined }}>
+                {currentUser && (
+                  <Link
+                    to="/profile"
+                    className="app-sheet-account__row"
+                    onClick={closeMore}
+                  >
+                    <span className="app-sheet-account__avatar" aria-hidden>
+                      <IconUser />
+                    </span>
+                    <span className="app-sheet-account__meta">
+                      <span className="app-sheet-account__name">{currentUser.displayName}</span>
+                      <span className="app-sheet-account__role">
+                        {lang === 'ar' ? 'طالب' : 'Student'}
+                      </span>
+                    </span>
+                  </Link>
+                )}
+
+                {isLoggedIn && (
+                  <Link
+                    to="/admin/profile"
+                    className="app-sheet-account__row"
+                    onClick={closeMore}
+                  >
+                    <span className="app-sheet-account__avatar app-sheet-account__avatar--admin" aria-hidden>
+                      <IconAdmin />
+                    </span>
+                    <span className="app-sheet-account__meta">
+                      <span className="app-sheet-account__name">{admin?.displayName}</span>
+                      <span className="app-sheet-account__role">
+                        {isSuperAdmin
+                          ? (lang === 'ar' ? 'سوبر أدمن' : 'Super Admin')
+                          : (lang === 'ar' ? 'مسؤول' : 'Admin')}
+                      </span>
+                    </span>
+                  </Link>
+                )}
+
+                {!currentUser && !isLoggedIn && (
+                  <Link
+                    to="/login"
+                    className="app-sheet-account__row app-sheet-account__row--login"
+                    onClick={closeMore}
+                  >
+                    <span className="app-sheet-account__avatar" aria-hidden>
+                      <IconLogin />
+                    </span>
+                    <span className="app-sheet-account__meta">
+                      <span className="app-sheet-account__name">{t('admin.userMgmt.signIn')}</span>
+                    </span>
+                  </Link>
+                )}
+
+                {(currentUser || isLoggedIn) && (
+                  <div className="app-sheet-account__actions">
+                    {currentUser && (
+                      <button type="button" className="app-sheet-account__logout" onClick={handleUserLogout}>
+                        {t('admin.userMgmt.signOut')}
+                      </button>
+                    )}
+                    {isLoggedIn && (
+                      <button type="button" className="app-sheet-account__logout" onClick={handleLogout}>
+                        {t('nav.logout')}
+                      </button>
+                    )}
+                  </div>
+                )}
+              </section>
             )}
           </div>
         </div>
       )}
 
       <nav className="app-bottom-bar" aria-label="Main navigation">
-        <div className="app-bottom-inner app-bottom-inner--dock" ref={bottomInnerRef}>
-          <span
-            className={`app-tab-dot ${tabDot.ready ? 'is-ready' : ''}`}
+        <div
+          className="app-bottom-inner app-bottom-inner--dock"
+          ref={bottomInnerRef}
+        >
+          <svg
+            className="app-bottom-nav-shape"
+            viewBox={`0 0 ${Math.max(navFrame.w, 1)} ${NAV_PILL_H}`}
+            preserveAspectRatio="none"
             aria-hidden
-            style={{ transform: `translateX(${tabDot.x}px) translateX(-50%)` }}
+          >
+            <path className="app-bottom-nav-shape__fill" d={navPath} />
+          </svg>
+          <div
+            className={`app-bottom-nav-dot ${tabDot.ready ? 'is-ready' : ''}`}
+            aria-hidden
+            style={{ left: `${tabDot.x}px` }}
           />
           <div className="app-bottom-rail">
             <Link
@@ -482,7 +558,17 @@ export default function Header() {
             >
               <NotificationBell className="app-tab-bell-btn" />
             </div>
-            <span className="app-bottom-rail-gap" aria-hidden />
+            <Link
+              ref={setTabRef(CENTER_TAB_INDEX)}
+              to="/"
+              className={`app-tab app-tab--rail app-tab--schedule ${activeTabIndex === CENTER_TAB_INDEX ? 'active' : ''}`}
+              onClick={() => { closeTheme(); closeMore(); }}
+              aria-label={t('nav.schedule')}
+            >
+              <span className="app-tab-schedule-mark">
+                <IconCalendar className="app-nav-icon app-nav-icon--schedule" />
+              </span>
+            </Link>
             <button
               ref={setTabRef(3)}
               type="button"
@@ -511,15 +597,6 @@ export default function Header() {
               <span className="app-tab-label">{t('nav.more')}</span>
             </button>
           </div>
-          <Link
-            ref={setTabRef(CENTER_TAB_INDEX)}
-            to="/"
-            className={`app-tab-fab ${activeTabIndex === CENTER_TAB_INDEX ? 'active' : ''}`}
-            onClick={() => { closeTheme(); closeMore(); }}
-            aria-label={t('nav.schedule')}
-          >
-            <IconCalendar className="app-nav-icon app-nav-icon--fab" />
-          </Link>
         </div>
       </nav>
     </div>

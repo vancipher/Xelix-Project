@@ -121,6 +121,7 @@ export default function App() {
       <ThemeEffects />
       <Header />
       <AppRoutes />
+      <div className="app-bottom-fade" aria-hidden />
       <Footer />
     </div>
   );
