@@ -32,51 +32,52 @@ export default function ResourcesPage() {
 
   return (
     <div className="resources-page">
-      <div className="resources-header">
-        <div>
-          <h1 className="resources-title">{t('resources.title')}</h1>
-          <p className="resources-sub">{t('resources.subtitle')}</p>
+      <header className="resources-header">
+        <h1 className="resources-title">{t('resources.title')}</h1>
+        <p className="resources-sub">{t('resources.subtitle')}</p>
+      </header>
+
+      <div className="resources-controls">
+        <div className="section-tabs resources-section-tabs">
+          {SECTIONS.map((s) => (
+            <button
+              key={s}
+              type="button"
+              className={`section-tab ${activeSection === s ? 'section-tab--active' : ''}`}
+              onClick={() => setActiveSection(s)}
+            >
+              {t(`sections.${s}`)}
+            </button>
+          ))}
+        </div>
+
+        <div className="res-type-tabs">
+          <button
+            type="button"
+            className={`res-type-tab ${activeTab === 'pdf' ? 'res-type-tab--active res-type-tab--pdf' : ''}`}
+            onClick={() => { setActiveTab('pdf'); setOpenSubject(null); }}
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
+              <path d="M4 1h5l4 4v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z" stroke="currentColor" strokeWidth="1.3"/>
+              <path d="M9 1v4h4" stroke="currentColor" strokeWidth="1.3"/>
+            </svg>
+            <span>{t('resources.pdfResources')}</span>
+          </button>
+          <button
+            type="button"
+            className={`res-type-tab ${activeTab === 'youtube' ? 'res-type-tab--active res-type-tab--yt' : ''}`}
+            onClick={() => { setActiveTab('youtube'); setOpenSubject(null); }}
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
+              <path d="M6.5 4.5l5 3.5-5 3.5V4.5z" fill="currentColor"/>
+              <rect x="1" y="3" width="14" height="10" rx="2" stroke="currentColor" strokeWidth="1.3" fill="none"/>
+            </svg>
+            <span>{t('resources.youtubeResources')}</span>
+          </button>
         </div>
       </div>
 
-      {/* Section tabs */}
-      <div className="section-tabs">
-        {SECTIONS.map((s) => (
-          <button
-            key={s}
-            className={`section-tab ${activeSection === s ? 'section-tab--active' : ''}`}
-            onClick={() => setActiveSection(s)}
-          >
-            {t(`sections.${s}`)}
-          </button>
-        ))}
-      </div>
-
-      {/* PDF / YouTube type tabs */}
-      <div className="res-type-tabs">
-        <button
-          className={`res-type-tab ${activeTab === 'pdf' ? 'res-type-tab--active res-type-tab--pdf' : ''}`}
-          onClick={() => { setActiveTab('pdf'); setOpenSubject(null); }}
-        >
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path d="M4 1h5l4 4v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z" stroke="currentColor" strokeWidth="1.3"/>
-            <path d="M9 1v4h4" stroke="currentColor" strokeWidth="1.3"/>
-          </svg>
-          {t('resources.pdfResources')}
-        </button>
-        <button
-          className={`res-type-tab ${activeTab === 'youtube' ? 'res-type-tab--active res-type-tab--yt' : ''}`}
-          onClick={() => { setActiveTab('youtube'); setOpenSubject(null); }}
-        >
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path d="M6.5 4.5l5 3.5-5 3.5V4.5z" fill="currentColor"/>
-            <rect x="1" y="3" width="14" height="10" rx="2" stroke="currentColor" strokeWidth="1.3" fill="none"/>
-          </svg>
-          {t('resources.youtubeResources')}
-        </button>
-      </div>
-
-      {/* Subject cards */}
+      <div className="resources-body">
       {subjects.length === 0 ? (
         <div className="res-empty glass">
           <p>{t('resources.noSubjects')}</p>
@@ -186,6 +187,7 @@ export default function ResourcesPage() {
           })}
         </div>
       )}
+      </div>
     </div>
   );
 }

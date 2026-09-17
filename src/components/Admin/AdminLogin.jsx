@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useT } from '../../utils/i18n';
+import BrandLogo from '../Layout/BrandLogo';
+import './admin-shared.css';
 import './AdminLogin.css';
 
 export default function AdminLogin() {
@@ -32,12 +34,11 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="login-page">
+    <div className="admin-page login-page">
       <div className="login-card glass">
         {/* Brand */}
         <div className="login-brand">
-          <span className="login-logo-mark">X</span>
-          <span className="login-logo-text">elix</span>
+          <BrandLogo markClass="login-logo-mark" textClass="login-logo-text" />
         </div>
         <h1 className="login-title">{t('admin.login')}</h1>
         <p className="login-sub">{t('appTagline')}</p>

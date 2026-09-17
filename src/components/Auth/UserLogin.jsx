@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useUserAuth } from '../../contexts/UserAuthContext';
+import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useT } from '../../utils/i18n';
+import BrandLogo from '../Layout/BrandLogo';
 import './UserAuth.css';
 
 export default function UserLogin() {
   const { login, loading, error, setError } = useUserAuth();
+  const { login: adminLogin, ready: adminReady } = useAuth();
   const { lang } = useLanguage();
   const navigate = useNavigate();
   const t = useT(lang);
@@ -18,7 +21,15 @@ export default function UserLogin() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    const success = await login(username.trim(), password);
+    const u = username.trim();
+    const p = password;
+
+    if (adminReady && adminLogin(u, p)) {
+      navigate('/admin');
+      return;
+    }
+
+    const success = await login(u, p);
     if (success) {
       navigate('/');
     }
@@ -27,9 +38,8 @@ export default function UserLogin() {
   return (
     <div className="auth-page">
       <div className="auth-card glass">
-        {/* Brand — always LTR */}
         <div className="auth-brand">
-          <span className="auth-logo-mark">X</span><span className="auth-logo-text">elix</span>
+          <BrandLogo markClass="auth-logo-mark" textClass="auth-logo-text" />
         </div>
         <h1 className="auth-title">{t('auth.signIn')}</h1>
         <p className="auth-sub">{t('auth.welcomeBack')}</p>

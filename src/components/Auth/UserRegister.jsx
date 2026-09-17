@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useUserAuth } from '../../contexts/UserAuthContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useT } from '../../utils/i18n';
+import BrandLogo from '../Layout/BrandLogo';
 import './UserAuth.css';
 
 export default function UserRegister() {
@@ -37,7 +38,7 @@ export default function UserRegister() {
       <div className="auth-page">
         <div className="auth-card glass">
           <div className="auth-brand">
-            <span className="auth-logo-mark">X</span><span className="auth-logo-text">elix</span>
+            <BrandLogo markClass="auth-logo-mark" textClass="auth-logo-text" />
           </div>
           <div className="auth-pending">
             <div className="pending-icon">⏳</div>
@@ -56,7 +57,7 @@ export default function UserRegister() {
     <div className="auth-page">
       <div className="auth-card glass">
         <div className="auth-brand">
-          <span className="auth-logo-mark">X</span><span className="auth-logo-text">elix</span>
+          <BrandLogo markClass="auth-logo-mark" textClass="auth-logo-text" />
         </div>
         <h1 className="auth-title">{t('auth.register')}</h1>
         <p className="auth-sub">{t('auth.joinCommunity')}</p>

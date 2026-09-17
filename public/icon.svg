@@ -1,8 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
-  <rect width="512" height="512" rx="110" fill="#ffffff"/>
-  <!-- Xelix wordmark: bold X in accent violet + light elix in dark — mirrors light-theme header -->
-  <text x="256" y="308" font-family="Inter,system-ui,-apple-system,'Segoe UI',Arial,sans-serif"
-    font-size="148" text-anchor="middle" dominant-baseline="auto">
-    <tspan font-weight="800" fill="#6c63ff">X</tspan><tspan font-weight="300" fill="#111111" letter-spacing="6">elix</tspan>
-  </text>
+  <rect width="512" height="512" rx="110" fill="#f6ebe2"/>
+  <text x="256" y="300" font-family="Georgia, 'Times New Roman', serif"
+    font-size="168" text-anchor="middle" font-weight="600" fill="#5f6f3d">AB</text>
 </svg>

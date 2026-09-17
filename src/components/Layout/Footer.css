@@ -1,31 +1,106 @@
-/* ── Footer ──────────────────────────────────────────────────────── */
+/* ── Footer (minimal app credit) ─────────────────────────────────── */
 .footer {
-  border-top: 1px solid var(--border);
-  background: var(--bg-secondary);
   margin-top: auto;
+  padding: 8px var(--page-pad) 4px;
+  background: transparent;
+  border: none;
 }
+
 .footer-inner {
-  max-width: 1280px;
+  max-width: var(--page-max);
   margin: 0 auto;
-  padding: 20px 24px;
+  padding: 10px 14px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: transparent;
+  border: none;
+}
+
+.footer-brand {
   display: flex;
   align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
   justify-content: center;
+  margin-bottom: 6px;
+  line-height: 0;
+  opacity: 0.92;
+  transition: opacity 0.15s ease;
 }
-.footer-brand {
-  font-family: var(--font-en);
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--text-muted);
-  letter-spacing: 1px;
+.footer-brand:hover {
+  opacity: 1;
 }
-.foot-x { color: var(--accent); }
-.footer-sep { color: var(--border); }
+
+.footer-brand-mark {
+  display: block;
+  width: clamp(48px, 14vw, 58px);
+  height: clamp(28px, 8vw, 36px);
+  background-color: var(--footer-logo-color, var(--accent));
+  -webkit-mask-image: url('/brand/logo-mark.png');
+  mask-image: url('/brand/logo-mark.png');
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  transition: background-color 0.15s ease;
+}
+
+.footer-brand:hover .footer-brand-mark {
+  background-color: var(--footer-logo-color-hover, var(--accent-hover));
+}
+
 .footer-credit {
-  font-size: 0.8rem;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  line-height: 1.45;
   color: var(--text-muted);
 }
-.footer-credit strong { color: var(--text-secondary); font-weight: 600; }
-.footer-team { color: var(--accent); font-weight: 600; }
+
+.footer-credit-main {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px 8px;
+}
+
+.footer-team {
+  color: var(--accent);
+  font-weight: 700;
+  text-decoration: none;
+  transition: opacity 0.15s ease;
+}
+.footer-team:hover {
+  text-decoration: underline;
+  opacity: 0.9;
+}
+
+.footer-designer {
+  color: var(--text-secondary);
+  font-family: thmanyahSerifDisplay, thmanyahSans, 'Segoe UI', Tahoma, sans-serif;
+  font-feature-settings: "ss01" 1, "salt" 1, "liga" 1, "rlig" 1, "calt" 1;
+  font-variant-ligatures: common-ligatures contextual;
+  font-weight: 600;
+  font-size: 0.68rem;
+  letter-spacing: 0;
+  opacity: 0.62;
+}
+
+@media (max-width: 480px) {
+  .footer-inner {
+    padding: 10px 12px;
+  }
+  .footer-credit {
+    font-size: 0.68rem;
+    gap: 5px 6px;
+  }
+}

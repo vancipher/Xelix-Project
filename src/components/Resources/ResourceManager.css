@@ -1,47 +1,58 @@
 /* ── Admin Resource Manager ────────────────────────────────── */
 
 .rman-page {
-  max-width: 820px;
-  margin: 0 auto;
-  padding: 24px 16px 60px;
+  position: relative;
 }
 
-.rman-header {
-  margin-bottom: 20px;
+.rman-type-tabs.res-type-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  width: 100%;
+  margin: 0;
 }
 
-.rman-title {
-  font-size: 1.5rem;
+.rman-type-tabs .res-type-tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1.5px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  font-size: 0.8rem;
   font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  font-family: inherit;
+  min-width: 0;
+  line-height: 1.25;
+}
+
+.rman-type-tabs .res-type-tab:hover {
+  border-color: var(--accent);
   color: var(--accent);
 }
 
-.rman-sub {
-  font-size: .85rem;
-  color: var(--text-secondary);
-  margin-top: 4px;
+.rman-type-tabs .res-type-tab--active {
+  color: #fff;
 }
 
-/* ── Add‑Subject Button ──────────────────────────────────── */
+.rman-type-tabs .res-type-tab--pdf.res-type-tab--active {
+  background: #e53935;
+  border-color: #e53935;
+}
+
+.rman-type-tabs .res-type-tab--yt.res-type-tab--active {
+  background: #ff0000;
+  border-color: #ff0000;
+}
 
 .rman-add-subject {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 16px;
-  border: none;
-  border-radius: 8px;
-  background: var(--accent);
-  color: #fff;
-  font-size: .85rem;
-  font-weight: 600;
-  cursor: pointer;
-  margin-bottom: 18px;
-  transition: opacity .2s;
-}
-
-.rman-add-subject:hover {
-  opacity: .85;
+  margin: 0 auto 18px;
+  display: flex;
 }
 
 /* ── Subject Cards ───────────────────────────────────────── */

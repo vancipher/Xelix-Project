@@ -9,7 +9,9 @@ import {
 } from '../../utils/helpers';
 import Modal from '../UI/Modal';
 import EventForm from './EventForm';
+import WeekNav from '../Schedule/WeekNav';
 import { sendEventPushNotification } from '../../utils/notifications';
+import './admin-shared.css';
 import './AdminDashboard.css';
 
 export default function AdminDashboard() {
@@ -124,25 +126,23 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="dashboard-page">
-      {/* Page header */}
-      <div className="dash-header">
-        <div>
-          <h1 className="dash-title">{t('admin.dashboard')}</h1>
-          <p className="dash-sub">
-            {t('admin.loggedInAs')} <strong>{admin?.displayName}</strong>
-          </p>
-        </div>
-      </div>
+    <div className="admin-page dashboard-page">
+      <header className="admin-page-header">
+        <h1 className="admin-page-title">{t('admin.dashboard')}</h1>
+        <p className="admin-page-sub">
+          {t('admin.loggedInAs')} <strong>{admin?.displayName}</strong>
+        </p>
+      </header>
 
-      {/* Section tabs */}
-      <div className="dash-section-tabs">
+      <div className="admin-controls">
+        <div className="section-tabs">
         {SECTIONS.map((s) => {
           const hasAccess = SECTION_GROUPS[s].some((g) => accessibleGroups.includes(g));
           if (!hasAccess) return null;
           return (
             <button
               key={s}
+              type="button"
               className={`section-tab ${activeSection === s ? 'section-tab--active' : ''}`}
               onClick={() => {
                 setActiveSection(s);
@@ -154,47 +154,30 @@ export default function AdminDashboard() {
             </button>
           );
         })}
-      </div>
+        </div>
 
-      {/* Group tabs */}
-      <div className="dash-group-tabs">
+        <div className="group-tabs group-tabs--spaced">
         {sectionGroups.map((g) => (
           <button
             key={g}
-            className={`dash-group-tab ${activeGroup === g ? 'dash-group-tab--active' : ''}`}
+            type="button"
+            className={`group-tab ${activeGroup === g ? 'group-tab--active' : ''}`}
             onClick={() => setActiveGroup(g)}
           >
             {t(`groups.${g}`)}
           </button>
         ))}
-      </div>
-
-      {/* Week navigation */}
-      <div className="week-nav" dir="ltr">
-        <button className="week-nav-btn" onClick={() => setWeekOffset((o) => lang === 'ar' ? o + 1 : o - 1)}>
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path d="M10 3L5 8l5 5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </button>
-        <div className="week-nav-center">
-          <span className="week-nav-label">{weekLabel}</span>
-          {weekOffset === 0 ? (
-            <span className="week-nav-current">{t('schedule.thisWeek')}</span>
-          ) : (
-            <button className="week-nav-today" onClick={() => setWeekOffset(0)}>
-              ↩ {t('schedule.thisWeek')}
-            </button>
-          )}
         </div>
-        <button className="week-nav-btn" onClick={() => setWeekOffset((o) => lang === 'ar' ? o - 1 : o + 1)}>
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </button>
+
+        <WeekNav
+          weekOffset={weekOffset}
+          setWeekOffset={setWeekOffset}
+          weekDates={weekDates}
+          weekLabel={weekLabel}
+        />
       </div>
 
-      {/* Days grid */}
-      <div className="dash-grid">
+      <div className="admin-panel dash-grid">
         {DAY_KEYS.map((dayKey) => {
           const dayData = getDayFiltered(activeGroup, dayKey, weekDates[dayKey]);
           const hasImportant = dayData.events.some((e) => e.isImportant);

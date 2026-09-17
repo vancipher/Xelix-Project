@@ -1,25 +1,6 @@
 /* ── User Activity Page ────────────────────────────────────────── */
 .ua-page {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 24px 16px;
-}
-
-.ua-header {
-  margin-bottom: 24px;
-}
-
-.ua-title {
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin: 0 0 4px 0;
-}
-
-.ua-sub {
-  font-size: 14px;
-  color: var(--text-secondary);
-  margin: 0;
+  position: relative;
 }
 
 .ua-loading,

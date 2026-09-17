@@ -1,0 +1,51 @@
+/* Thmanyah — After Rain studio fonts (self-hosted, same files as afterain.dev) */
+@font-face {
+  font-family: thmanyahSans;
+  src: url('/fonts/thmanyah/thmanyahsans_Regular-s.p.0o0gt2g3ym172.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: thmanyahSans;
+  src: url('/fonts/thmanyah/thmanyahsans_Medium-s.p.1bmepgtgqpy4i.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: thmanyahSans;
+  src: url('/fonts/thmanyah/thmanyahsans_Bold-s.p.2su9fyp37t-l0.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: thmanyahSans;
+  src: url('/fonts/thmanyah/thmanyahsans_Black-s.p.3y-fczom-didk.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: thmanyahSerifDisplay;
+  src: url('/fonts/thmanyah/thmanyahserifdisplay_Regular-s.p.2g1u361r8-amp.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: thmanyahSerifDisplay;
+  src: url('/fonts/thmanyah/thmanyahserifdisplay_Medium-s.p.37-bee8ms4atz.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: thmanyahSerifDisplay;
+  src: url('/fonts/thmanyah/thmanyahserifdisplay_Bold-s.p.0loz7cdo2h9uh.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}

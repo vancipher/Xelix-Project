@@ -3,6 +3,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useT } from '../../utils/i18n';
 import { supabase } from '../../firebase';
+import './admin-shared.css';
 import './AdminUserActivity.css';
 
 const REACTION_EMOJI = { happy: '😊', afraid: '😰', angry: '😠' };
@@ -67,18 +68,18 @@ export default function AdminUserActivity() {
   if (!isLoggedIn) return null;
 
   return (
-    <div className="ua-page">
-      <div className="ua-header">
-        <h1 className="ua-title">{t('admin.userActivity')}</h1>
-        <p className="ua-sub">{users.length} {t('admin.userMgmt.totalUsers')}</p>
-      </div>
+    <div className="admin-page ua-page">
+      <header className="admin-page-header">
+        <h1 className="admin-page-title">{t('admin.userActivity')}</h1>
+        <p className="admin-page-sub">{users.length} {t('admin.userMgmt.totalUsers')}</p>
+      </header>
 
       {loading ? (
         <div className="ua-loading">{t('admin.userMgmt.loading')}</div>
       ) : users.length === 0 ? (
         <div className="ua-empty">{t('admin.userMgmt.noUsers')}</div>
       ) : (
-        <div className="ua-list">
+        <div className="admin-panel ua-list">
           {users.map(u => (
             <div key={u.id} className={`ua-row glass ${expanded === u.id ? 'ua-row--open' : ''}`}>
               {/* Row header */}

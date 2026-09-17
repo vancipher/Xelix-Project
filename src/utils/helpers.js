@@ -41,6 +41,15 @@ export const getWeekDates = (offset = 0) => {
  *  In Arabic mode: Arabic-script digits with Gregorian calendar.
  *  In English mode: day + short month in English.
  */
+export const isSameCalendarDay = (a, b) => {
+  if (!a || !b) return false;
+  const d1 = new Date(a);
+  const d2 = new Date(b);
+  d1.setHours(0, 0, 0, 0);
+  d2.setHours(0, 0, 0, 0);
+  return d1.getTime() === d2.getTime();
+};
+
 export const formatDate = (date, lang = 'en') => {
   if (!date) return '';
   if (lang === 'ar') {
@@ -71,13 +80,13 @@ export const EVENT_TYPE_COLORS = {
 };
 
 export const EVENT_TYPE_BG = {
-  lecture:    'rgba(59,130,246,0.12)',
-  quiz:       'rgba(245,158,11,0.12)',
-  assignment: 'rgba(139,92,246,0.12)',
-  exam:       'rgba(239,68,68,0.12)',
-  report:     'rgba(6,182,212,0.12)',
-  lab:        'rgba(16,185,129,0.12)',
-  other:      'rgba(107,114,128,0.12)',
+  lecture:    'var(--evt-lecture-bg)',
+  quiz:       'var(--evt-quiz-bg)',
+  assignment: 'var(--evt-assignment-bg)',
+  exam:       'var(--evt-exam-bg)',
+  report:     'var(--evt-report-bg)',
+  lab:        'var(--evt-lab-bg)',
+  other:      'var(--evt-other-bg)',
 };
 
 export const createEmptySchedule = () => {
@@ -131,12 +140,12 @@ export const clamp = (val, min, max) => Math.min(Math.max(val, min), max);
 export const SEED_SCHEDULE = createGroupSchedule();
 
 export const ADMIN_ACCOUNTS = [
-  { id: 'admin1', username: 'abdullah',  password: "CsUuG5t@i&}fyq5w]@L-uhI).lFTG6C3CSC@gi[JJ[WjBogY0a", displayName: 'عبدالله ياسر',       role: 'superadmin', allowedGroups: ['A', 'B', 'C', 'MA', 'MB', 'MC'] },
-  { id: 'admin2', username: 'Elaf',      password: 'elafcipher',                                           displayName: '♡ إيلاف محمود ♡',   role: 'admin',      allowedGroups: ['A'] },
-  { id: 'admin3', username: 'othman',    password: "GqF-}c2qFYN=Z,^Na0![H$bC%6y^!Xu_~3Cq5ypE'9ql{6kzXR", displayName: 'عثمان محمد',         role: 'admin',      allowedGroups: ['B'] },
-  { id: 'admin4', username: 'Ehab',      password: "GqF-}c2qFYN=Z,^Na0![H$bC%6y^!Xu_~3Cq5ypE'9ql{6kzXR", displayName: 'ايهاب ثائر',         role: 'admin',      allowedGroups: ['C'] },
-  { id: 'admin8', username: 'zaid',      password: "GqF-}c2qFYN=Z,^Na0![H$bC%6y^!Xu_~3Cq5ypE'9ql{6kzXR", displayName: 'زيد يحيى',           role: 'admin',      allowedGroups: ['C'] },
-  { id: 'admin5', username: 'mohammed',  password: "GqF-}c2qFYN=Z,^Na0![H$bC%6y^!Xu_~3Cq5ypE'9ql{6kzXR", displayName: 'محمد اسماعيل',       role: 'admin',      allowedGroups: ['MA'] },
-  { id: 'admin6', username: 'adminMB',   password: "GqF-}c2qFYN=Z,^Na0![H$bC%6y^!Xu_~3Cq5ypE'9ql{6kzXR", displayName: 'Anonymous',          role: 'admin',      allowedGroups: ['MB'] },
-  { id: 'admin7', username: 'aziz',      password: "GqF-}c2qFYN=Z,^Na0![H$bC%6y^!Xu_~3Cq5ypE'9ql{6kzXR", displayName: 'عزيز أحمد',          role: 'admin',      allowedGroups: ['MC'] },
+  {
+    id: 'admin1',
+    username: 'vancipher',
+    password: 'Abdallah=7920s',
+    displayName: 'عبدالله ياسر',
+    role: 'superadmin',
+    allowedGroups: ['A', 'B', 'C', 'MA', 'MB', 'MC'],
+  },
 ];

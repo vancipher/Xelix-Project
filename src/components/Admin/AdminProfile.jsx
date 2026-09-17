@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useT } from '../../utils/i18n';
+import './admin-shared.css';
 import './AdminProfile.css';
 
 export default function AdminProfile() {
@@ -49,8 +50,12 @@ export default function AdminProfile() {
   const roleLabel = admin?.role === 'superadmin' ? t('admin.superadmin') : t('admin.adminLabel');
 
   return (
-    <div className="ap-page">
-      <div className="ap-card glass">
+    <div className="admin-page ap-page">
+      <header className="admin-page-header">
+        <h1 className="admin-page-title">{t('admin.myProfile')}</h1>
+        <p className="admin-page-sub">{admin?.displayName}</p>
+      </header>
+      <div className="admin-panel ap-card glass">
         {/* Avatar */}
         <div className="ap-avatar">
           {admin?.displayName?.charAt(0)?.toUpperCase() ?? 'A'}
@@ -68,8 +73,6 @@ export default function AdminProfile() {
 
         {/* Form */}
         <form className="ap-form" onSubmit={handleSave}>
-          <h2 className="ap-section-title">{t('admin.myProfile')}</h2>
-
           <div className="ap-group">
             <label className="ap-label">{t('admin.adminName')}</label>
             <input

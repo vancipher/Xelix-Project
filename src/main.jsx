@@ -9,7 +9,10 @@ import { ScheduleProvider } from './contexts/ScheduleContext';
 import { GroupProvider } from './contexts/GroupContext';
 import { ResourcesProvider } from './contexts/ResourcesContext';
 import App from './App';
+import { initPwaUpdates } from './utils/pwaUpdate';
 import './index.css';
+
+initPwaUpdates();
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

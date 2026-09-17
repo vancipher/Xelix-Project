@@ -4,6 +4,7 @@ import { useLanguage } from '../../contexts/LanguageContext';
 import { useT } from '../../utils/i18n';
 import { supabase } from '../../firebase';
 import { sendEventPushNotification } from '../../utils/notifications';
+import './admin-shared.css';
 import './UserManagement.css';
 
 const PENDING_BACKUP_KEY = 'xelix-pending-users';
@@ -167,8 +168,8 @@ export default function UserManagement() {
 
   if (!canAccess) {
     return (
-      <div className="um-page">
-        <div className="um-forbidden glass">
+      <div className="admin-page um-page">
+        <div className="admin-forbidden glass">
           <p>{t('admin.userMgmt.restricted')}</p>
         </div>
       </div>
@@ -183,47 +184,48 @@ export default function UserManagement() {
   });
 
   return (
-    <div className="um-page">
-      {toast && <div className="um-toast">{toast}</div>}
+    <div className="admin-page um-page">
+      {toast && <div className="admin-toast">{toast}</div>}
 
-      {/* Header */}
-      <div className="um-header">
-        <div>
-          <h1 className="um-title">{t('admin.userMgmt.title')}</h1>
-          <p className="um-sub">{users.length} {t('admin.userMgmt.totalUsers')}</p>
-        </div>
-      </div>
+      <header className="admin-page-header">
+        <h1 className="admin-page-title">{t('admin.userMgmt.title')}</h1>
+        <p className="admin-page-sub">{users.length} {t('admin.userMgmt.totalUsers')}</p>
+      </header>
 
-      {/* Filter */}
-      <div className="um-filter">
+      <div className="admin-controls">
+        <div className="section-tabs um-filter">
         <button
-          className={`filter-btn ${filter === 'all' ? 'active' : ''}`}
+          type="button"
+          className={`section-tab ${filter === 'all' ? 'section-tab--active' : ''}`}
           onClick={() => setFilter('all')}
         >
           {t('admin.userMgmt.all')} ({users.length})
         </button>
         <button
-          className={`filter-btn ${filter === 'pending' ? 'active' : ''}`}
+          type="button"
+          className={`section-tab ${filter === 'pending' ? 'section-tab--active' : ''}`}
           onClick={() => setFilter('pending')}
         >
           {t('admin.userMgmt.pending')} ({users.filter(u => !u.approved && !u.banned).length})
         </button>
         <button
-          className={`filter-btn ${filter === 'active' ? 'active' : ''}`}
+          type="button"
+          className={`section-tab ${filter === 'active' ? 'section-tab--active' : ''}`}
           onClick={() => setFilter('active')}
         >
           {t('admin.userMgmt.active')} ({users.filter(u => u.approved && !u.banned).length})
         </button>
         <button
-          className={`filter-btn ${filter === 'banned' ? 'active' : ''}`}
+          type="button"
+          className={`section-tab ${filter === 'banned' ? 'section-tab--active' : ''}`}
           onClick={() => setFilter('banned')}
         >
           {t('admin.userMgmt.banned')} ({users.filter(u => u.banned).length})
         </button>
+        </div>
       </div>
 
-      {/* Users List */}
-      <div className="um-list">
+      <div className="admin-panel admin-panel--wide um-list">
         {loading ? (
           <div className="um-loading">{t('admin.userMgmt.loading')}</div>
         ) : filteredUsers.length === 0 ? (

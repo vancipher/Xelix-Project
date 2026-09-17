@@ -679,3 +679,192 @@
   100% { opacity: 0.8; }
 }
 
+/* ── Horizon — blended landscape (sun / rose / purple / olive / sea) ─ */
+.txfx-horizon-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.txfx-horizon-sky {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(254,243,199,0.35) 0%,
+    rgba(253,244,251,0.18) 28%,
+    rgba(240,244,248,0.12) 55%,
+    rgba(232,245,240,0.15) 100%
+  );
+  animation: txfxHorizonSky 14s ease-in-out infinite alternate;
+}
+@keyframes txfxHorizonSky {
+  0%   { opacity: 0.65; }
+  100% { opacity: 1; }
+}
+
+.txfx-horizon-sun {
+  position: absolute;
+  top: -72px;
+  left: 50%;
+  width: 200px;
+  height: 200px;
+  margin-left: -100px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 40% 35%,
+    rgba(255,240,180,0.95) 0%,
+    rgba(250,180,80,0.55) 35%,
+    rgba(214,51,132,0.15) 70%,
+    transparent 72%
+  );
+  filter: blur(6px);
+  animation: txfxHorizonSun 10s ease-in-out infinite alternate;
+}
+@keyframes txfxHorizonSun {
+  0%   { transform: scale(0.92); opacity: 0.55; }
+  100% { transform: scale(1.06); opacity: 0.85; }
+}
+
+.txfx-horizon-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(28px);
+  animation: txfxHorizonOrb 12s ease-in-out infinite alternate;
+}
+.txfx-horizon-orb--rose {
+  width: 140px;
+  height: 140px;
+  top: 18%;
+  left: 8%;
+  background: rgba(214,51,132,0.22);
+  animation-delay: -3s;
+}
+.txfx-horizon-orb--purple {
+  width: 120px;
+  height: 120px;
+  top: 22%;
+  right: 6%;
+  background: rgba(168,85,247,0.20);
+  animation-delay: -6s;
+}
+@keyframes txfxHorizonOrb {
+  0%   { transform: translate(0, 0) scale(0.9);  opacity: 0.45; }
+  100% { transform: translate(12px, -8px) scale(1.08); opacity: 0.75; }
+}
+
+.txfx-horizon-sea {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 38vh;
+  background:
+    radial-gradient(ellipse 90% 70% at 50% 100%, rgba(45,122,173,0.28) 0%, transparent 70%),
+    linear-gradient(to top, rgba(45,122,173,0.12) 0%, transparent 100%);
+  animation: txfxHorizonSea 11s ease-in-out infinite alternate;
+}
+@keyframes txfxHorizonSea {
+  0%   { opacity: 0.5; transform: scaleY(0.96); }
+  100% { opacity: 0.9; transform: scaleY(1.03); }
+}
+
+.txfx-horizon-mist {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 160px;
+  background: linear-gradient(
+    to top,
+    rgba(45,122,45,0.14) 0%,
+    rgba(107,144,128,0.08) 45%,
+    transparent 100%
+  );
+  filter: blur(10px);
+  animation: txfxHorizonMist 9s ease-in-out infinite alternate;
+}
+@keyframes txfxHorizonMist {
+  0%   { opacity: 0.45; transform: scaleX(0.97); }
+  100% { opacity: 0.85; transform: scaleX(1.03); }
+}
+
+/* ── Mesa — desert plateau + sun haze ──────────────────────────── */
+.txfx-mesa-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.txfx-mesa-sky {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(254,243,199,0.28) 0%,
+    rgba(247,243,236,0.12) 50%,
+    rgba(239,232,220,0.08) 100%
+  );
+}
+
+.txfx-mesa-sun {
+  position: absolute;
+  top: -48px;
+  right: 18%;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 35% 35%,
+    rgba(255,240,200,0.9) 0%,
+    rgba(245,158,11,0.35) 45%,
+    transparent 70%
+  );
+  filter: blur(8px);
+  animation: txfxMesaSun 9s ease-in-out infinite alternate;
+}
+@keyframes txfxMesaSun {
+  0%   { opacity: 0.45; transform: scale(0.94); }
+  100% { opacity: 0.75; transform: scale(1.05); }
+}
+
+.txfx-mesa-plateau {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 28vh;
+  background:
+    linear-gradient(to top, rgba(120,113,108,0.16) 0%, transparent 100%),
+    linear-gradient(135deg, transparent 40%, rgba(180,83,9,0.08) 100%);
+  clip-path: polygon(0 100%, 0 35%, 18% 42%, 32% 28%, 48% 38%, 62% 22%, 78% 32%, 92% 18%, 100% 30%, 100% 100%);
+  animation: txfxMesaPlateau 13s ease-in-out infinite alternate;
+}
+@keyframes txfxMesaPlateau {
+  0%   { opacity: 0.55; }
+  100% { opacity: 0.85; }
+}
+
+.txfx-mesa-dust {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(
+    to top,
+    rgba(214,180,140,0.18) 0%,
+    transparent 100%
+  );
+  filter: blur(10px);
+  animation: txfxMesaDust 8s ease-in-out infinite alternate;
+}
+@keyframes txfxMesaDust {
+  0%   { opacity: 0.4; transform: scaleX(0.97); }
+  100% { opacity: 0.75; transform: scaleX(1.03); }
+}
+

@@ -1,9 +1,10 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from './contexts/AuthContext';
 import { useUserAuth } from './contexts/UserAuthContext';
 import Header from './components/Layout/Header';
 import Footer from './components/Layout/Footer';
 import ThemeEffects from './components/Layout/ThemeEffects';
+import VisitTracker from './components/Layout/VisitTracker';
 import WeeklySchedule from './components/Schedule/WeeklySchedule';
 import AdminLogin from './components/Admin/AdminLogin';
 import AdminDashboard from './components/Admin/AdminDashboard';
@@ -28,16 +29,22 @@ function UserProtectedRoute({ children }) {
   return isLoggedIn ? children : <Navigate to="/login" replace />;
 }
 
-export default function App() {
+function mainSectionKey(pathname) {
+  if (pathname === '/' || pathname === '/resources') return pathname;
+  return 'other';
+}
+
+function AppRoutes() {
+  const location = useLocation();
+  const sectionKey = mainSectionKey(location.pathname);
+
   return (
-    <div className="app-shell">
-      <ThemeEffects />
-      <Header />
-      <main className="app-main">
-        <Routes>
+    <main className="app-main">
+      <div key={sectionKey} className="app-main-stage">
+        <Routes location={location}>
           <Route path="/" element={<WeeklySchedule />} />
           <Route path="/resources" element={<ResourcesPage />} />
-          
+
           {/* User Auth Routes */}
           <Route path="/login" element={<UserLogin />} />
           <Route path="/register" element={<UserRegister />} />
@@ -49,7 +56,7 @@ export default function App() {
               </UserProtectedRoute>
             }
           />
-          
+
           {/* Admin Routes - UNCHANGED */}
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route
@@ -102,7 +109,18 @@ export default function App() {
           />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-      </main>
+      </div>
+    </main>
+  );
+}
+
+export default function App() {
+  return (
+    <div className="app-shell">
+      <VisitTracker />
+      <ThemeEffects />
+      <Header />
+      <AppRoutes />
       <Footer />
     </div>
   );

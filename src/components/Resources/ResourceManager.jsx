@@ -5,6 +5,7 @@ import { useLanguage } from '../../contexts/LanguageContext';
 import { useT } from '../../utils/i18n';
 import { SECTIONS, SECTION_GROUPS } from '../../utils/helpers';
 import Modal from '../UI/Modal';
+import '../Admin/admin-shared.css';
 import './ResourceManager.css';
 
 export default function ResourceManager() {
@@ -113,22 +114,23 @@ export default function ResourceManager() {
   };
 
   return (
-    <div className="rman-page">
-      <div className="rman-header">
-        <div>
-          <h1 className="rman-title">{t('resources.manageTitle')}</h1>
-          <p className="rman-sub">{t('admin.loggedInAs')} <strong>{admin?.displayName}</strong></p>
-        </div>
-      </div>
+    <div className="admin-page rman-page">
+      <header className="admin-page-header">
+        <h1 className="admin-page-title">{t('resources.manageTitle')}</h1>
+        <p className="admin-page-sub">
+          {t('admin.loggedInAs')} <strong>{admin?.displayName}</strong>
+        </p>
+      </header>
 
-      {/* Section tabs */}
-      <div className="dash-section-tabs">
+      <div className="admin-controls">
+        <div className="section-tabs">
         {SECTIONS.map((s) => {
           const hasAccess = SECTION_GROUPS[s].some((g) => canAccessGroup(g));
           if (!hasAccess) return null;
           return (
             <button
               key={s}
+              type="button"
               className={`section-tab ${activeSection === s ? 'section-tab--active' : ''}`}
               onClick={() => setActiveSection(s)}
             >
@@ -136,10 +138,9 @@ export default function ResourceManager() {
             </button>
           );
         })}
-      </div>
+        </div>
 
-      {/* Type tabs */}
-      <div className="res-type-tabs" style={{ marginBottom: 20 }}>
+        <div className="res-type-tabs rman-type-tabs">
         <button
           className={`res-type-tab ${activeTab === 'pdf' ? 'res-type-tab--active res-type-tab--pdf' : ''}`}
           onClick={() => { setActiveTab('pdf'); setExpanded(null); }}
@@ -160,10 +161,11 @@ export default function ResourceManager() {
           </svg>
           {t('resources.youtubeResources')}
         </button>
+        </div>
       </div>
 
-      {/* Add subject button */}
-      <button className="rman-add-subject" onClick={openAddSubject}>
+      <div className="admin-panel admin-panel--wide">
+      <button type="button" className="rman-add-subject admin-action-btn" onClick={openAddSubject}>
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
           <path d="M7 1v12M1 7h12" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
         </svg>
@@ -242,6 +244,7 @@ export default function ResourceManager() {
             </div>
           );
         })}
+      </div>
       </div>
 
       {/* Subject Modal */}

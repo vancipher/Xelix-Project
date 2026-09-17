@@ -238,10 +238,29 @@ const CLOUD_SHAPE = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
   <circle cx="15" cy="11" r="3" fill="currentColor" opacity="0.3"/>
 </svg>`;
 
+const PEAK_SHAPE = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <path d="M3 20 L12 4 L21 20 Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" opacity="0.85"/>
+  <path d="M8 20 L12 11 L16 20" fill="currentColor" opacity="0.15"/>
+  <path d="M12 11 L12 20" stroke="currentColor" stroke-width="0.8" opacity="0.35"/>
+</svg>`;
+
+const BOULDER_SHAPE = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <path d="M5 16 Q3 12 6 9 Q9 5 14 6 Q19 7 20 11 Q21 15 17 17 Q12 20 8 18 Z" fill="currentColor" opacity="0.45"/>
+  <path d="M5 16 Q3 12 6 9 Q9 5 14 6 Q19 7 20 11 Q21 15 17 17 Q12 20 8 18 Z" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.65"/>
+</svg>`;
+
+function particleColor(config) {
+  if (config.colors?.length) {
+    return config.colors[Math.floor(Math.random() * config.colors.length)];
+  }
+  return config.color;
+}
+
 function createParticle(container, config, randomStart = false) {
   const el = document.createElement('div');
   el.className = 'txfx-particle';
 
+  const color = particleColor(config);
   const size = config.minSize + Math.random() * (config.maxSize - config.minSize);
   const startX = Math.random() * 100; // vw %
   const delay = Math.random() * config.spawnDelay;
@@ -266,7 +285,7 @@ function createParticle(container, config, randomStart = false) {
       height: ${size}px;
       left: ${startX}vw;
       top: ${startY}vh;
-      color: ${config.color};
+      color: ${color};
       opacity: ${opacity};
       animation: txfxWander ${duration}s ${delay}s ease-in-out infinite alternate;
       --rot-start: ${rotStart}deg;
@@ -292,7 +311,7 @@ function createParticle(container, config, randomStart = false) {
       height: ${size}px;
       left: ${startLeft}vw;
       top: ${startY}vh;
-      color: ${config.color};
+      color: ${color};
       opacity: ${opacity};
       animation: txfxWindRight ${windDur}s ${delay}s linear forwards;
       --rot-start: ${rotStart}deg;
@@ -318,7 +337,7 @@ function createParticle(container, config, randomStart = false) {
     height: ${size}px;
     left: ${startX}vw;
     ${posStyle}
-    color: ${config.color};
+    color: ${color};
     opacity: ${opacity};
     animation: ${animName} ${duration}s ${delay}s linear forwards;
     --rot-start: ${rotStart}deg;
@@ -405,6 +424,43 @@ const CONFIGS = {
     maxParticles: 16,
     wander: true,
   },
+  horizon: {
+    shapes: [
+      SUNFLARE_SHAPE,
+      HEART_SHAPE,
+      STAR_SHAPE,
+      LEAF_GREEN_2,
+      BUBBLE_SHAPE,
+      LAUREL_LEAF,
+    ],
+    colors: ['#d97706', '#d63384', '#a855f7', '#2d7a2d', '#2d7aad'],
+    minSize: 11,
+    maxSize: 26,
+    minOpacity: 0.24,
+    maxOpacity: 0.58,
+    spawnDelay: 0,
+    minDur: 9,
+    durRange: 11,
+    drift: 150,
+    interval: 520,
+    maxParticles: 24,
+    wander: true,
+  },
+  mesa: {
+    shapes: [PEAK_SHAPE, BOULDER_SHAPE, LEAF_ORANGE, LEAF_BROWN, SUNFLARE_SHAPE, SPARK_SHAPE],
+    colors: ['#b45309', '#92400e', '#78716c', '#a16207', '#57534e'],
+    minSize: 12,
+    maxSize: 30,
+    minOpacity: 0.30,
+    maxOpacity: 0.65,
+    spawnDelay: 0,
+    minDur: 8,
+    durRange: 10,
+    drift: 130,
+    interval: 580,
+    maxParticles: 22,
+    wander: true,
+  },
   gold: {
     shapes: [STAR_SHAPE, SPARK_SHAPE],
     color: '#c9a227',
@@ -475,15 +531,6 @@ export default function ThemeEffects() {
         </div>
       )}
 
-      {/* Blurred giant X — dark/crimson theme */}
-      {theme === 'black' && (
-        <div className="txfx-dark-bg" aria-hidden="true">
-          <div className="txfx-x txfx-x--main">X</div>
-          <div className="txfx-x txfx-x--echo">X</div>
-          <div className="txfx-crimson-glow" />
-        </div>
-      )}
-
       {/* Lava blobs — ember/orange theme */}
       {theme === 'orange' && (
         <div className="txfx-lava-bg" aria-hidden="true">
@@ -524,6 +571,27 @@ export default function ThemeEffects() {
           <div className="txfx-sun-orb" />
           <div className="txfx-sun-rays" />
           <div className="txfx-sun-haze" />
+        </div>
+      )}
+
+      {/* Horizon — sunset meadow meets sea (sun / rose / purple / olive / sea) */}
+      {theme === 'horizon' && (
+        <div className="txfx-horizon-bg" aria-hidden="true">
+          <div className="txfx-horizon-sky" />
+          <div className="txfx-horizon-sun" />
+          <div className="txfx-horizon-orb txfx-horizon-orb--rose" />
+          <div className="txfx-horizon-orb txfx-horizon-orb--purple" />
+          <div className="txfx-horizon-sea" />
+          <div className="txfx-horizon-mist" />
+        </div>
+      )}
+
+      {theme === 'mesa' && (
+        <div className="txfx-mesa-bg" aria-hidden="true">
+          <div className="txfx-mesa-sky" />
+          <div className="txfx-mesa-sun" />
+          <div className="txfx-mesa-plateau" />
+          <div className="txfx-mesa-dust" />
         </div>
       )}
 

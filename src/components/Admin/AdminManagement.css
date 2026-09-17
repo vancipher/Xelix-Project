@@ -1,52 +1,7 @@
 /* ── Admin Management ────────────────────────────────────────────── */
 .amp-page {
-  max-width: 860px;
-  margin: 0 auto;
-  padding: 40px 24px 80px;
   position: relative;
 }
-.amp-forbidden {
-  padding: 40px;
-  border-radius: 16px;
-  text-align: center;
-  color: var(--danger);
-  font-weight: 600;
-}
-.amp-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 16px;
-  margin-bottom: 32px;
-}
-.amp-title {
-  font-size: 1.8rem;
-  font-weight: 800;
-  color: var(--text-primary);
-  letter-spacing: -0.4px;
-}
-.amp-sub {
-  margin-top: 4px;
-  font-size: 0.85rem;
-  color: var(--text-muted);
-}
-.amp-add-btn {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  background: var(--accent);
-  color: #fff;
-  border: none;
-  border-radius: 10px;
-  padding: 10px 18px;
-  font-size: 0.85rem;
-  font-weight: 700;
-  cursor: pointer;
-  font-family: inherit;
-  white-space: nowrap;
-}
-.amp-add-btn:hover { background: var(--accent-hover); }
 
 /* List */
 .amp-list {

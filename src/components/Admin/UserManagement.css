@@ -1,94 +1,16 @@
 /* ── User Management Page ──────────────────────────────────────── */
 .um-page {
-  padding: 40px 20px;
-  max-width: 1200px;
-  margin: 0 auto;
+  position: relative;
 }
 
-.um-forbidden {
-  padding: 40px;
+.admin-page .um-filter.section-tabs {
+  width: 100%;
+}
+
+.admin-page .um-filter .section-tab {
+  flex: 1 1 calc(50% - 4px);
+  min-width: 0;
   text-align: center;
-  color: var(--text-secondary);
-  background: var(--bg-card);
-  border-radius: 12px;
-  border: 1px solid var(--border);
-}
-
-/* ── Toast Notification ────────────────────────────────────────── */
-.um-toast {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  padding: 12px 16px;
-  background: var(--accent);
-  color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  z-index: 1000;
-  animation: slideIn 0.3s ease;
-}
-
-@keyframes slideIn {
-  from {
-    transform: translateX(400px);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-/* ── Header ────────────────────────────────────────────────────── */
-.um-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 32px;
-}
-
-.um-title {
-  font-size: 32px;
-  font-weight: 700;
-  margin: 0 0 8px 0;
-  color: var(--text-primary);
-}
-
-.um-sub {
-  font-size: 14px;
-  color: var(--text-secondary);
-  margin: 0;
-}
-
-/* ── Filter Buttons ────────────────────────────────────────────── */
-.um-filter {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 24px;
-  flex-wrap: wrap;
-}
-
-.filter-btn {
-  padding: 8px 16px;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  color: var(--text-secondary);
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: 600;
-  transition: all 0.2s;
-}
-
-.filter-btn:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-}
-
-.filter-btn.active {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: white;
 }
 
 /* ── Users List ────────────────────────────────────────────────── */

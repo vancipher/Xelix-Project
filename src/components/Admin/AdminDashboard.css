@@ -1,37 +1,13 @@
 /* ── Admin Dashboard ─────────────────────────────────────────────── */
 .dashboard-page {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 40px 24px 80px;
   position: relative;
 }
-.dash-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 16px;
-  margin-bottom: 40px;
-}
-.dash-title {
-  font-size: 2rem;
-  font-weight: 800;
-  color: var(--text-primary);
-  letter-spacing: -0.5px;
-}
-.dash-sub {
-  margin-top: 4px;
-  font-size: 0.9rem;
-  color: var(--text-muted);
-}
-.dash-sub strong { color: var(--accent); font-weight: 600; }
 
-/* Days grid */
 .dash-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  align-items: start;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: stretch;
 }
 
 /* Day card */
@@ -158,74 +134,8 @@
 }
 .aer__edit:hover { color: var(--accent); background: var(--accent-soft); }
 
-/* Toast */
-.toast {
-  position: fixed;
-  bottom: 32px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--text-primary);
-  color: var(--bg-primary);
-  padding: 12px 24px;
-  border-radius: 999px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  box-shadow: var(--shadow-lg);
-  z-index: 2000;
-  animation: slideUp 0.2s ease, fadeOut 0.3s ease 2.7s forwards;
-  white-space: nowrap;
-}
-@keyframes slideUp { from { opacity: 0; transform: translateX(-50%) translateY(10px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
-@keyframes fadeOut { to { opacity: 0; } }
-
-/* Responsive */
-@media (max-width: 1024px) {
-  .dash-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
-}
-@media (max-width: 768px) {
-  .dashboard-page { padding: 24px 16px 60px; }
-  .dash-title { font-size: 1.6rem; }
-  .dash-header { margin-bottom: 24px; }
-  .dash-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
-}
 @media (max-width: 520px) {
-  .dash-title { font-size: 1.35rem; }
-  .dash-grid { grid-template-columns: 1fr; }
   .dash-add-btn span { display: none; }
-}
-
-/* ── Section tabs (dashboard) ────────────────────────────────── */
-.dash-section-tabs {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 12px;
-  flex-wrap: wrap;
-}
-
-/* ── Group tabs ──────────────────────────────────────────────── */
-.dash-group-tabs {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 28px;
-  flex-wrap: wrap;
-}
-.dash-group-tab {
-  padding: 8px 22px;
-  border-radius: 999px;
-  border: 1.5px solid var(--border);
-  background: var(--bg-card);
-  color: var(--text-secondary);
-  font-size: 0.88rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.18s ease;
-  font-family: inherit;
-}
-.dash-group-tab:hover { border-color: var(--accent); color: var(--accent); }
-.dash-group-tab--active {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #fff;
 }
 
 /* ── Day head info ───────────────────────────────────────────── */

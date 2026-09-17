@@ -35,6 +35,11 @@ export const REACTION_SHAPES = {
     afraid: <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="currentColor" opacity="0.1"/><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" strokeWidth="1.4"/><ellipse cx="7.5" cy="7" rx="2.5" ry="3" fill="none" stroke="currentColor" strokeWidth="1.1"/><ellipse cx="16.5" cy="7" rx="2.5" ry="3" fill="none" stroke="currentColor" strokeWidth="1.1"/><ellipse cx="10" cy="10.5" r="1.8" fill="none" stroke="currentColor" strokeWidth="1"/><circle cx="10" cy="10.5" r="0.6" fill="currentColor"/><ellipse cx="14" cy="10.5" r="1.8" fill="none" stroke="currentColor" strokeWidth="1"/><circle cx="14" cy="10.5" r="0.6" fill="currentColor"/><ellipse cx="12" cy="16" rx="1.8" ry="2.2" fill="none" stroke="currentColor" strokeWidth="1.1"/><path d="M8 7l2.5 2M16 7l-2.5 2" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/><circle cx="16.5" cy="13.5" r="0.9" fill="currentColor" opacity="0.3"/><ellipse cx="12" cy="13" rx="1.3" ry="0.8" fill="currentColor" opacity="0.3"/></svg>,
     angry:  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="#f87171" opacity="0.1"/><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" strokeWidth="1.4"/><ellipse cx="7.5" cy="7" rx="2.5" ry="3" fill="none" stroke="currentColor" strokeWidth="1.1"/><ellipse cx="16.5" cy="7" rx="2.5" ry="3" fill="none" stroke="currentColor" strokeWidth="1.1"/><path d="M8.5 9l3 1.5M15.5 9l-3 1.5" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round"/><path d="M10 15h4" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round"/><ellipse cx="12" cy="13" rx="1.3" ry="0.8" fill="currentColor" opacity="0.3"/></svg>,
   },
+  rain: {
+    happy:  <svg viewBox="0 0 24 24"><path d="M12 2C8 4 4 10 4 15c0 4.5 3.5 8 8 8s8-3.5 8-8c0-5-4-11-8-13z" fill="currentColor" opacity="0.2"/><path d="M12 2C8 4 4 10 4 15c0 4.5 3.5 8 8 8s8-3.5 8-8c0-5-4-11-8-13z" fill="none" stroke="currentColor" strokeWidth="1.3"/><path d="M12 5v14" stroke="currentColor" strokeWidth="0.8" opacity="0.4"/><path d="M9 14s1.2 1.5 3 1.5 3-1.5 3-1.5" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/><circle cx="10" cy="12" r="0.7" fill="currentColor"/><circle cx="14" cy="12" r="0.7" fill="currentColor"/></svg>,
+    afraid: <svg viewBox="0 0 24 24"><path d="M12 2C8 4 4 10 4 15c0 4.5 3.5 8 8 8s8-3.5 8-8c0-5-4-11-8-13z" fill="currentColor" opacity="0.12"/><path d="M12 2C8 4 4 10 4 15c0 4.5 3.5 8 8 8s8-3.5 8-8c0-5-4-11-8-13z" fill="none" stroke="currentColor" strokeWidth="1.3"/><path d="M12 5v14" stroke="currentColor" strokeWidth="0.8" opacity="0.4"/><ellipse cx="12" cy="16" rx="1.5" ry="2" fill="none" stroke="currentColor" strokeWidth="1.1"/><ellipse cx="10" cy="11.5" r="1.4" fill="none" stroke="currentColor" strokeWidth="0.9"/><circle cx="10" cy="11.5" r="0.5" fill="currentColor"/><ellipse cx="14" cy="11.5" r="1.4" fill="none" stroke="currentColor" strokeWidth="0.9"/><circle cx="14" cy="11.5" r="0.5" fill="currentColor"/><path d="M8 9l2.5 1.5M16 9l-2.5 1.5" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/><circle cx="15.5" cy="14" r="0.8" fill="currentColor" opacity="0.3"/></svg>,
+    angry:  <svg viewBox="0 0 24 24"><path d="M12 2C8 4 4 10 4 15c0 4.5 3.5 8 8 8s8-3.5 8-8c0-5-4-11-8-13z" fill="#f87171" opacity="0.15"/><path d="M12 2C8 4 4 10 4 15c0 4.5 3.5 8 8 8s8-3.5 8-8c0-5-4-11-8-13z" fill="none" stroke="currentColor" strokeWidth="1.3"/><path d="M12 5v14" stroke="currentColor" strokeWidth="0.8" opacity="0.4"/><path d="M9 15h6" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/><path d="M8.5 10.5l3 1M15.5 10.5l-3 1" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/></svg>,
+  },
   nature: {
     happy:  <svg viewBox="0 0 24 24"><path d="M12 2C8 4 4 10 4 15c0 4.5 3.5 8 8 8s8-3.5 8-8c0-5-4-11-8-13z" fill="currentColor" opacity="0.2"/><path d="M12 2C8 4 4 10 4 15c0 4.5 3.5 8 8 8s8-3.5 8-8c0-5-4-11-8-13z" fill="none" stroke="currentColor" strokeWidth="1.3"/><path d="M12 5v14" stroke="currentColor" strokeWidth="0.8" opacity="0.4"/><path d="M9 14s1.2 1.5 3 1.5 3-1.5 3-1.5" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/><circle cx="10" cy="12" r="0.7" fill="currentColor"/><circle cx="14" cy="12" r="0.7" fill="currentColor"/></svg>,
     afraid: <svg viewBox="0 0 24 24"><path d="M12 2C8 4 4 10 4 15c0 4.5 3.5 8 8 8s8-3.5 8-8c0-5-4-11-8-13z" fill="currentColor" opacity="0.12"/><path d="M12 2C8 4 4 10 4 15c0 4.5 3.5 8 8 8s8-3.5 8-8c0-5-4-11-8-13z" fill="none" stroke="currentColor" strokeWidth="1.3"/><path d="M12 5v14" stroke="currentColor" strokeWidth="0.8" opacity="0.4"/><ellipse cx="12" cy="16" rx="1.5" ry="2" fill="none" stroke="currentColor" strokeWidth="1.1"/><ellipse cx="10" cy="11.5" r="1.4" fill="none" stroke="currentColor" strokeWidth="0.9"/><circle cx="10" cy="11.5" r="0.5" fill="currentColor"/><ellipse cx="14" cy="11.5" r="1.4" fill="none" stroke="currentColor" strokeWidth="0.9"/><circle cx="14" cy="11.5" r="0.5" fill="currentColor"/><path d="M8 9l2.5 1.5M16 9l-2.5 1.5" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/><circle cx="15.5" cy="14" r="0.8" fill="currentColor" opacity="0.3"/></svg>,
@@ -55,15 +60,20 @@ export const REACTION_SHAPES = {
     afraid: <svg viewBox="0 0 24 24"><polygon points="12,2 14.5,9 22,9 16,14 18.5,21 12,17 5.5,21 8,14 2,9 9.5,9" fill="currentColor" opacity="0.10"/><polygon points="12,2 14.5,9 22,9 16,14 18.5,21 12,17 5.5,21 8,14 2,9 9.5,9" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round"/><ellipse cx="12" cy="15" rx="1.8" ry="2.2" fill="none" stroke="currentColor" strokeWidth="1.1"/><ellipse cx="10" cy="9.5" r="1.5" fill="none" stroke="currentColor" strokeWidth="0.9"/><circle cx="10" cy="9.5" r="0.5" fill="currentColor"/><ellipse cx="14" cy="9.5" r="1.5" fill="none" stroke="currentColor" strokeWidth="0.9"/><circle cx="14" cy="9.5" r="0.5" fill="currentColor"/></svg>,
     angry:  <svg viewBox="0 0 24 24"><polygon points="12,2 14.5,9 22,9 16,14 18.5,21 12,17 5.5,21 8,14 2,9 9.5,9" fill="#f87171" opacity="0.15"/><polygon points="12,2 14.5,9 22,9 16,14 18.5,21 12,17 5.5,21 8,14 2,9 9.5,9" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round"/><path d="M9.5 14.5h5" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/><path d="M8.5 9l3 1.5M15.5 9l-3 1.5" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/></svg>,
   },
-  athena: {
-    happy:  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="currentColor" opacity="0.15"/><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeWidth="1.4"/><path d="M3.5 9Q5 7 6 9" fill="currentColor" opacity="0.55"/><path d="M3 12.5Q4.5 10.5 5.5 12.5" fill="currentColor" opacity="0.5"/><path d="M3.5 16Q5 14 6 16" fill="currentColor" opacity="0.45"/><path d="M20.5 9Q19 7 18 9" fill="currentColor" opacity="0.55"/><path d="M21 12.5Q19.5 10.5 18.5 12.5" fill="currentColor" opacity="0.5"/><path d="M20.5 16Q19 14 18 16" fill="currentColor" opacity="0.45"/><path d="M9 14s1.2 1.5 3 1.5 3-1.5 3-1.5" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round"/><circle cx="10" cy="11" r="0.8" fill="currentColor"/><circle cx="14" cy="11" r="0.8" fill="currentColor"/></svg>,
-    afraid: <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="currentColor" opacity="0.10"/><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeWidth="1.4"/><path d="M3.5 9Q5 7 6 9" fill="currentColor" opacity="0.5"/><path d="M3 12.5Q4.5 10.5 5.5 12.5" fill="currentColor" opacity="0.45"/><path d="M3.5 16Q5 14 6 16" fill="currentColor" opacity="0.40"/><path d="M20.5 9Q19 7 18 9" fill="currentColor" opacity="0.5"/><path d="M21 12.5Q19.5 10.5 18.5 12.5" fill="currentColor" opacity="0.45"/><path d="M20.5 16Q19 14 18 16" fill="currentColor" opacity="0.40"/><ellipse cx="12" cy="15.5" rx="1.8" ry="2.2" fill="none" stroke="currentColor" strokeWidth="1.1"/><ellipse cx="10" cy="10.5" r="1.5" fill="none" stroke="currentColor" strokeWidth="0.9"/><circle cx="10" cy="10.5" r="0.5" fill="currentColor"/><ellipse cx="14" cy="10.5" r="1.5" fill="none" stroke="currentColor" strokeWidth="0.9"/><circle cx="14" cy="10.5" r="0.5" fill="currentColor"/></svg>,
-    angry:  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="#f87171" opacity="0.12"/><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeWidth="1.4"/><path d="M3.5 9Q5 7 6 9" fill="currentColor" opacity="0.5"/><path d="M3 12.5Q4.5 10.5 5.5 12.5" fill="currentColor" opacity="0.45"/><path d="M3.5 16Q5 14 6 16" fill="currentColor" opacity="0.40"/><path d="M20.5 9Q19 7 18 9" fill="currentColor" opacity="0.5"/><path d="M21 12.5Q19.5 10.5 18.5 12.5" fill="currentColor" opacity="0.45"/><path d="M20.5 16Q19 14 18 16" fill="currentColor" opacity="0.40"/><path d="M9 14.5h6" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round"/><path d="M8.5 9l3 1.5M15.5 9l-3 1.5" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/></svg>,
-  },
   noir: {
     happy:  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="1.6"/><path d="M8 14s1.5 2 4 2 4-2 4-2" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/><circle cx="9" cy="10" r="1" fill="currentColor"/><circle cx="15" cy="10" r="1" fill="currentColor"/></svg>,
     afraid: <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="1.6"/><ellipse cx="12" cy="16" rx="2.5" ry="3" fill="none" stroke="currentColor" strokeWidth="1.4"/><ellipse cx="9" cy="9.5" r="1.8" fill="none" stroke="currentColor" strokeWidth="1.2"/><circle cx="9" cy="9.5" r="0.7" fill="currentColor"/><ellipse cx="15" cy="9.5" r="1.8" fill="none" stroke="currentColor" strokeWidth="1.2"/><circle cx="15" cy="9.5" r="0.7" fill="currentColor"/><path d="M7 6.5l3.5 1.5M17 6.5l-3.5 1.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>,
     angry:  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="1.6"/><path d="M8 16h8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/><path d="M7 8l4 2M17 8l-4 2" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>,
+  },
+  horizon: {
+    happy:  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7" fill="#fbbf24" opacity="0.25"/><circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" strokeWidth="1.4"/><path d="M9 14s1 1.5 3 1.5 3-1.5 3-1.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/><circle cx="10" cy="11" r="0.8" fill="currentColor"/><circle cx="14" cy="11" r="0.8" fill="currentColor"/></svg>,
+    afraid: <svg viewBox="0 0 24 24"><path d="M12 21C12 21 3 14 3 8a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6-9 13-9 13z" fill="currentColor" opacity="0.12"/><path d="M12 21C12 21 3 14 3 8a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6-9 13-9 13z" fill="none" stroke="currentColor" strokeWidth="1.4"/><ellipse cx="12" cy="13" rx="1.8" ry="2.2" fill="none" stroke="currentColor" strokeWidth="1.1"/><ellipse cx="10" cy="8.5" r="1.3" fill="none" stroke="currentColor" strokeWidth="0.9"/><circle cx="10" cy="8.5" r="0.5" fill="currentColor"/><ellipse cx="14" cy="8.5" r="1.3" fill="none" stroke="currentColor" strokeWidth="0.9"/><circle cx="14" cy="8.5" r="0.5" fill="currentColor"/></svg>,
+    angry:  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="#a855f7" opacity="0.12"/><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" strokeWidth="1.4"/><path d="M8.5 9l3 1.5M15.5 9l-3 1.5" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round"/><path d="M10 15h4" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round"/></svg>,
+  },
+  mesa: {
+    happy:  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7" fill="#fbbf24" opacity="0.22"/><circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" strokeWidth="1.4"/><path d="M9 14s1 1.5 3 1.5 3-1.5 3-1.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/><circle cx="10" cy="11" r="0.8" fill="currentColor"/><circle cx="14" cy="11" r="0.8" fill="currentColor"/></svg>,
+    afraid: <svg viewBox="0 0 24 24"><path d="M5 16 Q3 12 6 9 Q9 5 14 6 Q19 7 20 11 Q21 15 17 17 Q12 20 8 18 Z" fill="none" stroke="currentColor" strokeWidth="1.3"/><ellipse cx="12" cy="14" rx="1.5" ry="2" fill="none" stroke="currentColor" strokeWidth="1"/><circle cx="10" cy="11" r="0.6" fill="currentColor"/><circle cx="14" cy="11" r="0.6" fill="currentColor"/></svg>,
+    angry:  <svg viewBox="0 0 24 24"><path d="M5 16 Q3 12 6 9 Q9 5 14 6 Q19 7 20 11 Q21 15 17 17 Q12 20 8 18 Z" fill="currentColor" opacity="0.12"/><path d="M5 16 Q3 12 6 9 Q9 5 14 6 Q19 7 20 11 Q21 15 17 17 Q12 20 8 18 Z" fill="none" stroke="currentColor" strokeWidth="1.3"/><path d="M10 14h4" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/></svg>,
   },
 };
 
@@ -80,41 +90,105 @@ function getDeviceId() {
 
 export default function DayCard({ dayKey, dayData, isImportant, date, isToday }) {
   const { lang } = useLanguage();
+  const { theme } = useTheme();
   const t = useT(lang);
+  const afraidBadgeIcon = (REACTION_SHAPES[theme] || REACTION_SHAPES.white).afraid;
   const events = dayData?.events ?? [];
+  const [expanded, setExpanded] = useState(isToday);
+
+  useEffect(() => {
+    if (isToday) setExpanded(true);
+  }, [isToday, dayKey]);
+
+  const toggle = () => setExpanded((open) => !open);
 
   return (
-    <div className={`day-card glass ${isImportant ? 'day-card--alert' : ''} ${isToday ? 'day-card--today' : ''}`}>
-      {/* Day header */}
-      <div className="day-card__header">
-        <div className="day-card__header-left">
-          <h2 className="day-card__name">{t(`days.${dayKey}`)}</h2>
-          {date && (
-            <span className="day-card__date">{formatDate(date, lang)}</span>
+    <div
+      className={[
+        'day-card glass',
+        isImportant ? 'day-card--alert' : '',
+        isToday ? 'day-card--today' : '',
+        expanded ? 'day-card--open' : 'day-card--collapsed',
+      ].filter(Boolean).join(' ')}
+    >
+      <button
+        type="button"
+        className="day-card__summary"
+        onClick={toggle}
+        aria-expanded={expanded}
+        aria-controls={`day-panel-${dayKey}`}
+      >
+        <div className="day-card__summary-top">
+          <div className="day-card__summary-main">
+            <div className="day-card__summary-text">
+              <h2 className="day-card__name">{t(`days.${dayKey}`)}</h2>
+              {date && (
+                <span className="day-card__date">{formatDate(date, lang)}</span>
+              )}
+            </div>
+            <div className="day-card__summary-badges">
+              {isImportant && (
+                <span className="day-card__badge">
+                  <span className="day-card__badge-icon" aria-hidden="true">
+                    {afraidBadgeIcon}
+                  </span>
+                  {t('schedule.importantDay')}
+                </span>
+              )}
+              {events.length > 0 && (
+                <span className="day-card__count-badge">{events.length}</span>
+              )}
+            </div>
+          </div>
+          <div className="day-card__summary-end">
+            <span className="day-card__chevron" aria-hidden>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M6 9l6 6 6-6"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </span>
+            {isToday && (
+              <span className="day-card__today-badge">{t('schedule.today')}</span>
+            )}
+          </div>
+        </div>
+
+        <div className="day-card__shade-strip" aria-hidden>
+          {events.length === 0 ? (
+            <span className="day-card__shade day-card__shade--empty" />
+          ) : (
+            events.map((event) => (
+              <span
+                key={event.id}
+                className="day-card__shade"
+                style={{
+                  '--shade-color': EVENT_TYPE_COLORS[event.type] || EVENT_TYPE_COLORS.other,
+                  '--shade-bg': EVENT_TYPE_BG[event.type] || EVENT_TYPE_BG.other,
+                }}
+              />
+            ))
           )}
         </div>
-        <div className="day-card__header-right">
-          {isToday && (
-            <span className="day-card__today-badge">{t('schedule.today')}</span>
-          )}
-          {isImportant && (
-            <span className="day-card__badge">{t('schedule.importantDay')}</span>
-          )}
+      </button>
+
+      <div className="day-card__panel" id={`day-panel-${dayKey}`}>
+        <div className="day-card__panel-inner">
+          <div className="day-card__divider" />
+          <div className="day-card__events">
+            {events.length === 0 ? (
+              <p className="day-card__empty">{t('schedule.noEvents')}</p>
+            ) : (
+              events.map((event) => (
+                <EventItem key={event.id} event={event} lang={lang} t={t} />
+              ))
+            )}
+          </div>
         </div>
-      </div>
-
-      {/* Divider */}
-      <div className="day-card__divider" />
-
-      {/* Events */}
-      <div className="day-card__events">
-        {events.length === 0 ? (
-          <p className="day-card__empty">{t('schedule.noEvents')}</p>
-        ) : (
-          events.map((event) => (
-            <EventItem key={event.id} event={event} lang={lang} t={t} />
-          ))
-        )}
       </div>
     </div>
   );

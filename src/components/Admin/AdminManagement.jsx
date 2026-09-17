@@ -4,6 +4,7 @@ import { useLanguage } from '../../contexts/LanguageContext';
 import { useT } from '../../utils/i18n';
 import { GROUPS, SECTIONS, SECTION_GROUPS } from '../../utils/helpers';
 import Modal from '../UI/Modal';
+import './admin-shared.css';
 import './AdminManagement.css';
 
 export default function AdminManagement() {
@@ -21,8 +22,8 @@ export default function AdminManagement() {
 
   if (!isSuperAdmin) {
     return (
-      <div className="amp-page">
-        <div className="amp-forbidden glass">
+      <div className="admin-page amp-page">
+        <div className="admin-forbidden glass">
           <p>{lang === 'ar' ? 'وصول مقيّد للمسؤول الرئيسي فقط.' : 'Access restricted to Super Admin only.'}</p>
         </div>
       </div>
@@ -96,15 +97,16 @@ export default function AdminManagement() {
     role === 'superadmin' ? t('admin.superadmin') : t('admin.adminLabel');
 
   return (
-    <div className="amp-page">
-      <div className="amp-header">
-        <div>
-          <h1 className="amp-title">{t('admin.manageAdmins')}</h1>
-          <p className="amp-sub">
-            {lang === 'ar' ? `${accounts.length} حسابات مسجّلة` : `${accounts.length} registered accounts`}
-          </p>
-        </div>
-        <button className="amp-add-btn" onClick={openAdd}>
+    <div className="admin-page amp-page">
+      <header className="admin-page-header">
+        <h1 className="admin-page-title">{t('admin.manageAdmins')}</h1>
+        <p className="admin-page-sub">
+          {lang === 'ar' ? `${accounts.length} حسابات مسجّلة` : `${accounts.length} registered accounts`}
+        </p>
+      </header>
+
+      <div className="admin-toolbar">
+        <button type="button" className="admin-action-btn" onClick={openAdd}>
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
             <path d="M7 1v12M1 7h12" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
           </svg>
@@ -112,7 +114,7 @@ export default function AdminManagement() {
         </button>
       </div>
 
-      <div className="amp-list">
+      <div className="admin-panel admin-panel--wide amp-list">
         {accounts.map((acc) => (
           <div key={acc.id} className={`amp-row glass ${acc.id === admin.id ? 'amp-row--self' : ''}`}>
             <div className="amp-row__avatar">

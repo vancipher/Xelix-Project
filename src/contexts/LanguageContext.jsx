@@ -9,9 +9,9 @@ export function LanguageProvider({ children }) {
     const dir = lang === 'ar' ? 'rtl' : 'ltr';
     document.documentElement.setAttribute('dir', dir);
     document.documentElement.setAttribute('lang', lang);
-    document.body.style.fontFamily = lang === 'ar'
-      ? "var(--font-ar)"
-      : "var(--font-en)";
+    document.title = lang === 'ar'
+      ? 'After Break — الجدول الجامعي'
+      : 'After Break — University Schedule';
     localStorage.setItem('xelix-lang', lang);
   }, [lang]);
 
