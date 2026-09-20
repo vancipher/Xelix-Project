@@ -36,14 +36,17 @@ export default function AdminProfile() {
       return;
     }
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 400));
-    updateProfile({
+    const saved = await updateProfile({
       displayName: displayName.trim(),
       password: newPassword || undefined,
     });
+    setLoading(false);
+    if (!saved) {
+      setError(lang === 'ar' ? 'تعذر حفظ الملف.' : 'Could not save profile.');
+      return;
+    }
     setNewPassword('');
     setConfirmPassword('');
-    setLoading(false);
     showToast(t('admin.profileUpdated'));
   };
 

@@ -54,7 +54,7 @@ export default function AdminManagement() {
 
   const closeModal = () => { setModalMode(null); setTarget(null); setError(''); };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!form.displayName.trim() || !form.username.trim()) {
       setError(lang === 'ar' ? 'يرجى ملء جميع الحقول المطلوبة.' : 'Please fill all required fields.');
       return;
@@ -64,7 +64,7 @@ export default function AdminManagement() {
         setError(lang === 'ar' ? 'كلمة المرور مطلوبة.' : 'Password is required.');
         return;
       }
-      const result = addAdmin({
+      const result = await addAdmin({
           username: form.username.trim(),
           password: form.password,
           displayName: form.displayName.trim(),
@@ -72,24 +72,27 @@ export default function AdminManagement() {
           canManageUsers: form.canManageUsers,
         });
       if (result === 'duplicate') { setError(t('admin.duplicateUser')); return; }
+      if (!result) { setError(lang === 'ar' ? 'تعذر حفظ المسؤول.' : 'Could not save admin.'); return; }
       showToast(t('admin.adminAdded'));
     } else {
-      editAdmin(target.id, {
+      const saved = await editAdmin(target.id, {
         username:       form.username.trim(),
         displayName:    form.displayName.trim(),
         password:       form.password ? form.password : undefined,
         allowedGroups:  form.allowedGroups,
         canManageUsers: form.canManageUsers,
       });
+      if (!saved) { setError(lang === 'ar' ? 'تعذر تحديث المسؤول.' : 'Could not update admin.'); return; }
       showToast(t('admin.adminUpdated'));
     }
     closeModal();
   };
 
-  const handleRemove = (acc) => {
-    if (acc.id === admin.id) { showToast(t('admin.cantRemoveSelf')); return; }
+  const handleRemove = async (acc) => {
+    if (acc.id === admin.id || acc.role === 'superadmin') { showToast(t('admin.cantRemoveSelf')); return; }
     if (!window.confirm(t('admin.confirmRemove'))) return;
-    removeAdmin(acc.id);
+    const saved = await removeAdmin(acc.id);
+    if (!saved) return;
     showToast(t('admin.adminRemoved'));
   };
 

@@ -1,4 +1,4 @@
-// sw v6 — network-first when online (same idea as afterain.dev) + offline precache
+// sw v7 — network-first when online (same idea as afterain.dev) + offline precache
 import { clientsClaim } from 'workbox-core';
 import { precacheAndRoute, cleanupOutdatedCaches } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';

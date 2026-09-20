@@ -6,29 +6,41 @@ import { v4 as uuidv4 } from 'uuid';
 const AuthContext = createContext(null);
 
 const SESSION_KEY = 'xelix-admin';
-const OLD_ACCOUNTS_KEY = 'xelix-accounts';
 const ACCOUNTS_ROW = 'accounts';
 
+const isProtectedSuperadmin = (account) =>
+  account?.role === 'superadmin' || account?.id === 'admin1';
+
+const canPersistAccounts = (accounts) =>
+  Array.isArray(accounts) &&
+  accounts.length > 0 &&
+  accounts.some(isProtectedSuperadmin);
+
 const saveToSupabase = async (accounts) => {
+  if (!canPersistAccounts(accounts)) {
+    console.error('Refusing to save admin list without a superadmin');
+    return false;
+  }
   const { error } = await supabase
     .from('admins')
     .upsert({ id: ACCOUNTS_ROW, data: accounts });
-  if (error) console.error('Admins save error:', error.message);
+  if (error) {
+    console.error('Admins save error:', error.message);
+    return false;
+  }
+  return true;
 };
 
-// Ensures every account in ADMIN_ACCOUNTS seed always exists.
-// DB version wins (preserves any profile changes), but missing seed
-// accounts are re-added — so a DB wipe never permanently removes them.
-const mergeWithSeed = (existing) => {
-  const result = [...existing];
-  for (const seed of ADMIN_ACCOUNTS) {
-    const alreadyExists = result.find(
-      (a) => a.id === seed.id || a.username === seed.username
-    );
-    if (!alreadyExists) result.push(seed);
-  }
-  return result;
-};
+async function fetchAccountsRow() {
+  const { data, error } = await supabase
+    .from('admins')
+    .select('data')
+    .eq('id', ACCOUNTS_ROW)
+    .maybeSingle();
+  if (error) return { ok: false, list: null, error };
+  const list = Array.isArray(data?.data) ? data.data : [];
+  return { ok: true, list };
+}
 
 export function AuthProvider({ children }) {
   const [accounts, setAccounts] = useState(ADMIN_ACCOUNTS);
@@ -42,42 +54,62 @@ export function AuthProvider({ children }) {
   const accountsRef = useRef(accounts);
   accountsRef.current = accounts;
 
-  // Load accounts from Supabase on mount, migrate localStorage if needed
   useEffect(() => {
-    const init = async () => {
-      const { data, error } = await supabase
-        .from('admins')
-        .select('data')
-        .eq('id', ACCOUNTS_ROW)
-        .single();
+    let cancelled = false;
 
-      if (!error && data?.data && Array.isArray(data.data) && data.data.length > 0) {
-        // Supabase has accounts — merge with seed so protected admins always exist
-        const merged = mergeWithSeed(data.data);
-        setAccounts(merged);
-        // Write back if any seed accounts were re-added after a partial wipe
-        if (merged.length !== data.data.length) {
-          await saveToSupabase(merged);
-        }
-      } else {
-        // Supabase empty — migrate from localStorage or use seed
-        const raw = localStorage.getItem(OLD_ACCOUNTS_KEY);
-        let local = null;
-        if (raw) {
-          try { local = JSON.parse(raw); } catch { /* ignore */ }
-        }
-        const toSave = (local && local.length > 0) ? mergeWithSeed(local) : ADMIN_ACCOUNTS;
-        setAccounts(toSave);
-        await saveToSupabase(toSave);
+    const init = async () => {
+      const { ok, list, error } = await fetchAccountsRow();
+      if (cancelled) return;
+
+      if (!ok) {
+        // Keep in-memory fallback for login — never overwrite the DB on a failed read
+        console.error('Admins load error:', error?.message);
+        setReady(true);
+        return;
       }
-      setReady(true);
+
+      if (list.length > 0) {
+        setAccounts(list);
+        setReady(true);
+        return;
+      }
+
+      // Truly empty row: bootstrap superadmin only so login still works
+      setAccounts(ADMIN_ACCOUNTS);
+      await saveToSupabase(ADMIN_ACCOUNTS);
+      if (!cancelled) setReady(true);
     };
+
     init();
+
+    const channel = supabase
+      .channel('admins-changes')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'admins', filter: `id=eq.${ACCOUNTS_ROW}` },
+        (payload) => {
+          const list = payload.new?.data;
+          if (!Array.isArray(list) || list.length === 0) return;
+          setAccounts(list);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      cancelled = true;
+      supabase.removeChannel(channel);
+    };
   }, []);
 
-  const _setAccounts = (next) => {
+  const mutateAccounts = async (mutator) => {
+    const { ok, list } = await fetchAccountsRow();
+    const current = ok && list.length > 0 ? list : accountsRef.current;
+    const next = mutator(current);
+    if (next === 'duplicate') return 'duplicate';
+    if (!canPersistAccounts(next)) return false;
     setAccounts(next);
-    setTimeout(() => saveToSupabase(next), 0);
+    const saved = await saveToSupabase(next);
+    return saved;
   };
 
   /* ── Auth ─────────────────────────────────────────────────────── */
@@ -92,6 +124,7 @@ export function AuthProvider({ children }) {
       displayName: found.displayName,
       role: found.role || 'admin',
       allowedGroups: found.allowedGroups ?? ['A', 'B', 'C'],
+      canManageUsers: found.canManageUsers ?? false,
     };
     setAdmin(session);
     localStorage.setItem(SESSION_KEY, JSON.stringify(session));
@@ -104,17 +137,19 @@ export function AuthProvider({ children }) {
   };
 
   /* ── Profile (self) ───────────────────────────────────────────── */
-  const updateProfile = ({ displayName, password }) => {
+  const updateProfile = async ({ displayName, password }) => {
     if (!admin) return false;
-    const next = accountsRef.current.map((a) => {
-      if (a.id !== admin.id) return a;
-      return {
-        ...a,
-        displayName: displayName ?? a.displayName,
-        password:    password    ?? a.password,
-      };
-    });
-    _setAccounts(next);
+    const saved = await mutateAccounts((current) =>
+      current.map((a) => {
+        if (a.id !== admin.id) return a;
+        return {
+          ...a,
+          displayName: displayName ?? a.displayName,
+          password:    password    ?? a.password,
+        };
+      })
+    );
+    if (!saved) return false;
     const updatedSession = { ...admin, displayName: displayName ?? admin.displayName };
     setAdmin(updatedSession);
     localStorage.setItem(SESSION_KEY, JSON.stringify(updatedSession));
@@ -125,40 +160,51 @@ export function AuthProvider({ children }) {
   const isSuperAdmin = admin?.role === 'superadmin';
   const canManageUsers = isSuperAdmin || admin?.canManageUsers === true;
 
-  const addAdmin = ({ username, password, displayName, allowedGroups, canManageUsers: cmu }) => {
+  const addAdmin = async ({ username, password, displayName, allowedGroups, canManageUsers: cmu }) => {
     if (!isSuperAdmin) return false;
-    if (accountsRef.current.find((a) => a.username === username)) return 'duplicate';
-    const newAdmin = {
-      id: uuidv4(), username, password, displayName, role: 'admin',
-      allowedGroups: allowedGroups ?? ['A', 'B', 'C'],
-      canManageUsers: cmu ?? false,
-    };
-    _setAccounts([...accountsRef.current, newAdmin]);
-    return true;
+    return mutateAccounts((current) => {
+      if (current.find((a) => a.username === username)) return 'duplicate';
+      return [
+        ...current,
+        {
+          id: uuidv4(),
+          username,
+          password,
+          displayName,
+          role: 'admin',
+          allowedGroups: allowedGroups ?? ['A', 'B', 'C'],
+          canManageUsers: cmu ?? false,
+        },
+      ];
+    });
   };
 
-  const removeAdmin = (id) => {
+  const removeAdmin = async (id) => {
     if (!isSuperAdmin) return false;
     if (id === admin.id) return false;
-    _setAccounts(accountsRef.current.filter((a) => a.id !== id));
-    return true;
+    return mutateAccounts((current) => {
+      const target = current.find((a) => a.id === id);
+      if (!target || isProtectedSuperadmin(target)) return current;
+      return current.filter((a) => a.id !== id);
+    });
   };
 
-  const editAdmin = (id, { displayName, password, username, allowedGroups, canManageUsers: cmu }) => {
+  const editAdmin = async (id, { displayName, password, username, allowedGroups, canManageUsers: cmu }) => {
     if (!isSuperAdmin) return false;
-    const next = accountsRef.current.map((a) => {
-      if (a.id !== id) return a;
-      return {
-        ...a,
-        displayName:    displayName   ?? a.displayName,
-        password:       password      ?? a.password,
-        username:       username      ?? a.username,
-        allowedGroups:  allowedGroups ?? a.allowedGroups,
-        canManageUsers: cmu           ?? a.canManageUsers ?? false,
-      };
-    });
-    _setAccounts(next);
-    return true;
+    return mutateAccounts((current) =>
+      current.map((a) => {
+        if (a.id !== id) return a;
+        const nextUsername = isProtectedSuperadmin(a) ? a.username : (username ?? a.username);
+        return {
+          ...a,
+          displayName:    displayName   ?? a.displayName,
+          password:       password      ?? a.password,
+          username:       nextUsername,
+          allowedGroups:  allowedGroups ?? a.allowedGroups,
+          canManageUsers: cmu           ?? a.canManageUsers ?? false,
+        };
+      })
+    );
   };
 
   const canAccessGroup = (groupKey) => {
