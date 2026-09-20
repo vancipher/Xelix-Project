@@ -10,9 +10,11 @@ import { GroupProvider } from './contexts/GroupContext';
 import { ResourcesProvider } from './contexts/ResourcesContext';
 import App from './App';
 import { initPwaUpdates } from './utils/pwaUpdate';
+import { syncPushSubscription } from './utils/notifications';
 import './index.css';
 
 initPwaUpdates();
+syncPushSubscription();
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

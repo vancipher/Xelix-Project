@@ -1,4 +1,4 @@
-// sw v5 — network-first when online (same idea as afterain.dev) + offline precache
+// sw v6 — network-first when online (same idea as afterain.dev) + offline precache
 import { clientsClaim } from 'workbox-core';
 import { precacheAndRoute, cleanupOutdatedCaches } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
@@ -22,7 +22,14 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('activate', (event) => {
-  event.waitUntil(clientsClaim());
+  event.waitUntil((async () => {
+    await clientsClaim();
+    // Drop any leftover notifications tagged under the old Xelix app
+    try {
+      const legacy = await self.registration.getNotifications({ tag: 'xelix-event' });
+      legacy.forEach((n) => n.close());
+    } catch { /* ignore */ }
+  })());
 });
 
 self.addEventListener('message', (event) => {
@@ -42,7 +49,7 @@ self.addEventListener('push', (event) => {
     body: data.body || 'New event posted',
     icon: '/icons/icon-192.png',
     badge: '/icons/icon-192.png',
-    tag: data.tag || 'xelix-event',
+    tag: data.tag || 'afterbreak-event',
     data: { url: data.url || '/' },
     vibrate: [200, 100, 200],
   };

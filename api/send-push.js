@@ -9,9 +9,41 @@ const PUSH_SECRET     = (process.env.PUSH_SECRET        || '').trim();
 const SUPABASE_URL    = (process.env.SUPABASE_URL       || '').trim();
 const SUPABASE_KEY    = (process.env.SUPABASE_SERVICE_KEY || '').trim();
 
+/** Only After Break hosts receive pushes — legacy Xelix / unlabeled rows are dropped */
+const ALLOWED_ORIGINS = new Set([
+  'https://afterbreak.afterain.dev',
+  'http://localhost:5173',
+  'http://127.0.0.1:5173',
+]);
+
 webpush.setVapidDetails(`mailto:${VAPID_EMAIL}`, VAPID_PUBLIC, VAPID_PRIVATE);
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+function normalizeOrigin(value) {
+  if (!value || typeof value !== 'string') return '';
+  return value.trim().replace(/\/$/, '');
+}
+
+function isAfterBreakSubscription(subscription) {
+  if (!subscription || typeof subscription !== 'object') return false;
+  if (subscription.app === 'afterbreak') return true;
+  return ALLOWED_ORIGINS.has(normalizeOrigin(subscription.origin));
+}
+
+function toWebPushSubscription(subscription) {
+  if (!subscription?.endpoint || !subscription?.keys?.p256dh || !subscription?.keys?.auth) {
+    return null;
+  }
+  return {
+    endpoint: subscription.endpoint,
+    expirationTime: subscription.expirationTime ?? null,
+    keys: {
+      p256dh: subscription.keys.p256dh,
+      auth: subscription.keys.auth,
+    },
+  };
+}
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -36,8 +68,30 @@ export default async function handler(req, res) {
   const payload = JSON.stringify({ title, body: body ?? '', url: url ?? '/' });
 
   const staleIds = [];
+  const legacyIds = [];
+  const targets = [];
+
+  for (const row of rows ?? []) {
+    const sub = row.subscription;
+    if (!isAfterBreakSubscription(sub)) {
+      // Untagged / Xelix-origin rows caused duplicate "Xelix" + "After Break" alerts
+      legacyIds.push(row.id);
+      continue;
+    }
+    const pushSub = toWebPushSubscription(sub);
+    if (!pushSub) {
+      legacyIds.push(row.id);
+      continue;
+    }
+    targets.push({ id: row.id, subscription: pushSub });
+  }
+
+  if (legacyIds.length) {
+    await supabase.from('push_subscriptions').delete().in('id', legacyIds);
+  }
+
   const results = await Promise.allSettled(
-    (rows ?? []).map(async ({ id, subscription }) => {
+    targets.map(async ({ id, subscription }) => {
       try {
         await webpush.sendNotification(subscription, payload);
       } catch (err) {
@@ -54,5 +108,9 @@ export default async function handler(req, res) {
   }
 
   const sent = results.filter((r) => r.status === 'fulfilled').length;
-  res.json({ sent, total: rows?.length ?? 0 });
+  res.json({
+    sent,
+    total: targets.length,
+    removedLegacy: legacyIds.length,
+  });
 }
