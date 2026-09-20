@@ -7,14 +7,14 @@ const HIGH_IMPACT_THEMES = [
   'rain', 'sun', 'lavender', 'purple', 'nature', 'sea', 'horizon', 'mesa',
 ];
 const THEMES = [...HIGH_IMPACT_THEMES, ...LOW_IMPACT_THEMES];
-const DEFAULT_THEME = 'sun';
-const DEFAULT_MIGRATION = 'xelix-default-rain-v1';
+const DEFAULT_THEME = 'rain';
+const DEFAULT_MIGRATION = 'xelix-default-rain-v2';
 
 function initialTheme() {
   const stored = localStorage.getItem('xelix-theme');
   if (!localStorage.getItem(DEFAULT_MIGRATION)) {
     localStorage.setItem(DEFAULT_MIGRATION, '1');
-    if (!stored || stored === 'white') return DEFAULT_THEME;
+    if (!stored || stored === 'white' || stored === 'sun') return DEFAULT_THEME;
   }
   if (
     !stored
