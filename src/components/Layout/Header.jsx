@@ -319,9 +319,7 @@ export default function Header() {
             <Link to="/" className="app-top-brand" onClick={closeMore} dir="ltr">
               <BrandLogo markClass="logo-mark" textClass="logo-text" />
             </Link>
-            {location.pathname === '/' && (
-              <p className="app-top-tagline">{t('schedule.title')}</p>
-            )}
+            <p className="app-top-credit" dir="ltr">AN AFTER RAIN ORIGINAL</p>
           </div>
           {isLoggedIn && (
             <Link

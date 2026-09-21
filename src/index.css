@@ -1060,12 +1060,19 @@ html[data-theme="rain"] .auth-title,
 html[data-theme="rain"] .login-title,
 html[data-theme="rain"] .pending-title,
 html[data-theme="rain"] .day-card__name,
-html[data-theme="rain"] .app-top-tagline,
 html[data-theme="rain"] .week-nav-label {
   font-family: var(--font-thmanyah-display);
   font-feature-settings: var(--thmanyah-features);
   letter-spacing: 0;
   font-weight: 700;
+}
+
+html[data-theme="rain"] .app-top-credit {
+  font-family: var(--font-thmanyah-display);
+  font-feature-settings: var(--thmanyah-features);
+  font-weight: 300;
+  letter-spacing: 0.14em;
+  opacity: 0.48;
 }
 
 html[data-theme="rain"] .app-top-brand .logo-mark,
