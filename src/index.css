@@ -1060,6 +1060,7 @@ html[data-theme="rain"] .auth-title,
 html[data-theme="rain"] .login-title,
 html[data-theme="rain"] .pending-title,
 html[data-theme="rain"] .day-card__name,
+html[data-theme="rain"] .app-top-tagline,
 html[data-theme="rain"] .week-nav-label {
   font-family: var(--font-thmanyah-display);
   font-feature-settings: var(--thmanyah-features);

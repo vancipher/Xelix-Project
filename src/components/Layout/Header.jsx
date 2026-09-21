@@ -320,6 +320,9 @@ export default function Header() {
               <BrandLogo markClass="logo-mark" textClass="logo-text" />
             </Link>
             <p className="app-top-credit" dir="ltr">AN AFTER RAIN ORIGINAL</p>
+            {location.pathname === '/' && (
+              <p className="app-top-tagline">{t('schedule.title')}</p>
+            )}
           </div>
           {isLoggedIn && (
             <Link

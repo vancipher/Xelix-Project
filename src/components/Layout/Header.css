@@ -50,6 +50,19 @@
   text-transform: uppercase;
 }
 
+.app-top-tagline {
+  margin: 0;
+  padding: 0 8px;
+  max-width: 100%;
+  font-size: clamp(0.58rem, 2.85vw, 0.8rem);
+  font-weight: 600;
+  color: var(--text-muted);
+  opacity: 0.72;
+  letter-spacing: 0;
+  line-height: 1.35;
+  white-space: nowrap;
+}
+
 .app-top-brand {
   text-decoration: none;
   display: flex;
