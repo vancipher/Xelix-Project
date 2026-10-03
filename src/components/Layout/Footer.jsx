@@ -40,6 +40,7 @@ export default function Footer() {
           <span className="footer-designer" aria-label={designerRaw}>
             {designerDisplay}
           </span>
+          <span className="footer-version" dir="ltr">v2.0.0</span>
         </p>
       </div>
     </footer>

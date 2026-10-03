@@ -97,6 +97,15 @@
   opacity: 0.62;
 }
 
+.footer-version {
+  color: var(--text-muted);
+  font-size: 0.58rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  opacity: 0.48;
+  line-height: 1.2;
+}
+
 @media (max-width: 480px) {
   .footer-inner {
     padding: 10px 12px;
